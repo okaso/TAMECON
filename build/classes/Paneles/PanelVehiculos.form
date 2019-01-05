@@ -87,7 +87,7 @@
     <Component class="javax.swing.JButton" name="BtnNuevo">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/Manager/addarticulo.png"/>
+          <Image iconType="3" name="/Imagenes/Manager/vehiculos.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="NUEVO"/>
       </Properties>
@@ -124,7 +124,7 @@
     <Component class="javax.swing.JButton" name="BtnEliminar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/Manager/edicion.png"/>
+          <Image iconType="3" name="/Imagenes/Manager/advertencia.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
@@ -151,7 +151,7 @@
     <Component class="javax.swing.JButton" name="BtnActualizar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/Manager/edicion.png"/>
+          <Image iconType="3" name="/Paneles/Imagenes/refresh.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>

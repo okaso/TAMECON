@@ -52,12 +52,18 @@ public class InterfazManager extends javax.swing.JFrame {
         jMenu1.setFont(new java.awt.Font("Wide Latin", 1, 12)); // NOI18N
         jMenu1.setPreferredSize(new java.awt.Dimension(375, 25));
 
+        ItemMateriales.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        ItemMateriales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/material.png"))); // NOI18N
         ItemMateriales.setText("ADMINISTRAR MATERIALES");
         jMenu1.add(ItemMateriales);
 
+        ItemAyudantes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        ItemAyudantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/ayudante.png"))); // NOI18N
         ItemAyudantes.setText("ADMINISTRAR AYUDANTES");
         jMenu1.add(ItemAyudantes);
 
+        ItemVehiculos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        ItemVehiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/vehiculo.png"))); // NOI18N
         ItemVehiculos.setText("ADMINISTRAR VEHICULOS");
         ItemVehiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,15 +72,23 @@ public class InterfazManager extends javax.swing.JFrame {
         });
         jMenu1.add(ItemVehiculos);
 
+        ItemRegistroVehiculos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        ItemRegistroVehiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/reparacion.png"))); // NOI18N
         ItemRegistroVehiculos.setText("REGISTRAR INGRESO DE VEHICULO AL TALLER");
         jMenu1.add(ItemRegistroVehiculos);
 
+        ItemEntregas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        ItemEntregas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/entrega.png"))); // NOI18N
         ItemEntregas.setText("ADMINISTRAR ENTREGAS A AYUDANTE");
         jMenu1.add(ItemEntregas);
 
+        ItemVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        ItemVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/venta.png"))); // NOI18N
         ItemVentas.setText("ADMINISTRAR VENTAS A CLIENTE");
         jMenu1.add(ItemVentas);
 
+        ItemProveedor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        ItemProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/proveedor.png"))); // NOI18N
         ItemProveedor.setText("ADMINISTRAR PROVEEDORES");
         ItemProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,12 +98,18 @@ public class InterfazManager extends javax.swing.JFrame {
         jMenu1.add(ItemProveedor);
         jMenu1.add(Separador);
 
+        ItemUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        ItemUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/user.png"))); // NOI18N
         ItemUsuarios.setText("REGISTRAR NUEVO USUARIO");
         jMenu1.add(ItemUsuarios);
 
+        ItemBackup.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        ItemBackup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/backup.png"))); // NOI18N
         ItemBackup.setText("COPIA DE SEGURIDAD");
         jMenu1.add(ItemBackup);
 
+        ItemSesion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        ItemSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/cerrar.png"))); // NOI18N
         ItemSesion.setText("CERRAR SESION");
         jMenu1.add(ItemSesion);
         jMenu1.add(jSeparator1);

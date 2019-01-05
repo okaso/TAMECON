@@ -248,7 +248,7 @@ public class ConsultaGlobal {
         };
 
         try {
-            String consulta = "SELECT Placa,Modelo,Color,Nombre de Cliente"
+            String consulta = "SELECT Placa,Modelo,Color,NombreCliente"
                     + " From Vehiculo";
             if (!textoBusqueda.isEmpty()) {
                 consulta += " WHERE NombreCliente LIKE '" + textoBusqueda + "%' OR Placa LIKE '" + textoBusqueda + "%'";
@@ -295,14 +295,14 @@ public class ConsultaGlobal {
         };
 
         try {
-            String consulta = "SELECT A.Id,A.Placa,A.FechaIngreso,A.FechaSalida,I.Nombre "
-                    + " From IngresoVehiculo I inner join Ayudante A on I.PC=A.Id";
+            String consulta = "SELECT I.Id,I.Placa,I.FechaIngreso,I.FechaSalida,A.Nombre "
+                    + " From IngresoVehiculo I inner join Ayudante A on I.PC=A.Id ";
             if (!textoBusqueda.isEmpty()) {
                 consulta += " WHERE Placa LIKE '" + textoBusqueda + "%' OR Nombre LIKE '" + textoBusqueda + "%'";
             }
 
 //            System.out.println(consulta);
-            ResultSet resultado = Conexion.getDatos(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta); 
 
             // Se crea el array de columnas
             String[] columnas = {"Nro Registro", "Placa", "F/Ingreso", "F/Salida", "Ayudante"};
@@ -537,11 +537,15 @@ public class ConsultaGlobal {
     }
 
     //           INSERTAR NUEVO USUARIO
-    public boolean InsertarUsuario(String login, String Nombre, String Contrasenia, String Cargo) {
-
-        String consulta = "Insert into Usuario(User,NombreUsuario,Password,Cargo,FechaIngreso) values "
-                + "('" + login + "','" + Nombre + "','" + Contrasenia + "','" + Cargo + "',NOW())";
-
+    public boolean InsertarUsuario(String login, String Nombre, String Contrasenia, String Cargo,boolean condicion) {
+        String consulta="";
+        if(condicion){
+            consulta = "Insert into Usuario(User,NombreUsuario,Password,Cargo,FechaIngreso) values "
+                + "('" + login + "','" + Nombre + "',SHA1('" + Contrasenia + "'),'" + Cargo + "',NOW())";
+        }else{
+            consulta="UPDATE Usuario SET NombreUsuario='"+Nombre+"', Password=SHA1('"+Contrasenia+"'), Cargo='"+Cargo+"' where User ='"+login+"'";
+        }
+        
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {

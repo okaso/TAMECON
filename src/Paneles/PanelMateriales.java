@@ -85,10 +85,10 @@ public class PanelMateriales extends javax.swing.JPanel {
 
         jLabel2.setText("Buscar Material Codigo/Nombre");
 
-        BtnEditarMaterial1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
+        BtnEditarMaterial1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
         BtnEditarMaterial1.setText("Eliminar");
 
-        BtnEditarMaterial2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
+        BtnEditarMaterial2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
         BtnEditarMaterial2.setText("Actualizar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

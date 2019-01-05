@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -33,7 +34,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class ControlGlobal implements ActionListener, KeyListener {
 
-    //COPIA DE SEGURIDAD
     Login login;
     ConsultaGlobal CG;
     InterfazManager IM;
@@ -109,7 +109,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         PU.BtnActualizar().addActionListener((ActionListener) this);
         PU.BtnBuscar().addActionListener((ActionListener) this);
         PU.BtnEditarMaterial().addActionListener((ActionListener) this);
-        PU.BtnEliminar().addActionListener((ActionListener) this);
+
         PU.BtnNuevo().addActionListener((ActionListener) this);
         PU.TxtBusqueda().addKeyListener((KeyListener) this);
 
@@ -154,7 +154,16 @@ public class ControlGlobal implements ActionListener, KeyListener {
         //PB.Guardar().addActionListener((ActionListener) this);
 
         //              INTERFACES DE REGISTROS
+        //              REGISTRO DE USUARIOS
         RUsuario = new RegistroUsuario();
+        RUsuario.BtnAgregar().addActionListener((ActionEvent e) -> {
+            GuardarUsuario(true);
+            RUsuario.setVisible(false);
+        });
+        RUsuario.BtnModificar().addActionListener((ActionEvent e) -> {
+            GuardarUsuario(false);
+            RUsuario.setVisible(false);
+        });
 
     }
 
@@ -226,6 +235,28 @@ public class ControlGlobal implements ActionListener, KeyListener {
         if (e.getSource() == IM.ItemVentas()) {
             //Vacio
         }
+        //Boton NUEVO PRESIONADO DE PANEL USUARIO
+        if (e.getSource() == PU.BtnNuevo()) {
+            RegistroUsuario(true);
+        }
+        //BOTON EDITAR PRESIONADO PANEL USUARIO
+        if (e.getSource() == PU.BtnEditarMaterial()) {
+            if (PU.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+            } else {
+                RUsuario.TxtUser().setText(PU.TablaArticulos().getValueAt(PU.TablaArticulos().getSelectedRow(), 0).toString());
+                RUsuario.TxtNombre().setText(PU.TablaArticulos().getValueAt(PU.TablaArticulos().getSelectedRow(), 1).toString());
+                RUsuario.ComboCargo().setSelectedItem(PU.TablaArticulos().getValueAt(PU.TablaArticulos().getSelectedRow(), 2).toString());
+                RegistroUsuario(false);
+            }
+        }
+        if (e.getSource() == this.PU.BtnActualizar()) {
+            System.out.println("Funciona");
+            CargarDatosUsuarios("");
+        }
+        if (e.getSource() == PU.BtnBuscar()) {
+            CargarDatosUsuarios(PU.TxtBusqueda().getText());
+        }
 
     }
 
@@ -239,6 +270,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
         if (e.getSource() == PM.TxtBusqueda()) {
             CargarDatosMateriales(PM.TxtBusqueda().getText());
         }
+        if (e.getSource() == PU.TxtBusqueda()) {
+            CargarDatosUsuarios(PU.TxtBusqueda().getText());
+        }
     }
 
     @Override
@@ -246,8 +280,40 @@ public class ControlGlobal implements ActionListener, KeyListener {
     }
 
     /*FIN ACCIOBES BOTONES Y TEXTOS*/
+    //                  REGISTRO DE USUARIOS
+    public void RegistroUsuario(boolean condicion) {
+        RUsuario.setVisible(true);
+        RUsuario.setLocationRelativeTo(null);
+        if (condicion) {
+            RUsuario.BtnAgregar().setVisible(true);
+            RUsuario.BtnModificar().setVisible(false);
+            RUsuario.TxtUser().setEditable(true);
+            RUsuario.TxtContrasenia().setText("");
+            RUsuario.TxtNombre().setText("");
+            RUsuario.TxtUser().setText("");
+        } else {
+            RUsuario.BtnAgregar().setVisible(false);
+            RUsuario.BtnModificar().setVisible(true);
+            RUsuario.TxtUser().setEditable(false);
+        }
+    }
 
- /*                      Interfaz Manager       */
+    //                  Guardar DATOS Usuario
+    public void GuardarUsuario(boolean condicion) {
+        if (CG.InsertarUsuario(RUsuario.TxtUser().getText(),
+                RUsuario.TxtNombre().getText(),
+                RUsuario.TxtContrasenia().getText(),
+                RUsuario.ComboCargo().getSelectedItem().toString(),
+                condicion)) {
+            JOptionPane.showMessageDialog(null, "USUARIO REGISTRADO...");
+        } else {
+            JOptionPane.showMessageDialog(null, "ERROR AL REGISTRAR...");
+
+        }
+
+    }
+
+    /*                      Interfaz Manager       */
     public void UserManager() {
         IM.ItemAyudantes().setVisible(true);
         IM.ItemBackup().setVisible(true);
@@ -269,7 +335,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.ItemSesion().setVisible(true);
         IM.ItemProveedor().setVisible(true);
         IM.ItemMateriales().setVisible(true);
-        IM.ItemUsuarios().setVisible(true);
+        IM.ItemUsuarios().setVisible(false);
         IM.ItemVehiculos().setVisible(true);
         IM.ItemVentas().setVisible(true);
     }
@@ -315,12 +381,14 @@ public class ControlGlobal implements ActionListener, KeyListener {
         CargarDatosAyudantes(PA.TxtBusqueda().getText());
         PA.setVisible(true);
         LimpiarInterfaz(PA);
+        System.out.println(" Ayudantes");
     }
 
     public void IngresoVehiculo() {
         CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
         PIV.setVisible(true);
         LimpiarInterfaz(PIV);
+        System.out.println("Ingreso ");
     }
 
     public void Proveedor() {
@@ -440,19 +508,19 @@ public class ControlGlobal implements ActionListener, KeyListener {
     }
 
     public void CargarDatosAyudantes(String textoBusqueda) {
-        this.PU.setDatos(this.CG.getListaAyudante(textoBusqueda), this.CG.getTotal());
+        this.PA.setDatos(this.CG.getListaAyudante(textoBusqueda), this.CG.getTotal());
     }
 
     public void CargarDatosProveedor(String textoBusqueda) {
-        this.PU.setDatos(this.CG.getListaProveedor(textoBusqueda), this.CG.getTotal());
+        this.PP.setDatos(this.CG.getListaProveedor(textoBusqueda), this.CG.getTotal());
     }
 
     public void CargarDatosVehiculo(String textoBusqueda) {
-        this.PU.setDatos(this.CG.getListaVehiculo(textoBusqueda), this.CG.getTotal());
+        this.PV.setDatos(this.CG.getListaVehiculo(textoBusqueda), this.CG.getTotal());
     }
 
     public void CargarDatosIngresoVehiculo(String textoBusqueda) {
-        this.PU.setDatos(this.CG.getListaIngresoVehiculo(textoBusqueda), this.CG.getTotal());
+        this.PIV.setDatos(this.CG.getListaIngresoVehiculo(textoBusqueda), this.CG.getTotal());
     }
 
     /*                    FIn interfaz Manager     */

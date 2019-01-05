@@ -44,7 +44,7 @@ public class PanelAyudantes extends javax.swing.JPanel {
         BtnActualizar = new javax.swing.JButton();
         BtnBuscar = new javax.swing.JButton();
 
-        BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/addarticulo.png"))); // NOI18N
+        BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/users.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,7 +62,7 @@ public class PanelAyudantes extends javax.swing.JPanel {
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
         BtnEditar.setText("Editar");
 
-        BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
+        BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
         BtnEliminar.setText("Eliminar");
 
         TablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
@@ -75,7 +75,7 @@ public class PanelAyudantes extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaArticulos);
 
-        BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
+        BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
         BtnActualizar.setText("Actualizar");
 
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/buscar.png"))); // NOI18N

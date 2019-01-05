@@ -38,13 +38,12 @@ public class PanelUsuarios extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         BtnEditar = new javax.swing.JButton();
-        BtnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaArticulos = new javax.swing.JTable();
         BtnActualizar = new javax.swing.JButton();
         BtnBuscar = new javax.swing.JButton();
 
-        BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/addarticulo.png"))); // NOI18N
+        BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/users.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,9 +61,6 @@ public class PanelUsuarios extends javax.swing.JPanel {
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
         BtnEditar.setText("Editar");
 
-        BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
-        BtnEliminar.setText("Eliminar");
-
         TablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -75,7 +71,7 @@ public class PanelUsuarios extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaArticulos);
 
-        BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
+        BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
         BtnActualizar.setText("Actualizar");
 
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/buscar.png"))); // NOI18N
@@ -94,11 +90,9 @@ public class PanelUsuarios extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(BtnNuevo)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGap(49, 49, 49)
                                     .addComponent(BtnEditar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(BtnEliminar)
-                                    .addGap(65, 65, 65)
+                                    .addGap(137, 137, 137)
                                     .addComponent(BtnActualizar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2)
@@ -127,7 +121,6 @@ public class PanelUsuarios extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BtnNuevo)
                         .addComponent(BtnEditar)
-                        .addComponent(BtnEliminar)
                         .addComponent(BtnActualizar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,7 +139,6 @@ public class PanelUsuarios extends javax.swing.JPanel {
     private javax.swing.JButton BtnActualizar;
     private javax.swing.JButton BtnBuscar;
     private javax.swing.JButton BtnEditar;
-    private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JLabel LabelTotal;
     private javax.swing.JTable TablaArticulos;
@@ -176,9 +168,6 @@ public class PanelUsuarios extends javax.swing.JPanel {
         return BtnNuevo;
     }
 
-    public JButton BtnEliminar() {
-        return BtnEliminar;
-    }
 
     public JButton BtnActualizar() {
         return BtnNuevo;

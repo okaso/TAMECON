@@ -188,7 +188,7 @@
     <Component class="javax.swing.JButton" name="BtnEditarMaterial1">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/Manager/edicion.png"/>
+          <Image iconType="3" name="/Imagenes/Manager/advertencia.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
@@ -196,7 +196,7 @@
     <Component class="javax.swing.JButton" name="BtnEditarMaterial2">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/Manager/edicion.png"/>
+          <Image iconType="3" name="/Paneles/Imagenes/refresh.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>

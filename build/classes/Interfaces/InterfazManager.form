@@ -22,16 +22,34 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="ItemMateriales">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+M"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/material.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="ADMINISTRAR MATERIALES"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemAyudantes">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+A"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/ayudante.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="ADMINISTRAR AYUDANTES"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemVehiculos">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+V"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/vehiculo.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="ADMINISTRAR VEHICULOS"/>
               </Properties>
               <Events>
@@ -40,21 +58,45 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemRegistroVehiculos">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+T"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/reparacion.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="REGISTRAR INGRESO DE VEHICULO AL TALLER"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemEntregas">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+E"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/entrega.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="ADMINISTRAR ENTREGAS A AYUDANTE"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemVentas">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+R"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/venta.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="ADMINISTRAR VENTAS A CLIENTE"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemProveedor">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+P"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/proveedor.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="ADMINISTRAR PROVEEDORES"/>
               </Properties>
               <Events>
@@ -65,16 +107,34 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemUsuarios">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+U"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/user.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="REGISTRAR NUEVO USUARIO"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemBackup">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+S"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Imagenes/Manager/backup.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="COPIA DE SEGURIDAD"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemSesion">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Z"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Paneles/Imagenes/cerrar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="CERRAR SESION"/>
               </Properties>
             </MenuItem>
