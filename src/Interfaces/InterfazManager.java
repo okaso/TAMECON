@@ -5,9 +5,8 @@
  */
 package Interfaces;
 
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JMenuItem;
+
 
 /**
  *
@@ -31,175 +30,95 @@ public class InterfazManager extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TablaArticulos = new javax.swing.JTable();
-        BtnMaterialesBajos = new javax.swing.JButton();
-        TxtBusqueda = new javax.swing.JTextField();
-        BtnRegistoArticulo = new javax.swing.JButton();
-        BtnCopiaSeguridad = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        BtnProveedores = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        BtnRegistroVentas = new javax.swing.JButton();
-        BtnEditarMaterial = new javax.swing.JButton();
-        BtnBuscar = new javax.swing.JButton();
-        BtnRegistroAyudantes = new javax.swing.JButton();
-        BtnRegistroVehiculos = new javax.swing.JButton();
-        BtnInventario = new javax.swing.JButton();
-        BtnRegistroUsuarios = new javax.swing.JButton();
-        LabelTotal = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        ItemMateriales = new javax.swing.JMenuItem();
+        ItemAyudantes = new javax.swing.JMenuItem();
+        ItemVehiculos = new javax.swing.JMenuItem();
+        ItemRegistroVehiculos = new javax.swing.JMenuItem();
+        ItemEntregas = new javax.swing.JMenuItem();
+        ItemVentas = new javax.swing.JMenuItem();
+        ItemProveedor = new javax.swing.JMenuItem();
+        Separador = new javax.swing.JPopupMenu.Separator();
+        ItemUsuarios = new javax.swing.JMenuItem();
+        ItemBackup = new javax.swing.JMenuItem();
+        ItemSesion = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 153, 102));
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        jMenu1.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        jMenu1.setText("TALLER MECANICO CONDORI");
+        jMenu1.setFont(new java.awt.Font("Wide Latin", 1, 12)); // NOI18N
+        jMenu1.setPreferredSize(new java.awt.Dimension(375, 25));
 
-        TablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        ItemMateriales.setText("ADMINISTRAR MATERIALES");
+        jMenu1.add(ItemMateriales);
 
-            },
-            new String [] {
+        ItemAyudantes.setText("ADMINISTRAR AYUDANTES");
+        jMenu1.add(ItemAyudantes);
 
+        ItemVehiculos.setText("ADMINISTRAR VEHICULOS");
+        ItemVehiculos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemVehiculosActionPerformed(evt);
             }
-        ));
-        jScrollPane1.setViewportView(TablaArticulos);
+        });
+        jMenu1.add(ItemVehiculos);
 
-        BtnMaterialesBajos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
-        BtnMaterialesBajos.setText("Materiales Agotados o Bajos");
+        ItemRegistroVehiculos.setText("REGISTRAR INGRESO DE VEHICULO AL TALLER");
+        jMenu1.add(ItemRegistroVehiculos);
 
-        BtnRegistoArticulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/addarticulo.png"))); // NOI18N
-        BtnRegistoArticulo.setText("Registro de Articulos");
+        ItemEntregas.setText("ADMINISTRAR ENTREGAS A AYUDANTE");
+        jMenu1.add(ItemEntregas);
 
-        BtnCopiaSeguridad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/backup.png"))); // NOI18N
-        BtnCopiaSeguridad.setText("Copia de Seguridad");
+        ItemVentas.setText("ADMINISTRAR VENTAS A CLIENTE");
+        jMenu1.add(ItemVentas);
 
-        jLabel1.setFont(new java.awt.Font("Wide Latin", 1, 36)); // NOI18N
-        jLabel1.setText("Lista De Materiales");
+        ItemProveedor.setText("ADMINISTRAR PROVEEDORES");
+        ItemProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemProveedorActionPerformed(evt);
+            }
+        });
+        jMenu1.add(ItemProveedor);
+        jMenu1.add(Separador);
 
-        BtnProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/contacto.png"))); // NOI18N
-        BtnProveedores.setText("Proveedores");
+        ItemUsuarios.setText("REGISTRAR NUEVO USUARIO");
+        jMenu1.add(ItemUsuarios);
 
-        jLabel2.setText("Buscar Material Codigo/Nombre");
+        ItemBackup.setText("COPIA DE SEGURIDAD");
+        jMenu1.add(ItemBackup);
 
-        BtnRegistroVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/registro.png"))); // NOI18N
-        BtnRegistroVentas.setText("Registro De Ventas");
+        ItemSesion.setText("CERRAR SESION");
+        jMenu1.add(ItemSesion);
+        jMenu1.add(jSeparator1);
 
-        BtnEditarMaterial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
-        BtnEditarMaterial.setText("Editar Articulo");
+        jMenuBar1.add(jMenu1);
 
-        BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/buscar.png"))); // NOI18N
-        BtnBuscar.setText("Buscar");
-
-        BtnRegistroAyudantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/trabajador.png"))); // NOI18N
-        BtnRegistroAyudantes.setText("Registro de Ayudantes");
-
-        BtnRegistroVehiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/vehiculos.png"))); // NOI18N
-        BtnRegistroVehiculos.setText("Registro de Vehiculos");
-
-        BtnInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/Inventory.png"))); // NOI18N
-        BtnInventario.setText("Inventario");
-
-        BtnRegistroUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/users.png"))); // NOI18N
-        BtnRegistroUsuarios.setText("Registro de Usuarios");
-
-        LabelTotal.setText("TOTAL REGISTROS");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(124, 124, 124)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(BtnRegistoArticulo)
-                                .addGap(55, 55, 55)
-                                .addComponent(BtnRegistroUsuarios)
-                                .addGap(65, 65, 65)
-                                .addComponent(BtnRegistroVehiculos)
-                                .addGap(57, 57, 57)
-                                .addComponent(BtnProveedores))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(BtnInventario)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(BtnMaterialesBajos))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(73, 73, 73)
-                                        .addComponent(BtnRegistroVentas)))
-                                .addGap(16, 16, 16)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(BtnRegistroAyudantes)
-                                        .addGap(71, 71, 71)
-                                        .addComponent(BtnCopiaSeguridad))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(BtnEditarMaterial)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(TxtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(BtnBuscar))))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 906, Short.MAX_VALUE))
-                        .addGap(29, 29, 29))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(LabelTotal)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnRegistoArticulo)
-                    .addComponent(BtnRegistroUsuarios)
-                    .addComponent(BtnRegistroVehiculos)
-                    .addComponent(BtnProveedores))
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnRegistroVentas)
-                    .addComponent(BtnRegistroAyudantes)
-                    .addComponent(BtnCopiaSeguridad))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnInventario)
-                    .addComponent(BtnMaterialesBajos)
-                    .addComponent(TxtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(BtnBuscar)
-                    .addComponent(BtnEditarMaterial))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LabelTotal)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 996, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGap(0, 595, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ItemVehiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemVehiculosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemVehiculosActionPerformed
+
+    private void ItemProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemProveedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemProveedorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,76 +156,52 @@ public class InterfazManager extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnBuscar;
-    private javax.swing.JButton BtnCopiaSeguridad;
-    private javax.swing.JButton BtnEditarMaterial;
-    private javax.swing.JButton BtnInventario;
-    private javax.swing.JButton BtnMaterialesBajos;
-    private javax.swing.JButton BtnProveedores;
-    private javax.swing.JButton BtnRegistoArticulo;
-    private javax.swing.JButton BtnRegistroAyudantes;
-    private javax.swing.JButton BtnRegistroUsuarios;
-    private javax.swing.JButton BtnRegistroVehiculos;
-    private javax.swing.JButton BtnRegistroVentas;
-    private javax.swing.JLabel LabelTotal;
-    private javax.swing.JTable TablaArticulos;
-    private javax.swing.JTextField TxtBusqueda;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem ItemAyudantes;
+    private javax.swing.JMenuItem ItemBackup;
+    private javax.swing.JMenuItem ItemEntregas;
+    private javax.swing.JMenuItem ItemMateriales;
+    private javax.swing.JMenuItem ItemProveedor;
+    private javax.swing.JMenuItem ItemRegistroVehiculos;
+    private javax.swing.JMenuItem ItemSesion;
+    private javax.swing.JMenuItem ItemUsuarios;
+    private javax.swing.JMenuItem ItemVehiculos;
+    private javax.swing.JMenuItem ItemVentas;
+    private javax.swing.JPopupMenu.Separator Separador;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
-    public JButton BtnBuscar() {
-        return BtnBuscar;
+    public JMenuItem ItemAyudantes(){
+        return ItemAyudantes;
     }
-
-    public void setDatos(DefaultTableModel modeloTabla, int total) {
-        TablaArticulos.setModel(modeloTabla);
-        LabelTotal.setText("Total Registros: " + total);
+    public JMenuItem ItemBackup(){
+        return ItemBackup;
     }
-
-    public JButton BtnEditarMaterial() {
-        return BtnEditarMaterial;
+    public JMenuItem ItemEntregas(){
+        return ItemEntregas;
     }
-
-    public JButton BtnInventario() {
-        return BtnInventario;
+    public JMenuItem ItemMateriales(){
+        return ItemMateriales;
     }
-
-    public JButton BtnMaterialBajo() {
-        return BtnMaterialesBajos;
+    public JMenuItem ItemProveedor(){
+        return ItemProveedor;
     }
-
-    public JButton BtnProveedor() {
-        return BtnProveedores;
+    public JMenuItem ItemIngresoVehiculos(){
+        return ItemRegistroVehiculos;
     }
-
-    public JButton BtnRegistroArticulo() {
-        return BtnRegistoArticulo;
+    public JMenuItem ItemSesion(){
+        return ItemSesion;
     }
-
-    public JButton BtnRegistroAyudante() {
-        return BtnRegistroAyudantes;
+    public JMenuItem ItemUsuarios(){
+        return ItemUsuarios;
     }
-
-    public JButton BtnRegistroUsuario() {
-        return BtnRegistroUsuarios;
+    public JMenuItem ItemVehiculos(){
+        return ItemVehiculos;
     }
-
-    public JButton BtnRegistroVehiculos() {
-        return BtnRegistroVehiculos;
+    
+    public JMenuItem ItemVentas(){
+        return ItemVentas;
     }
-
-    public JButton BtnVentas() {
-        return BtnRegistroVentas;
-    }
-
-    public JButton BtnBackup() {
-        return BtnCopiaSeguridad;
-    }
-
-    public JTextField TxtBusqueda() {
-        return TxtBusqueda;
-    }
+    
 }

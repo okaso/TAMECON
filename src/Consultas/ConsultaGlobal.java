@@ -9,6 +9,8 @@ import Mysql.ConexionBD;
 import com.mysql.jdbc.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -34,8 +36,8 @@ public class ConsultaGlobal {
                 usuario[1] = resultado.getString("NombreUsuario");
                 usuario[2] = resultado.getString("Cargo");
                 String url = "Insert Into Bitacora(User,FechaIngreso) values('" + usuario[0] + "',NOW())";
-
                 Conexion.EjecutarConsulta(url);
+                Conexion.EjecutarConsulta("Update Usuario set FechaIngreso=NOW() where User='" + usuario[0] + "'");
             }
             ResultSet rs = Conexion.getDatos("Select * From Usuario U inner join Bitacora B on U.User=B.User where U.User ='" + login + "'");
             if (rs.last()) {
@@ -47,6 +49,7 @@ public class ConsultaGlobal {
         }
         return usuario;
     }
+
     /*                       Cagar Datos de La LIsta De Articulos en Manager         */
     public DefaultTableModel getLista(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
@@ -56,12 +59,13 @@ public class ConsultaGlobal {
             }
         };
         try {
-            String consulta = "SELECT I.Codigo,I.Material,I.PrecioCompra,I.PrecioVenta,Sum(D.CEntrada)-Sum(D.CSalida),Unidad,Fecha"
-                    + " From Inventario I inner join Deposito D on I.Codigo = D.Codigo"
-                    + " Group by I.Codigo";
+            String consulta = "SELECT I.Codigo,I.Material,I.PrecioCompra,I.PrecioVenta,Q.CSaldo,Unidad,Fecha"
+                    + " From Inventario I inner join Deposito D on I.Codigo = D.Codigo inner join DepositoTotal Q on I.Codigo=Q.Codigo"
+                    + " ";
             if (!textoBusqueda.isEmpty()) {
-                consulta += " WHERE P.nombre LIKE '%" + textoBusqueda + "%' OR P.docente LIKE '%" + textoBusqueda + "%' OR P.descripcion LIKE '%" + textoBusqueda + "%' OR C.nombre LIKE '%" + textoBusqueda + "%'";
+                consulta += " WHERE I.Material LIKE '" + textoBusqueda + "%' or I.Codigo LIKE '" + textoBusqueda + "%'";
             }
+            consulta += " Group by I.Codigo";
 //            System.out.println(consulta);
             ResultSet resultado = Conexion.getDatos(consulta);
 
@@ -96,8 +100,453 @@ public class ConsultaGlobal {
         return modeloTabla;
     }
 
+    public DefaultTableModel getListaUsuarios(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "SELECT User,NombreUsuario,Cargo,FechaIngreso"
+                    + " From Usuario";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE NombreUsuario LIKE '" + textoBusqueda + "%'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Nombre del Usuario", "Login", "Cargo de Usuario", "Ultimo Ingreso"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][4];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+
+    public DefaultTableModel getListaAyudante(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "SELECT Id,Nombre,Estado "
+                    + " From Ayudante";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE Nombre LIKE '" + textoBusqueda + "%'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"ID Ayudante", "Nombre de Ayudante", "Estado"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][3];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return modeloTabla;
+    }
+
+    public DefaultTableModel getListaProveedor(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        try {
+            String consulta = "SELECT Id,Nombre,Telefono,Direccion,Detalles"
+                    + " From Proveedor";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE Nombre LIKE '" + textoBusqueda + "%' OR Detalles LIKE '" + textoBusqueda + "%'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Id", "Nombre Proveedor", "Telefono", "Direccion", "Detalles"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][5];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+
+    public DefaultTableModel getListaVehiculo(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        try {
+            String consulta = "SELECT Placa,Modelo,Color,Nombre de Cliente"
+                    + " From Vehiculo";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE NombreCliente LIKE '" + textoBusqueda + "%' OR Placa LIKE '" + textoBusqueda + "%'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Placa", "Modelo ", "Color", "Nombre de Cliente"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][4];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+
+    public DefaultTableModel getListaIngresoVehiculo(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        try {
+            String consulta = "SELECT A.Id,A.Placa,A.FechaIngreso,A.FechaSalida,I.Nombre "
+                    + " From IngresoVehiculo I inner join Ayudante A on I.PC=A.Id";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE Placa LIKE '" + textoBusqueda + "%' OR Nombre LIKE '" + textoBusqueda + "%'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Nro Registro", "Placa", "F/Ingreso", "F/Salida", "Ayudante"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][5];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return modeloTabla;
+    }
+
+    public String Backup() {
+        String Tabla[] = {"Usuario","Vehiculo","Inventario","Deposito","DepositoTotal","Ayudante","Venta","IngresoVehiculo","EntregaMateriales","Bitacora","Proveedor"};
+
+        String Copia = "";
+        
+        for (int x = 0; x < 11; x++) {
+            String consulta = "Select * From ";
+            if (Tabla[x].equals("Usuario")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Usuario(User,NombreUsuario,FechaIngreso,Cargo) values('" + rs.getString("User") + "','"
+                                + rs.getString("NombreUsuario") + "','" + rs.getString("FechaIngreso") + "','" + rs.getString("Cargo") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Usuario");
+                }
+            }
+            if (Tabla[x].equals("Bitacora")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Bitacora(User,FechaIngreso) values('" + rs.getString("User") + "','" + rs.getString("FechaIngreso") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Bitacora");
+                }
+            }
+            if (Tabla[x].equals("Proveedor")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Proveedor(Nombre,Telefono,Direccion,Detalles) values('" + rs.getString("Nombre") + "','" + rs.getString("Telefono") + "','"
+                                + rs.getString("Direccion") + "','" + rs.getString("Detalles") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Proveedor");
+                }
+            }
+            if (Tabla[x].equals("Vehiculo")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Vehiculo(Placa,Modelo,Color,NombreCliente) values('" + rs.getString("Placa") + "','" + rs.getString("Modelo") + "','"
+                                + rs.getString("Color") + "','" + rs.getString("NombreCliente") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Vehiculo" + ex);
+                }
+            }
+            if (Tabla[x].equals("Ayudante")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Ayudante(Id,Nombre,Estado) values('" + rs.getString("Id") + "','" + rs.getString("Nombre") + "','"
+                                + rs.getString("Estado") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Ayudante");
+                }
+            }
+            if (Tabla[x].equals("IngresoVehiculo")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into IngresoVehiculo(Id,Placa,PC,FechaIngreso,FechaSalida) values(" + rs.getInt("Id") + ",'" + rs.getString("Placa") + "'," + rs.getInt("PC") + ",'"
+                                + rs.getString("FechaIngreso") + "','" + rs.getString("FechaSalida") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Vehiculo2");
+                }
+            }
+            if (Tabla[x].equals("Inventario")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Inventario(Codigo,Material,PrecioCompra,PrecioVenta,Unidad) values('" + rs.getString("Codigo") + "','" + rs.getString("Material") + "'," + rs.getFloat("PrecioCompra") + ","
+                                + rs.getFloat("PrecioVenta") + ",'" + rs.getString("Unidad") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Inventario");
+                }
+            }
+            if (Tabla[x].equals("Deposito")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Deposito(Codigo,CEntrada,CSalida,Fecha) values('" + rs.getString("Codigo") + "'," + rs.getFloat("CEntrada") + ","
+                                + rs.getFloat("CSalida") + ",'" + rs.getString("Fecha") + "');";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Deposito");
+                }
+            }
+            if (Tabla[x].equals("DepositoTotal")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into DepositoTotal(Codigo,CEntrada,CSalida,CSaldo) values('" + rs.getString("Codigo") + "'," + rs.getFloat("CEntrada") + ","
+                                + rs.getFloat("CSalida") + "," + rs.getString("CSaldo") + ");";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Deposito2");
+                }
+            }
+            if (Tabla[x].equals("EntregaMateriales")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into EntregaMateriales(Codigo,Id,Cantidad,PrecioVenta,Fecha,User,Descuento) values('" + rs.getString("Codigo") + "'," + rs.getInt("Id") + "," + rs.getFloat("Cantidad") + "," + rs.getFloat("PrecioVenta") + ",'"
+                                + rs.getString("Fecha") + "','" + rs.getString("User") + "'," + rs.getFloat("Descuento") + ");";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en Entrega");
+                }
+
+            }
+            if (Tabla[x].equals("Venta")) {
+                try {
+                    consulta += Tabla[x];
+                    ResultSet rs = Conexion.getDatos(consulta);
+                    while (rs.next()) {
+                        Copia += "\n Insert into Venta(Codigo,Cantidad,PrecioVenta,FechaCancelacion,User,Nombre,Descuento) values('" + rs.getString("Codigo") + "'," + rs.getFloat("Cantidad") + "," + rs.getFloat("PrecioVenta") + ",'" + rs.getString("FechaCancelacion") + "','"
+                                + rs.getString("User") + "','" + rs.getString("Nombre") + "'," + rs.getFloat("Descuento") + ");";
+                    }
+                } catch (SQLException ex) {
+                    System.out.println("Error en venta");
+                }
+            }
+        }
+        Conexion.Desconectar();
+        return Copia;
+    }
+
     public int getTotal() {
         return Total;
+    }
+
+    ////////Insertar nuevo Articulo
+    public boolean InsertarArticulo(String Codigo, String Material, String PC, String PV, String Unidad, String Cantidad) {
+
+        String consulta = "Insert into Inventario(Codigo,Material,PrecioCompra,PrecioVenta,Unidad) values "
+                + "('" + Codigo + "','" + Material + "'," + PC + "," + PV + ",'" + Unidad + "')";
+
+        if (Conexion.EjecutarConsulta(consulta)) {
+            String consulta2 = "Insert into Deposito (Codigo,CEntrada,CSalida,Fecha) values ('" + Codigo + "'," + Cantidad + ",0,NOW())";
+            Conexion.EjecutarConsulta(consulta2);
+            String consulta3 = "Insert into DepositoTotal (Codigo,CEntrada,CSalida,CSaldo) values ('" + Codigo + "'," + Cantidad + ",0," + Cantidad + ")";
+            Conexion.EjecutarConsulta(consulta3);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String getCodigo() {
+        String cod = "";
+        try {
+
+            ResultSet rs = Conexion.getDatos("Select * from Inventario");
+            if (rs.last()) {
+                cod = rs.getString("Codigo");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaGlobal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return cod;
+    }
+
+    public String[] getArticulo(String Codigo) {
+        String datos[] = {"", "", "", "", ""};
+        String consulta = "Select * From Inventario I inner join Deposito D on D.Codigo =I.Codigo where I.Codigo='" + Codigo + "' group by I.Codigo";
+        try {
+            ResultSet rs = Conexion.getDatos(consulta);
+            if (rs.last()) {
+                datos[0] = rs.getString("Material");
+                datos[1] = rs.getString("PrecioCompra");
+                datos[2] = rs.getString("PrecioVenta");
+                datos[3] = rs.getString("Unidad");
+                datos[4] = rs.getString("CEntrada");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaGlobal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return datos;
+    }
+
+    //           INSERTAR NUEVO USUARIO
+    public boolean InsertarUsuario(String login, String Nombre, String Contrasenia, String Cargo) {
+
+        String consulta = "Insert into Usuario(User,NombreUsuario,Password,Cargo,FechaIngreso) values "
+                + "('" + login + "','" + Nombre + "','" + Contrasenia + "','" + Cargo + "',NOW())";
+
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

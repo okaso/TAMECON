@@ -1,13 +1,97 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
+                <CompoundBorder/>
+              </Border>
+            </Property>
+            <Property name="text" type="java.lang.String" value="TALLER MECANICO CONDORI"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Wide Latin" size="12" style="1"/>
+            </Property>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[375, 25]"/>
+            </Property>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemMateriales">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ADMINISTRAR MATERIALES"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemAyudantes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ADMINISTRAR AYUDANTES"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemVehiculos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ADMINISTRAR VEHICULOS"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ItemVehiculosActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemRegistroVehiculos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="REGISTRAR INGRESO DE VEHICULO AL TALLER"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemEntregas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ADMINISTRAR ENTREGAS A AYUDANTE"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemVentas">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ADMINISTRAR VENTAS A CLIENTE"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemProveedor">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ADMINISTRAR PROVEEDORES"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ItemProveedorActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemUsuarios">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="REGISTRAR NUEVO USUARIO"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemBackup">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="COPIA DE SEGURIDAD"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemSesion">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="CERRAR SESION"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Menu>
+  </NonVisualComponents>
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="66" green="99" red="ff" type="rgb"/>
     </Property>
   </Properties>
   <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
@@ -26,257 +110,13 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="996" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <EmptySpace min="0" pref="595" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
-  <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel1">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="99" green="99" red="99" type="rgb"/>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="BtnRegistoArticulo" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                                  <Component id="BtnRegistroUsuarios" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                                  <Component id="BtnRegistroVehiculos" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
-                                  <Component id="BtnProveedores" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="BtnInventario" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="BtnMaterialesBajos" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-                                          <Component id="BtnRegistroVentas" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="BtnRegistroAyudantes" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
-                                          <Component id="BtnCopiaSeguridad" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="BtnEditarMaterial" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="TxtBusqueda" min="-2" pref="112" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="BtnBuscar" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <Component id="jScrollPane1" alignment="0" pref="906" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="LabelTotal" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="BtnRegistoArticulo" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnRegistroUsuarios" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnRegistroVehiculos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnProveedores" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="BtnRegistroVentas" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnRegistroAyudantes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnCopiaSeguridad" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="BtnInventario" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnMaterialesBajos" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="TxtBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnEditarMaterial" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" min="-2" pref="393" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="LabelTotal" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTable" name="TablaArticulos">
-              <Properties>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="0" rowCount="0"/>
-                </Property>
-                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                  <TableColumnModel selectionModel="0"/>
-                </Property>
-                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                </Property>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="javax.swing.JButton" name="BtnMaterialesBajos">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/advertencia.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Materiales Agotados o Bajos"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="TxtBusqueda">
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnRegistoArticulo">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/addarticulo.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Registro de Articulos"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnCopiaSeguridad">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/backup.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Copia de Seguridad"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Wide Latin" size="36" style="1"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Lista De Materiales"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnProveedores">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/contacto.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Proveedores"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Buscar Material Codigo/Nombre"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnRegistroVentas">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/registro.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Registro De Ventas"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnEditarMaterial">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/edicion.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Editar Articulo"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnBuscar">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/buscar.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Buscar"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnRegistroAyudantes">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/trabajador.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Registro de Ayudantes"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnRegistroVehiculos">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/vehiculos.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Registro de Vehiculos"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnInventario">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/Inventory.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Inventario"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnRegistroUsuarios">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Imagenes/Manager/users.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Registro de Usuarios"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="LabelTotal">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="TOTAL REGISTROS"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
-  </SubComponents>
 </Form>
