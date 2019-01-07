@@ -42,6 +42,8 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
         TablaArticulos = new javax.swing.JTable();
         BtnActualizar = new javax.swing.JButton();
         BtnBuscar = new javax.swing.JButton();
+        BtnEntrega = new javax.swing.JButton();
+        BtnDetalles = new javax.swing.JButton();
 
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/vehiculos.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
@@ -77,6 +79,17 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/buscar.png"))); // NOI18N
         BtnBuscar.setText("Buscar");
 
+        BtnEntrega.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/entrega.png"))); // NOI18N
+        BtnEntrega.setText("Entrega de Materiales");
+
+        BtnDetalles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/vehiculos.png"))); // NOI18N
+        BtnDetalles.setText("Detalles");
+        BtnDetalles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDetallesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,26 +98,31 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelTotal)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(BtnNuevo)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(BtnEditar)
-                                    .addGap(180, 180, 180)
-                                    .addComponent(BtnActualizar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(TxtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(BtnBuscar))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(BtnNuevo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnEditar)
+                        .addGap(18, 18, 18)
+                        .addComponent(BtnEntrega)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnDetalles)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnActualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TxtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnBuscar))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(147, 147, 147)
-                        .addComponent(jLabel1)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(LabelTotal)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,12 +139,14 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BtnNuevo)
                         .addComponent(BtnEditar)
-                        .addComponent(BtnActualizar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                        .addComponent(BtnActualizar)
+                        .addComponent(BtnEntrega)
+                        .addComponent(BtnDetalles)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LabelTotal)
-                .addGap(30, 30, 30))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -134,11 +154,17 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
+    private void BtnDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDetallesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnDetallesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnActualizar;
     private javax.swing.JButton BtnBuscar;
+    private javax.swing.JButton BtnDetalles;
     private javax.swing.JButton BtnEditar;
+    private javax.swing.JButton BtnEntrega;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JLabel LabelTotal;
     private javax.swing.JTable TablaArticulos;
@@ -171,7 +197,17 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
   
 
     public JButton BtnActualizar() {
-        return BtnNuevo;
+        return BtnActualizar;
+    }
+    
+    public JButton BtnDetalles() {
+        return BtnDetalles;
+    }
+
+  
+
+    public JButton BtnEntrega() {
+        return BtnEntrega;
     }
 
     public JTextField TxtBusqueda() {

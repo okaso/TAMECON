@@ -36,7 +36,6 @@ public class InterfazManager extends javax.swing.JFrame {
         ItemAyudantes = new javax.swing.JMenuItem();
         ItemVehiculos = new javax.swing.JMenuItem();
         ItemRegistroVehiculos = new javax.swing.JMenuItem();
-        ItemEntregas = new javax.swing.JMenuItem();
         ItemVentas = new javax.swing.JMenuItem();
         ItemProveedor = new javax.swing.JMenuItem();
         Separador = new javax.swing.JPopupMenu.Separator();
@@ -76,11 +75,6 @@ public class InterfazManager extends javax.swing.JFrame {
         ItemRegistroVehiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/reparacion.png"))); // NOI18N
         ItemRegistroVehiculos.setText("REGISTRAR INGRESO DE VEHICULO AL TALLER");
         jMenu1.add(ItemRegistroVehiculos);
-
-        ItemEntregas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        ItemEntregas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/entrega.png"))); // NOI18N
-        ItemEntregas.setText("ADMINISTRAR ENTREGAS A AYUDANTE");
-        jMenu1.add(ItemEntregas);
 
         ItemVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         ItemVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/venta.png"))); // NOI18N
@@ -126,7 +120,7 @@ public class InterfazManager extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 595, Short.MAX_VALUE)
+            .addGap(0, 643, Short.MAX_VALUE)
         );
 
         pack();
@@ -178,7 +172,6 @@ public class InterfazManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ItemAyudantes;
     private javax.swing.JMenuItem ItemBackup;
-    private javax.swing.JMenuItem ItemEntregas;
     private javax.swing.JMenuItem ItemMateriales;
     private javax.swing.JMenuItem ItemProveedor;
     private javax.swing.JMenuItem ItemRegistroVehiculos;
@@ -198,9 +191,7 @@ public class InterfazManager extends javax.swing.JFrame {
     public JMenuItem ItemBackup(){
         return ItemBackup;
     }
-    public JMenuItem ItemEntregas(){
-        return ItemEntregas;
-    }
+   
     public JMenuItem ItemMateriales(){
         return ItemMateriales;
     }

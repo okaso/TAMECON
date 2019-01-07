@@ -94,7 +94,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.setLocationRelativeTo(null);
         IM.ItemAyudantes().addActionListener((ActionListener) this);
         IM.ItemBackup().addActionListener((ActionListener) this);
-        IM.ItemEntregas().addActionListener((ActionListener) this);
+
         IM.ItemIngresoVehiculos().addActionListener((ActionListener) this);
         IM.ItemMateriales().addActionListener((ActionListener) this);
         IM.ItemProveedor().addActionListener((ActionListener) this);
@@ -280,7 +280,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
     public void PanelIngresoVehiculo() {
         PIV = new PanelIngresoVehiculo();
         PIV.BtnActualizar().addActionListener((e) -> {
-            CargarDatosIngresoVehiculo("");
+            PIV.TxtBusqueda().setText("");
+            CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
         });
         PIV.BtnBuscar().addActionListener((e) -> {
             CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
@@ -294,7 +295,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 RIngresoVehiculo.setVisible(true);
                 RIngresoVehiculo.BtnAgregar().setVisible(false);
                 RIngresoVehiculo.BtnModificar().setVisible(true);
-                
+
                 RIngresoVehiculo.TxtPlaca().setText(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 1).toString());
                 RIngresoVehiculo.Placa().setSelectedItem(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 1).toString());
                 RIngresoVehiculo.Ayudante().setSelectedItem(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 4).toString());
@@ -309,7 +310,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
             RIngresoVehiculo.BtnModificar().setVisible(false);
         });
         PIV.TxtBusqueda().addKeyListener((KeyListener) this);
-
+        PIV.BtnDetalles().addActionListener((e) -> {
+            this.PIV.setDatos(this.CG.getListaIngresoVehiculoDetalles(PIV.TxtBusqueda().getText()), this.CG.getTotal());
+        });
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -362,9 +365,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         if (e.getSource() == IM.ItemAyudantes()) {
             Ayudantes();
         }
-        if (e.getSource() == IM.ItemEntregas()) {
-            //Vacio
-        }
+
         if (e.getSource() == IM.ItemIngresoVehiculos()) {
             IngresoVehiculo();
         }
@@ -424,7 +425,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             CargarDatosVehiculo(PV.TxtBusqueda().getText());
         }
         if (e.getSource() == PIV.TxtBusqueda()) {
-            CargarDatosVehiculo(PIV.TxtBusqueda().getText());
+            CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
         }
     }
 
@@ -470,7 +471,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     public void UserManager() {
         IM.ItemAyudantes().setVisible(true);
         IM.ItemBackup().setVisible(true);
-        IM.ItemEntregas().setVisible(true);
+
         IM.ItemIngresoVehiculos().setVisible(true);
         IM.ItemSesion().setVisible(true);
         IM.ItemProveedor().setVisible(true);
@@ -483,7 +484,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     public void UserSupervisor() {
         IM.ItemAyudantes().setVisible(true);
         IM.ItemBackup().setVisible(false);
-        IM.ItemEntregas().setVisible(true);
+
         IM.ItemIngresoVehiculos().setVisible(true);
         IM.ItemSesion().setVisible(true);
         IM.ItemProveedor().setVisible(true);
@@ -496,7 +497,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     public void UserAdministrador() {
         IM.ItemAyudantes().setVisible(true);
         IM.ItemBackup().setVisible(false);
-        IM.ItemEntregas().setVisible(true);
+
         IM.ItemIngresoVehiculos().setVisible(true);
         IM.ItemSesion().setVisible(true);
         IM.ItemProveedor().setVisible(true);

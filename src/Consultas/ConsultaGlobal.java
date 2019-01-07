@@ -301,9 +301,56 @@ public class ConsultaGlobal {
 
         try {
             String consulta = "SELECT I.Id,I.Placa,I.FechaIngreso,I.FechaSalida,A.Nombre "
+                    + " From IngresoVehiculo I inner join Ayudante A on I.PC=A.Id WHERE I.FechaSalida1='null' ";
+            
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Nro Registro", "Placa", "F/Ingreso", "F/Salida", "Ayudante"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][5];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return modeloTabla;
+    }
+    
+    public DefaultTableModel getListaIngresoVehiculoDetalles(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        try {
+            String consulta = "SELECT I.Id,I.Placa,I.FechaIngreso,I.FechaSalida,A.Nombre "
                     + " From IngresoVehiculo I inner join Ayudante A on I.PC=A.Id ";
             if (!textoBusqueda.isEmpty()) {
-                consulta += " WHERE Placa LIKE '" + textoBusqueda + "%' OR Nombre LIKE '" + textoBusqueda + "%'";
+                consulta += " Where Placa LIKE '" + textoBusqueda + "%' OR Nombre LIKE '" + textoBusqueda + "%'";
             }
 
 //            System.out.println(consulta);
@@ -339,6 +386,7 @@ public class ConsultaGlobal {
 
         return modeloTabla;
     }
+
 
     public DefaultTableModel getListaUsuariosDetalles(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
@@ -781,7 +829,7 @@ public class ConsultaGlobal {
     }
     public String[] getAyudantes() {
         try {
-            String consulta = "SELECT * FROM Ayudante";
+            String consulta = "SELECT * FROM Ayudante Where Estado='H'";
             ResultSet resultado = Conexion.getDatos(consulta);
 
             resultado.last();
