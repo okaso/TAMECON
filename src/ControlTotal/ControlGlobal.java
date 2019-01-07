@@ -59,7 +59,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     RegistroEntregaMateriales REntrega;
     Backup PB;
     JDialog Dialogo;
-
+    String User = "";
     DateFormat df = DateFormat.getDateInstance();
 
     public ControlGlobal() {
@@ -316,7 +316,13 @@ public class ControlGlobal implements ActionListener, KeyListener {
             this.PIV.setDatos(this.CG.getListaIngresoVehiculoDetalles(PIV.TxtBusqueda().getText()), this.CG.getTotal());
         });
         PIV.BtnEntrega().addActionListener((e) -> {
-            EntregaMateriales();
+            if (PIV.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+            } else {
+
+                EntregaMateriales();
+
+            }
         });
     }
 
@@ -324,13 +330,59 @@ public class ControlGlobal implements ActionListener, KeyListener {
         REntrega = new RegistroEntregaMateriales();
         REntrega.setLocationRelativeTo(null);
         REntrega.setVisible(true);
-        REntrega.BtnAgregar().addActionListener(this);
+        CargarDatosEntrega();
+        REntrega.BtnAgregar().addActionListener((e) -> {
+            RegistroEntregaMateriales();
+        });
         REntrega.BtnImprimir().addActionListener(this);
         REntrega.BtnQuitar().addActionListener(this);
         REntrega.BtnRebaja().addActionListener(this);
-        REntrega.ComboMaterial().addActionListener(this);
-        REntrega.TxtCodigo().addKeyListener(this);
 
+    }
+
+    public void RegistroEntregaMateriales() {
+        if (CG.EntregaMateriales(REntrega.TxtCodigo().getText(),
+                REntrega.LabelNro().getText(),
+                REntrega.TxtCantidad().getText(),
+                User,
+                REntrega.TxtRebaja().getText(),
+                REntrega.LabelPV().getText())) {
+            REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
+
+        } else {
+            System.out.println("NOse PUDO GUARDAR");
+        }
+    }
+
+    public void CargarDatosEntrega() {
+        REntrega.LabelNro().setText(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 0).toString());
+        REntrega.LabelPlaca().setText(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 1).toString());
+        REntrega.LabelAyudante().setText(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 4).toString());
+        REntrega.ComboMaterial().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(REntrega.TxtCodigo().getText())));
+        REntrega.ComboMaterial().addActionListener((e) -> {
+            REntrega.TxtCodigo().setText(CG.getCodigo(REntrega.ComboMaterial().getSelectedItem().toString()));
+            String[] datos = CG.getMaterialDetalles(REntrega.TxtCodigo().getText());
+            REntrega.LabelPC().setText(datos[0]);
+            REntrega.LabelPV().setText(datos[1]);
+            REntrega.LabelUnidad().setText(datos[2]);
+            REntrega.LabelCantidad().setText(datos[3]);
+        });
+        REntrega.TxtCodigo().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                REntrega.ComboMaterial().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(REntrega.TxtCodigo().getText())));
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -353,6 +405,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
                     JOptionPane.showMessageDialog(login, "El Usuario No esta Registrado o \n La Contraseña es Incorrecta", "Datos Erroneos..", JOptionPane.WARNING_MESSAGE);
                     login.TxtPassword().setText("");
                 } else {
+                    User = Usuario[0];
                     login.TxtPassword().setText("");
                     login.TxtUsuario().setText("");
                     if (Usuario[2].equals("Manager")) {
@@ -430,6 +483,10 @@ public class ControlGlobal implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            login.BtnIngresar().doClick();
+        }
+
         if (e.getSource() == PM.TxtBusqueda()) {
             CargarDatosMateriales(PM.TxtBusqueda().getText());
         }

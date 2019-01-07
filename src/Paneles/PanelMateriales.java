@@ -151,9 +151,9 @@ public class PanelMateriales extends javax.swing.JPanel {
                         .addComponent(BtnIngresar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LabelTotal)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

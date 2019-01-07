@@ -59,8 +59,7 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         TXtCantidad = new javax.swing.JLabel();
         TxtImprimer = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        LabelUnidad = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Wide Latin", 1, 36)); // NOI18N
         jLabel1.setText("Entregas");
@@ -91,9 +90,11 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
 
         BtnEntregar.setText("Entregar Material");
 
-        TXtPC.setText("jLabel12");
+        TXtPC.setText("--------------");
 
-        TxtPV.setText("jLabel13");
+        TxtPV.setText("--------------");
+
+        TxtRebaja.setText("0");
 
         jLabel14.setText("AGREGAR REBAJA AL TOTAL :");
 
@@ -101,11 +102,13 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
 
         BtnQuitar.setText("Quitar Material de Este Registro");
 
-        jLabel15.setText("Cantidad En Almacen");
+        jLabel15.setText("Cantidad En Almacen :");
 
-        TXtCantidad.setText("jLabel12");
+        TXtCantidad.setText("---------");
 
         TxtImprimer.setText("IMPRIMIR");
+
+        LabelUnidad.setText("----------");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -157,13 +160,15 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(TXtCantidad)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(LabelUnidad)
+                                        .addGap(0, 108, Short.MAX_VALUE))
                                     .addComponent(ComboMaterial, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(TxtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(BtnEntregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(TxtImprimer))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
@@ -202,7 +207,8 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
                             .addComponent(TXtPC)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel15)
-                                .addComponent(TXtCantidad)))))
+                                .addComponent(TXtCantidad)
+                                .addComponent(LabelUnidad)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
@@ -270,6 +276,7 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
     private javax.swing.JButton BtnQuitar;
     private javax.swing.JButton BtnRebajar;
     private javax.swing.JComboBox<String> ComboMaterial;
+    private javax.swing.JLabel LabelUnidad;
     private javax.swing.JLabel TXtCantidad;
     private javax.swing.JLabel TXtPC;
     private javax.swing.JTable TablaEntregas;
@@ -313,6 +320,9 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
     public JLabel LabelCantidad(){
         return TXtCantidad;
     }
+    public JLabel LabelUnidad(){
+        return LabelUnidad;
+    }
     public JTextField TxtCantidad(){
         return TxtCantidad;
     }
@@ -340,6 +350,7 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
     }
 
     public void setDatos(DefaultTableModel modeloTabla) {
+       
         TablaEntregas.setModel(modeloTabla);
     }
     public javax.swing.JComboBox ComboMaterial(){

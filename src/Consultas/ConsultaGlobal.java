@@ -387,7 +387,6 @@ public class ConsultaGlobal {
         return modeloTabla;
     }
 
-
     public DefaultTableModel getListaUsuariosDetalles(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -494,7 +493,7 @@ public class ConsultaGlobal {
             String consulta = "SELECT I.Codigo,I.CodMat,I.Material,D.CSaldo,Unidad"
                     + " From Inventario I inner join DepositoTotal D on I.Codigo = D.Codigo where D.CSaldo BETWEEN 0 and 30 ";
             if (!textoBusqueda.isEmpty()) {
-                consulta += " WHERE  I.Codigo ='" + textoBusqueda + "'";
+                consulta += " AND  I.Codigo ='" + textoBusqueda + "'";
             }
 
 //            System.out.println(consulta);
@@ -529,6 +528,52 @@ public class ConsultaGlobal {
         }
         return modeloTabla;
     }
+    public DefaultTableModel getEntrega(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "SELECT E.Id,I.Codigo,I.Material,I.PrecioVenta,E.Cantidad,I.PrecioVenta*E.Cantidad,E.Descuento From EntregaMateriales E inner join Inventario I on E.Codigo=I.Codigo WHERE  E.IdV =" + textoBusqueda;
+            
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Nro Registro", "Codigo Material", "Articulo", "P/Venta", "Cantidad"," Total","Descuento Al TOTAL"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][7];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+                    datos[i][5] = resultado.getString(6);
+                    datos[i][6] = resultado.getString(7);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+    
 
     public String Backup() {
         String Tabla[] = {"Usuario", "Vehiculo", "Inventario", "Deposito", "DepositoTotal", "Ayudante", "Venta", "IngresoVehiculo", "EntregaMateriales", "Bitacora", "Proveedor"};
@@ -827,6 +872,17 @@ public class ConsultaGlobal {
             return false;
         }
     }
+    
+    public boolean EntregaMateriales(String Codigo,String Id,String Cantidad,String User,String Descuento,String PV) {
+        String consulta = "CALL Entrega('" + Codigo + "',"+ Id +"," + Cantidad + ",'"+User+"',"+Descuento+","+PV+")";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
     public String[] getAyudantes() {
         try {
             String consulta = "SELECT * FROM Ayudante Where Estado='H'";
@@ -879,4 +935,78 @@ public class ConsultaGlobal {
         }
         return null;
     }
+    public String[] getMaterial(String txtBusqueda) {
+        try {
+            String consulta = "SELECT * FROM Inventario";
+           
+            if (!txtBusqueda.isEmpty()) {
+                consulta += " WHERE Codigo LIKE '" + txtBusqueda + "%' OR CodMat LIKE '"+txtBusqueda+"%'";
+            }
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            resultado.last();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            String[] datos = new String[resultado.getRow()];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i] = resultado.getString("Material");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            return datos;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+    public String getCodigo(String txtBusqueda) {
+        try {
+            String consulta = "SELECT * FROM Inventario Where Material='"+txtBusqueda+"'";
+     
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            resultado.last();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            String datos = new String();
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos = resultado.getString("Codigo");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            return datos;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    public String[] getMaterialDetalles(String Codigo) {
+        String datos[] = {"", "", "", ""};
+        String consulta = "Select * From Inventario I inner join DepositoTotal D on D.Codigo =I.Codigo where I.Codigo='" + Codigo + "'";
+        try {
+            ResultSet rs = Conexion.getDatos(consulta);
+            if (rs.last()) {
+                
+                datos[0] = rs.getString("PrecioCompra");
+                datos[1] = rs.getString("PrecioVenta");
+                datos[2] = rs.getString("Unidad");
+                datos[3] = rs.getString("CSaldo");
+                
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultaGlobal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return datos;
+    }
+    
 }
