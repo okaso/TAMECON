@@ -56,6 +56,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     RegistroIngresoVehiculo RIngresoVehiculo;
     RegistroVehiculo RVehiculo;
     RegistroVentaArticulos RVenta;
+    RegistroEntregaMateriales REntrega;
     Backup PB;
     JDialog Dialogo;
 
@@ -78,6 +79,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RAyudante = new RegistroAyudante();
         RVehiculo = new RegistroVehiculo();
         RIngresoVehiculo = new RegistroIngresoVehiculo();
+
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
@@ -313,6 +315,22 @@ public class ControlGlobal implements ActionListener, KeyListener {
         PIV.BtnDetalles().addActionListener((e) -> {
             this.PIV.setDatos(this.CG.getListaIngresoVehiculoDetalles(PIV.TxtBusqueda().getText()), this.CG.getTotal());
         });
+        PIV.BtnEntrega().addActionListener((e) -> {
+            EntregaMateriales();
+        });
+    }
+
+    public void EntregaMateriales() {
+        REntrega = new RegistroEntregaMateriales();
+        REntrega.setLocationRelativeTo(null);
+        REntrega.setVisible(true);
+        REntrega.BtnAgregar().addActionListener(this);
+        REntrega.BtnImprimir().addActionListener(this);
+        REntrega.BtnQuitar().addActionListener(this);
+        REntrega.BtnRebaja().addActionListener(this);
+        REntrega.ComboMaterial().addActionListener(this);
+        REntrega.TxtCodigo().addKeyListener(this);
+
     }
 
     /*Vaciar Interfaz Principañ*/
