@@ -12,12 +12,15 @@ import Interfaces.Registros.RegistroArticulo;
 import Interfaces.Registros.*;
 import Mysql.CopiaSeguridad;
 import Paneles.*;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.text.DateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -56,6 +59,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
     Backup PB;
     JDialog Dialogo;
 
+    DateFormat df = DateFormat.getDateInstance();
+
     public ControlGlobal() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -72,6 +77,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RArticulo = new RegistroArticulo();
         RAyudante = new RegistroAyudante();
         RVehiculo = new RegistroVehiculo();
+        RIngresoVehiculo = new RegistroIngresoVehiculo();
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
@@ -107,14 +113,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         PanelAyudantes();
 
         //              PANEL INGRESO VEHICULO AL TALLER
-        PIV = new PanelIngresoVehiculo();
-        PIV.BtnActualizar().addActionListener((ActionListener) this);
-        PIV.BtnBuscar().addActionListener((ActionListener) this);
-        PIV.BtnEditarMaterial().addActionListener((ActionListener) this);
-        PIV.BtnEliminar().addActionListener((ActionListener) this);
-        PIV.BtnNuevo().addActionListener((ActionListener) this);
-        PIV.TxtBusqueda().addKeyListener((KeyListener) this);
-
+        PanelIngresoVehiculo();
         //              PANEL REGISTRO PROVEEDORES
         PP = new PanelProveedores();
         PP.BtnActualizar().addActionListener((ActionListener) this);
@@ -265,7 +264,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 RVehiculo.TxtColor().setText(PV.TablaArticulos().getValueAt(PV.TablaArticulos().getSelectedRow(), 2).toString());
                 RVehiculo.BtnAgregar().setVisible(false);
                 RVehiculo.BtnModificar().setVisible(true);
-                RVehiculo.BtnAgregar().setEnabled(false);
+                RVehiculo.TxtPlaca().setEditable(false);
             }
         });
 
@@ -273,9 +272,44 @@ public class ControlGlobal implements ActionListener, KeyListener {
             RVehiculo.setVisible(true);
             RVehiculo.BtnAgregar().setVisible(true);
             RVehiculo.BtnModificar().setVisible(false);
-            RVehiculo.BtnAgregar().setEnabled(true);
+            RVehiculo.TxtPlaca().setEditable(true);
         });
         PV.TxtBusqueda().addKeyListener((KeyListener) this);
+    }
+
+    public void PanelIngresoVehiculo() {
+        PIV = new PanelIngresoVehiculo();
+        PIV.BtnActualizar().addActionListener((e) -> {
+            CargarDatosIngresoVehiculo("");
+        });
+        PIV.BtnBuscar().addActionListener((e) -> {
+            CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
+        });
+        PIV.BtnEditarMaterial().addActionListener((e) -> {
+            if (PIV.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+            } else {
+                RIngresoVehiculo.Ayudante().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getAyudantes()));
+                RIngresoVehiculo.Placa().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getPlaca("")));
+                RIngresoVehiculo.setVisible(true);
+                RIngresoVehiculo.BtnAgregar().setVisible(false);
+                RIngresoVehiculo.BtnModificar().setVisible(true);
+                
+                RIngresoVehiculo.TxtPlaca().setText(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 1).toString());
+                RIngresoVehiculo.Placa().setSelectedItem(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 1).toString());
+                RIngresoVehiculo.Ayudante().setSelectedItem(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 4).toString());
+                RIngresoVehiculo.setTitle(PIV.TablaArticulos().getValueAt(PIV.TablaArticulos().getSelectedRow(), 0).toString());
+            }
+        });
+        PIV.BtnNuevo().addActionListener((e) -> {
+            RIngresoVehiculo.Ayudante().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getAyudantes()));
+            RIngresoVehiculo.Placa().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getPlaca("")));
+            RIngresoVehiculo.setVisible(true);
+            RIngresoVehiculo.BtnAgregar().setVisible(true);
+            RIngresoVehiculo.BtnModificar().setVisible(false);
+        });
+        PIV.TxtBusqueda().addKeyListener((KeyListener) this);
+
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -388,6 +422,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
         if (e.getSource() == PV.TxtBusqueda()) {
             CargarDatosVehiculo(PV.TxtBusqueda().getText());
+        }
+        if (e.getSource() == PIV.TxtBusqueda()) {
+            CargarDatosVehiculo(PIV.TxtBusqueda().getText());
         }
     }
 
@@ -528,7 +565,29 @@ public class ControlGlobal implements ActionListener, KeyListener {
         CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
         PIV.setVisible(true);
         LimpiarInterfaz(PIV);
-        System.out.println("Ingreso ");
+        RIngresoVehiculo.BtnAgregar().addActionListener((e) -> {
+            NuevoIngresoVehiculo();
+        });
+        RIngresoVehiculo.BtnModificar().addActionListener((e) -> {
+            ModificarIngresoVehiculo();
+        });
+        RIngresoVehiculo.TxtPlaca().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                RIngresoVehiculo.Placa().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getPlaca(RIngresoVehiculo.TxtPlaca().getText())));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        RIngresoVehiculo.Placa().addActionListener((e) -> {
+            RIngresoVehiculo.TxtPlaca().setText(RIngresoVehiculo.Placa().getSelectedItem().toString());
+        });
     }
 
     public void Proveedor() {
@@ -812,4 +871,37 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
     }
 
+    public void NuevoIngresoVehiculo() {
+        String fecha = df.format(RIngresoVehiculo.Date().getDate());
+        if (CG.NuevoIngresoVehiculo(fecha,
+                RIngresoVehiculo.TxtPlaca().getText(),
+                RIngresoVehiculo.Ayudante().getSelectedItem().toString())) {
+            CargarDatosIngresoVehiculo("");
+            RIngresoVehiculo.TxtPlaca().setText("");
+            RIngresoVehiculo.Ayudante().setSelectedIndex(0);
+            Date date = null;
+            RIngresoVehiculo.Date().setDate(date);
+
+        } else {
+            JOptionPane.showMessageDialog(PV, "NO SE PUDO REGISTRAR EL VEHICULO");
+        }
+    }
+
+    public void ModificarIngresoVehiculo() {
+
+        if (CG.ModificarIngresoVehiculo(
+                RIngresoVehiculo.TxtPlaca().getText(),
+                RIngresoVehiculo.Ayudante().getSelectedItem().toString(),
+                RIngresoVehiculo.getTitle())) {
+            CargarDatosVehiculo("");
+            RIngresoVehiculo.setVisible(false);
+            CargarDatosIngresoVehiculo("");
+            RIngresoVehiculo.TxtPlaca().setText("");
+            RIngresoVehiculo.Ayudante().setSelectedIndex(0);
+            Date date = null;
+            RIngresoVehiculo.Date().setDate(date);
+        } else {
+            JOptionPane.showMessageDialog(PV, "NO SE PUDO MODIFICAR EL VEHICULO");
+        }
+    }
 }

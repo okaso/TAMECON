@@ -27,9 +27,7 @@
                                   <Component id="BtnNuevo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="BtnEditar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="BtnEliminar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="180" max="-2" attributes="0"/>
                                   <Component id="BtnActualizar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -68,7 +66,6 @@
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="BtnNuevo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="BtnEditar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="BtnActualizar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -119,14 +116,6 @@
           <Image iconType="3" name="/Imagenes/Manager/edicion.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Editar"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="BtnEliminar">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Imagenes/Manager/advertencia.png"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Eliminar"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">

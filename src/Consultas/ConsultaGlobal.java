@@ -763,5 +763,72 @@ public class ConsultaGlobal {
             return false;
         }
     }
-    
+    public boolean NuevoIngresoVehiculo(String fecha,String Placa, String Ayudante) {
+        String consulta = "CALL IngresoVehiculo('" + Placa + "','"+ Ayudante +"','" + fecha + "')";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean ModificarIngresoVehiculo(String Placa, String Ayudante,String id) {
+        String consulta = "CALL ModificarIngresoVehiculo('" + Placa + "','" + Ayudante + "',"+id+")";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public String[] getAyudantes() {
+        try {
+            String consulta = "SELECT * FROM Ayudante";
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            resultado.last();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            String[] datos = new String[resultado.getRow()];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i] = resultado.getString("Nombre");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            return datos;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+    public String[] getPlaca(String txtBusqueda) {
+        try {
+            String consulta = "SELECT * FROM Vehiculo";
+           
+            if (!txtBusqueda.isEmpty()) {
+                consulta += " WHERE Placa LIKE '" + txtBusqueda + "%'";
+            }
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            resultado.last();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            String[] datos = new String[resultado.getRow()];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i] = resultado.getString("Placa");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            return datos;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
 }
