@@ -38,7 +38,6 @@ public class PanelVehiculos extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         BtnEditar = new javax.swing.JButton();
-        BtnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaArticulos = new javax.swing.JTable();
         BtnActualizar = new javax.swing.JButton();
@@ -61,9 +60,6 @@ public class PanelVehiculos extends javax.swing.JPanel {
 
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
         BtnEditar.setText("Editar");
-
-        BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
-        BtnEliminar.setText("Eliminar");
 
         TablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,9 +92,7 @@ public class PanelVehiculos extends javax.swing.JPanel {
                                     .addComponent(BtnNuevo)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(BtnEditar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(BtnEliminar)
-                                    .addGap(65, 65, 65)
+                                    .addGap(180, 180, 180)
                                     .addComponent(BtnActualizar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2)
@@ -127,7 +121,6 @@ public class PanelVehiculos extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BtnNuevo)
                         .addComponent(BtnEditar)
-                        .addComponent(BtnEliminar)
                         .addComponent(BtnActualizar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,7 +139,6 @@ public class PanelVehiculos extends javax.swing.JPanel {
     private javax.swing.JButton BtnActualizar;
     private javax.swing.JButton BtnBuscar;
     private javax.swing.JButton BtnEditar;
-    private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JLabel LabelTotal;
     private javax.swing.JTable TablaArticulos;
@@ -176,9 +168,6 @@ public class PanelVehiculos extends javax.swing.JPanel {
         return BtnNuevo;
     }
 
-    public JButton BtnEliminar() {
-        return BtnEliminar;
-    }
 
     public JButton BtnActualizar() {
         return BtnNuevo;

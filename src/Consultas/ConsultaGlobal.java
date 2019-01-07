@@ -730,7 +730,7 @@ public class ConsultaGlobal {
             return false;
         }
     }
-       public boolean EliminarAyudante(int id) {
+    public boolean EliminarAyudante(int id) {
         String consulta = "Delete From Ayudante where Id="+id;
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
@@ -739,4 +739,29 @@ public class ConsultaGlobal {
         }
     }
  
+    public boolean NuevoVehiculo(String NombreCliente,String Placa, String Modelo,String Color) {
+        String consulta = "Insert Into Vehiculo(NombreCliente,Placa,Modelo,Color)Values('" + NombreCliente + "','" + Placa + "','" + Modelo + "','" + Color + "')";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean ModificarVehiculo(String NombreCliente,String Placa, String Modelo,String Color) {
+        String consulta = "UPDATE Vehiculo SET NombreCliente='" + NombreCliente + "',Modelo='" + Modelo + "',Color='" + Color + "' where Placa='"+Placa+"'";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean EliminarVehiculo(String Placa) {
+        String consulta = "Delete From Vehiculo where Placa='"+Placa+"'";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }

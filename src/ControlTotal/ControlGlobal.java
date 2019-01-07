@@ -70,7 +70,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
 
         RArticulo = new RegistroArticulo();
-        RAyudante= new RegistroAyudante();
+        RAyudante = new RegistroAyudante();
+        RVehiculo = new RegistroVehiculo();
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
@@ -124,13 +125,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         PP.TxtBusqueda().addKeyListener((KeyListener) this);
 
         //              PANEL REGISTRO VEHICULOS
-        PV = new PanelVehiculos();
-        PV.BtnActualizar().addActionListener((ActionListener) this);
-        PV.BtnBuscar().addActionListener((ActionListener) this);
-        PV.BtnEditarMaterial().addActionListener((ActionListener) this);
-        PV.BtnEliminar().addActionListener((ActionListener) this);
-        PV.BtnNuevo().addActionListener((ActionListener) this);
-        PV.TxtBusqueda().addKeyListener((KeyListener) this);
+        PanelVehiculo();
 
         //              PANEL COPIA DE SEGURIDAD
         PB = new Backup();
@@ -233,14 +228,14 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 int dialogoResultado = JOptionPane.showConfirmDialog(PA, "¿Esta segur@ de borrar el registro de Ayudante?", "Pregunta", JOptionPane.YES_NO_OPTION);
                 if (dialogoResultado == JOptionPane.YES_OPTION) {
                     int id = Integer.parseInt(
-                            ((DefaultTableModel)PA.TablaArticulos().getModel())
+                            ((DefaultTableModel) PA.TablaArticulos().getModel())
                                     .getValueAt(PA.TablaArticulos().getSelectedRow(), 0).toString());
                     if (CG.EliminarAyudante(id)) {
-                         CargarDatosAyudantes("");
+                        CargarDatosAyudantes("");
                     } else {
                         JOptionPane.showMessageDialog(PA, "El Registro no se pudo borrar");
                     }
-                   
+
                 }
             }
         });
@@ -249,6 +244,38 @@ public class ControlGlobal implements ActionListener, KeyListener {
             InsertarAyudantes(true);
         });
         PA.TxtBusqueda().addKeyListener((KeyListener) this);
+    }
+
+    public void PanelVehiculo() {
+        PV = new PanelVehiculos();
+        PV.BtnActualizar().addActionListener((e) -> {
+            CargarDatosVehiculo("");
+        });
+        PV.BtnBuscar().addActionListener((e) -> {
+            CargarDatosVehiculo(PV.TxtBusqueda().getText());
+        });
+        PV.BtnEditarMaterial().addActionListener((e) -> {
+            if (PV.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+            } else {
+                RVehiculo.setVisible(true);
+                RVehiculo.TxtNombre().setText(PV.TablaArticulos().getValueAt(PV.TablaArticulos().getSelectedRow(), 3).toString());
+                RVehiculo.TxtPlaca().setText(PV.TablaArticulos().getValueAt(PV.TablaArticulos().getSelectedRow(), 0).toString());
+                RVehiculo.TxtModelo().setText(PV.TablaArticulos().getValueAt(PV.TablaArticulos().getSelectedRow(), 1).toString());
+                RVehiculo.TxtColor().setText(PV.TablaArticulos().getValueAt(PV.TablaArticulos().getSelectedRow(), 2).toString());
+                RVehiculo.BtnAgregar().setVisible(false);
+                RVehiculo.BtnModificar().setVisible(true);
+                RVehiculo.BtnAgregar().setEnabled(false);
+            }
+        });
+
+        PV.BtnNuevo().addActionListener((e) -> {
+            RVehiculo.setVisible(true);
+            RVehiculo.BtnAgregar().setVisible(true);
+            RVehiculo.BtnModificar().setVisible(false);
+            RVehiculo.BtnAgregar().setEnabled(true);
+        });
+        PV.TxtBusqueda().addKeyListener((KeyListener) this);
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -356,8 +383,11 @@ public class ControlGlobal implements ActionListener, KeyListener {
         if (e.getSource() == PU.TxtBusqueda()) {
             CargarDatosUsuarios(PU.TxtBusqueda().getText());
         }
-        if(e.getSource() ==PA.TxtBusqueda()){
+        if (e.getSource() == PA.TxtBusqueda()) {
             CargarDatosAyudantes(PA.TxtBusqueda().getText());
+        }
+        if (e.getSource() == PV.TxtBusqueda()) {
+            CargarDatosVehiculo(PV.TxtBusqueda().getText());
         }
     }
 
@@ -461,6 +491,14 @@ public class ControlGlobal implements ActionListener, KeyListener {
         CargarDatosVehiculo(PV.TxtBusqueda().getText());
         PV.setVisible(true);
         LimpiarInterfaz(PV);
+        RVehiculo.BtnAgregar().addActionListener((e) -> {
+            NuevoVehiculo();
+        });
+        RVehiculo.BtnModificar().addActionListener((e) -> {
+            System.out.println("as");
+            ModificarVehiculo();
+        });
+
     }
 
     public void Ayudantes() {
@@ -474,7 +512,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             } else {
                 S = "D";
             }
-            if (CG.NuevoAyudante(RAyudante.TxtNombre().getText(),S)) {
+            if (CG.NuevoAyudante(RAyudante.TxtNombre().getText(), S)) {
                 CargarDatosAyudantes(PA.TxtBusqueda().getText());
             } else {
                 JOptionPane.showMessageDialog(PA, "NO SE PUDO COMPLETAR EL REGISTRO");
@@ -483,7 +521,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RAyudante.BtnModificar().addActionListener((e) -> {
             NuevoAyudante(false);
         });
-        
+
     }
 
     public void IngresoVehiculo() {
@@ -652,7 +690,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             RAyudante.TxtNombre().setText(PA.TablaArticulos().getValueAt(PA.TablaArticulos().getSelectedRow(), 1).toString());
             RAyudante.Estado().setSelectedItem(PA.TablaArticulos().getValueAt(PA.TablaArticulos().getSelectedRow(), 2));
         }
-        
+
     }
 
     public void NuevoAyudante(boolean condicion) {
@@ -738,6 +776,40 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RArticulo.TxtNombre().setText("");
         RArticulo.TxtPrecioCompra().setText("");
         RArticulo.TxtPrecioVenta().setText("");
+    }
+
+    /*              INTERFAZ VEHICULOS*/
+    public void NuevoVehiculo() {
+
+        if (CG.NuevoVehiculo(RVehiculo.TxtNombre().getText(),
+                RVehiculo.TxtPlaca().getText(),
+                RVehiculo.TxtModelo().getText(),
+                RVehiculo.TxtColor().getText())) {
+            CargarDatosVehiculo("");
+            RVehiculo.TxtNombre().setText("");
+            RVehiculo.TxtPlaca().setText("");
+            RVehiculo.TxtModelo().setText("");
+            RVehiculo.TxtColor().setText("");
+        } else {
+            JOptionPane.showMessageDialog(PV, "NO SE PUDO REGISTRAR EL VEHICULO");
+        }
+    }
+
+    public void ModificarVehiculo() {
+
+        if (CG.ModificarVehiculo(RVehiculo.TxtNombre().getText(),
+                RVehiculo.TxtPlaca().getText(),
+                RVehiculo.TxtModelo().getText(),
+                RVehiculo.TxtColor().getText())) {
+            CargarDatosVehiculo("");
+            RVehiculo.setVisible(false);
+            RVehiculo.TxtNombre().setText("");
+            RVehiculo.TxtPlaca().setText("");
+            RVehiculo.TxtModelo().setText("");
+            RVehiculo.TxtColor().setText("");
+        } else {
+            JOptionPane.showMessageDialog(PV, "NO SE PUDO MODIFICAR EL VEHICULO");
+        }
     }
 
 }
