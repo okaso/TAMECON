@@ -59,23 +59,23 @@ public class ConsultaGlobal {
             }
         };
         try {
-            String consulta = "SELECT I.Codigo,I.Material,I.PrecioCompra,I.PrecioVenta,Q.CSaldo,Unidad,Fecha"
+            String consulta = "SELECT I.Codigo,I.CodMat,I.Material,I.PrecioCompra,I.PrecioVenta,Q.CSaldo,Unidad,Fecha"
                     + " From Inventario I inner join Deposito D on I.Codigo = D.Codigo inner join DepositoTotal Q on I.Codigo=Q.Codigo"
                     + " ";
             if (!textoBusqueda.isEmpty()) {
-                consulta += " WHERE I.Material LIKE '" + textoBusqueda + "%' or I.Codigo LIKE '" + textoBusqueda + "%'";
+                consulta += " WHERE I.Material LIKE '" + textoBusqueda + "%' or I.Codigo LIKE '" + textoBusqueda + "%' OR I.CodMat LIKE '" + textoBusqueda + "%'";
             }
             consulta += " Group by I.Codigo";
 //            System.out.println(consulta);
             ResultSet resultado = Conexion.getDatos(consulta);
 
             // Se crea el array de columnas
-            String[] columnas = {"Codigo", "Articulo", "P/Compra", "P/Venta", "En Almacen", "Unidad", "F/Registro"};
+            String[] columnas = {"Codigo", "Codigo Material", "Articulo", "P/Compra", "P/Venta", "En Almacen", "Unidad", "F/Registro"};
 
             resultado.last();
             Total = resultado.getRow();
             //Se crea una matriz con tantas filas y columnas que necesite
-            Object[][] datos = new String[Total][7];
+            Object[][] datos = new String[Total][8];
 
             if (resultado.getRow() > 0) {
                 resultado.first();
@@ -88,6 +88,8 @@ public class ConsultaGlobal {
                     datos[i][4] = resultado.getString(5);
                     datos[i][5] = resultado.getString(6);
                     datos[i][6] = resultado.getString(7);
+                    datos[i][7] = resultado.getString(8);
+
 //                    datos[i][6] = resultado.getString("categoria");
                     i++;
                 } while (resultado.next());
@@ -302,7 +304,7 @@ public class ConsultaGlobal {
             }
 
 //            System.out.println(consulta);
-            ResultSet resultado = Conexion.getDatos(consulta); 
+            ResultSet resultado = Conexion.getDatos(consulta);
 
             // Se crea el array de columnas
             String[] columnas = {"Nro Registro", "Placa", "F/Ingreso", "F/Salida", "Ayudante"};
@@ -335,11 +337,154 @@ public class ConsultaGlobal {
         return modeloTabla;
     }
 
+    public DefaultTableModel getListaUsuariosDetalles(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "SELECT NombreUsuario,U.User,Cargo,B.FechaIngreso"
+                    + " From Usuario U inner join Bitacora B on U.User=B.User";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE NombreUsuario LIKE '" + textoBusqueda + "%'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Nombre del Usuario", "Login", "Cargo de Usuario", "Fechas de Ingreso"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][4];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+
+    public DefaultTableModel getListaDetalles(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "SELECT I.Codigo,I.CodMat,I.Material,D.CEntrada,D.CSalida,Unidad,Fecha"
+                    + " From Inventario I inner join Deposito D on I.Codigo = D.Codigo ";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE  I.Codigo ='" + textoBusqueda + "'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Codigo", "Codigo Material", "Articulo", "Entrada", "Salida", "Unidad", "F/Registro"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][8];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+                    datos[i][5] = resultado.getString(6);
+                    datos[i][6] = resultado.getString(7);
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+    public DefaultTableModel getListaBajos(String textoBusqueda) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "SELECT I.Codigo,I.CodMat,I.Material,D.CSaldo,Unidad"
+                    + " From Inventario I inner join DepositoTotal D on I.Codigo = D.Codigo where D.CSaldo BETWEEN 0 and 30 ";
+            if (!textoBusqueda.isEmpty()) {
+                consulta += " WHERE  I.Codigo ='" + textoBusqueda + "'";
+            }
+
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            // Se crea el array de columnas
+            String[] columnas = {"Codigo", "Codigo Material", "Articulo", "Entrada", "Salida", "Unidad"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][8];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+                    datos[i][5] = resultado.getString(6);
+                    
+
+//                    datos[i][6] = resultado.getString("categoria");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
+
     public String Backup() {
-        String Tabla[] = {"Usuario","Vehiculo","Inventario","Deposito","DepositoTotal","Ayudante","Venta","IngresoVehiculo","EntregaMateriales","Bitacora","Proveedor"};
+        String Tabla[] = {"Usuario", "Vehiculo", "Inventario", "Deposito", "DepositoTotal", "Ayudante", "Venta", "IngresoVehiculo", "EntregaMateriales", "Bitacora", "Proveedor"};
 
         String Copia = "";
-        
+
         for (int x = 0; x < 11; x++) {
             String consulta = "Select * From ";
             if (Tabla[x].equals("Usuario")) {
@@ -418,7 +563,7 @@ public class ConsultaGlobal {
                     consulta += Tabla[x];
                     ResultSet rs = Conexion.getDatos(consulta);
                     while (rs.next()) {
-                        Copia += "\n Insert into Inventario(Codigo,Material,PrecioCompra,PrecioVenta,Unidad) values('" + rs.getString("Codigo") + "','" + rs.getString("Material") + "'," + rs.getFloat("PrecioCompra") + ","
+                        Copia += "\n Insert into Inventario(Codigo,CodMat,Material,PrecioCompra,PrecioVenta,Unidad) values('" + rs.getString("Codigo") + "','" + rs.getString("CodMat") + "','" + rs.getString("Material") + "'," + rs.getFloat("PrecioCompra") + ","
                                 + rs.getFloat("PrecioVenta") + ",'" + rs.getString("Unidad") + "');";
                     }
                 } catch (SQLException ex) {
@@ -484,21 +629,30 @@ public class ConsultaGlobal {
     }
 
     ////////Insertar nuevo Articulo
-    public boolean InsertarArticulo(String Codigo, String Material, String PC, String PV, String Unidad, String Cantidad) {
+    public boolean InsertarArticulo(String Codigo, String Codigo1, String Material, String PC, String PV, String Unidad, String Cantidad, int x) {
+        int c = 0;
+        String consulta = "";
 
-        String consulta = "Insert into Inventario(Codigo,Material,PrecioCompra,PrecioVenta,Unidad) values "
-                + "('" + Codigo + "','" + Material + "'," + PC + "," + PV + ",'" + Unidad + "')";
+        if (x == 1) {
+            consulta = "CALL ModificarMaterial('" + Codigo + "','" + Codigo1 + "','" + Material + "'," + PC + "," + PV + ",'" + Unidad + "'," + Cantidad + ")";
+        }
+        if (x == 0) {
+            consulta = "CALL InsertarNuevoMaterial('" + Codigo + "','" + Codigo1 + "','" + Material + "'," + PC + "," + PV + ",'" + Unidad + "'," + Cantidad + ")";
+        }
+        if (x == 2) {
+            consulta = " CALL InsertarDeposito('" + Codigo + "'," + Cantidad + "," + c + ")";
+        }
+        if (x == 3) {
+            consulta = " CALL InsertarDeposito('" + Codigo + "'," + c + "," + Cantidad + ")";
+        }
 
         if (Conexion.EjecutarConsulta(consulta)) {
-            String consulta2 = "Insert into Deposito (Codigo,CEntrada,CSalida,Fecha) values ('" + Codigo + "'," + Cantidad + ",0,NOW())";
-            Conexion.EjecutarConsulta(consulta2);
-            String consulta3 = "Insert into DepositoTotal (Codigo,CEntrada,CSalida,CSaldo) values ('" + Codigo + "'," + Cantidad + ",0," + Cantidad + ")";
-            Conexion.EjecutarConsulta(consulta3);
 
             return true;
         } else {
             return false;
         }
+
     }
 
     public String getCodigo() {
@@ -518,8 +672,8 @@ public class ConsultaGlobal {
     }
 
     public String[] getArticulo(String Codigo) {
-        String datos[] = {"", "", "", "", ""};
-        String consulta = "Select * From Inventario I inner join Deposito D on D.Codigo =I.Codigo where I.Codigo='" + Codigo + "' group by I.Codigo";
+        String datos[] = {"", "", "", "", "", ""};
+        String consulta = "Select * From Inventario I inner join DepositoTotal D on D.Codigo =I.Codigo where I.Codigo='" + Codigo + "'";
         try {
             ResultSet rs = Conexion.getDatos(consulta);
             if (rs.last()) {
@@ -527,7 +681,8 @@ public class ConsultaGlobal {
                 datos[1] = rs.getString("PrecioCompra");
                 datos[2] = rs.getString("PrecioVenta");
                 datos[3] = rs.getString("Unidad");
-                datos[4] = rs.getString("CEntrada");
+                datos[4] = rs.getString("CSaldo");
+                datos[5] = rs.getString("CodMat");
 
             }
         } catch (SQLException ex) {
@@ -537,15 +692,15 @@ public class ConsultaGlobal {
     }
 
     //           INSERTAR NUEVO USUARIO
-    public boolean InsertarUsuario(String login, String Nombre, String Contrasenia, String Cargo,boolean condicion) {
-        String consulta="";
-        if(condicion){
+    public boolean InsertarUsuario(String login, String Nombre, String Contrasenia, String Cargo, boolean condicion) {
+        String consulta = "";
+        if (condicion) {
             consulta = "Insert into Usuario(User,NombreUsuario,Password,Cargo,FechaIngreso) values "
-                + "('" + login + "','" + Nombre + "',SHA1('" + Contrasenia + "'),'" + Cargo + "',NOW())";
-        }else{
-            consulta="UPDATE Usuario SET NombreUsuario='"+Nombre+"', Password=SHA1('"+Contrasenia+"'), Cargo='"+Cargo+"' where User ='"+login+"'";
+                    + "('" + login + "','" + Nombre + "',SHA1('" + Contrasenia + "'),'" + Cargo + "',NOW())";
+        } else {
+            consulta = "UPDATE Usuario SET NombreUsuario='" + Nombre + "', Password=SHA1('" + Contrasenia + "'), Cargo='" + Cargo + "' where User ='" + login + "'";
         }
-        
+
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {

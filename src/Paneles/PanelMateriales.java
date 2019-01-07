@@ -43,8 +43,8 @@ public class PanelMateriales extends javax.swing.JPanel {
         LabelTotal = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        BtnEditarMaterial1 = new javax.swing.JButton();
-        BtnEditarMaterial2 = new javax.swing.JButton();
+        BtnActualizar = new javax.swing.JButton();
+        BtnIngresar = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(996, 622));
 
@@ -68,7 +68,7 @@ public class PanelMateriales extends javax.swing.JPanel {
         BtnMaterialesBajos.setText("Materiales  Bajos");
 
         BtnInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/Inventory.png"))); // NOI18N
-        BtnInventario.setText("Inventario");
+        BtnInventario.setText("Mas Detalles");
 
         BtnRegistoArticulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/addarticulo.png"))); // NOI18N
         BtnRegistoArticulo.setText("NUEVO");
@@ -85,11 +85,11 @@ public class PanelMateriales extends javax.swing.JPanel {
 
         jLabel2.setText("Buscar Material Codigo/Nombre");
 
-        BtnEditarMaterial1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
-        BtnEditarMaterial1.setText("Eliminar");
+        BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
+        BtnActualizar.setText("Actualizar");
 
-        BtnEditarMaterial2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
-        BtnEditarMaterial2.setText("Actualizar");
+        BtnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/Inventory.png"))); // NOI18N
+        BtnIngresar.setText("Ingresar Materiales");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -101,19 +101,15 @@ public class PanelMateriales extends javax.swing.JPanel {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LabelTotal)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BtnInventario)
-                                .addGap(73, 73, 73)
-                                .addComponent(BtnMaterialesBajos))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(BtnRegistoArticulo)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGap(18, 18, 18)
                                     .addComponent(BtnEditarMaterial)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(BtnEditarMaterial1)
-                                    .addGap(65, 65, 65)
-                                    .addComponent(BtnEditarMaterial2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(BtnIngresar)
+                                    .addGap(31, 31, 31)
+                                    .addComponent(BtnActualizar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -123,21 +119,23 @@ public class PanelMateriales extends javax.swing.JPanel {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 951, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(147, 147, 147)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BtnMaterialesBajos)
+                        .addGap(29, 29, 29)
+                        .addComponent(BtnInventario)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(BtnInventario)
-                            .addComponent(BtnMaterialesBajos)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)))
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnMaterialesBajos)
+                    .addComponent(BtnInventario))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,8 +146,8 @@ public class PanelMateriales extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BtnRegistoArticulo)
                         .addComponent(BtnEditarMaterial)
-                        .addComponent(BtnEditarMaterial1)
-                        .addComponent(BtnEditarMaterial2)))
+                        .addComponent(BtnActualizar)
+                        .addComponent(BtnIngresar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
@@ -164,10 +162,10 @@ public class PanelMateriales extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnActualizar;
     private javax.swing.JButton BtnBuscar;
     private javax.swing.JButton BtnEditarMaterial;
-    private javax.swing.JButton BtnEditarMaterial1;
-    private javax.swing.JButton BtnEditarMaterial2;
+    private javax.swing.JButton BtnIngresar;
     private javax.swing.JButton BtnInventario;
     private javax.swing.JButton BtnMaterialesBajos;
     private javax.swing.JButton BtnRegistoArticulo;
@@ -196,12 +194,21 @@ public class PanelMateriales extends javax.swing.JPanel {
         return BtnEditarMaterial;
     }
 
-    public JButton BtnInventario() {
+    public JButton BtnDetalles() {
         return BtnInventario;
     }
 
     public JButton BtnMaterialBajo() {
         return BtnMaterialesBajos;
+    }
+    public JButton BtnActualizar(){
+        return BtnActualizar;
+    }
+    public JButton BtnNuevo() {
+        return BtnRegistoArticulo;
+    }
+    public JButton BtnIngresoMateriales() {
+        return BtnIngresar;
     }
     
     public JTextField TxtBusqueda() {

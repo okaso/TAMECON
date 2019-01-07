@@ -42,6 +42,7 @@ public class PanelUsuarios extends javax.swing.JPanel {
         TablaArticulos = new javax.swing.JTable();
         BtnActualizar = new javax.swing.JButton();
         BtnBuscar = new javax.swing.JButton();
+        BtnDtalles = new javax.swing.JButton();
 
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/users.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
@@ -77,6 +78,14 @@ public class PanelUsuarios extends javax.swing.JPanel {
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/buscar.png"))); // NOI18N
         BtnBuscar.setText("Buscar");
 
+        BtnDtalles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/users.png"))); // NOI18N
+        BtnDtalles.setText("Detalles");
+        BtnDtalles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDtallesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,9 +99,11 @@ public class PanelUsuarios extends javax.swing.JPanel {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(BtnNuevo)
-                                    .addGap(49, 49, 49)
+                                    .addGap(18, 18, 18)
                                     .addComponent(BtnEditar)
-                                    .addGap(137, 137, 137)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(BtnDtalles)
+                                    .addGap(55, 55, 55)
                                     .addComponent(BtnActualizar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel2)
@@ -121,7 +132,8 @@ public class PanelUsuarios extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BtnNuevo)
                         .addComponent(BtnEditar)
-                        .addComponent(BtnActualizar)))
+                        .addComponent(BtnActualizar)
+                        .addComponent(BtnDtalles)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
@@ -134,10 +146,15 @@ public class PanelUsuarios extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnNuevoActionPerformed
 
+    private void BtnDtallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDtallesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnDtallesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnActualizar;
     private javax.swing.JButton BtnBuscar;
+    private javax.swing.JButton BtnDtalles;
     private javax.swing.JButton BtnEditar;
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JLabel LabelTotal;
@@ -168,12 +185,15 @@ public class PanelUsuarios extends javax.swing.JPanel {
         return BtnNuevo;
     }
 
-
+    
     public JButton BtnActualizar() {
-        return BtnNuevo;
+        return BtnActualizar;
     }
 
     public JTextField TxtBusqueda() {
         return TxtBusqueda;
+    }
+    public JButton BtnDetalles(){
+        return BtnDtalles;
     }
 }

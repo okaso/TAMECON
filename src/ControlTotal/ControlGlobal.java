@@ -37,7 +37,6 @@ public class ControlGlobal implements ActionListener, KeyListener {
     Login login;
     ConsultaGlobal CG;
     InterfazManager IM;
-    RegistroArticulo RA;
 
     //PANELES DE CONTROL O LISTAS 
     PanelMateriales PM;
@@ -70,7 +69,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             Logger.getLogger(InterfazManager.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
+        RArticulo = new RegistroArticulo();
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
@@ -97,21 +96,10 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.ItemVentas().addActionListener((ActionListener) this);
 
         /*              Iniciando Panel Materiales                 */
-        PM = new PanelMateriales();
-        PM.BtnBuscar().addActionListener((ActionListener) this);
-        PM.BtnEditarMaterial().addActionListener((ActionListener) this);
-        PM.BtnInventario().addActionListener((ActionListener) this);
-        PM.BtnMaterialBajo().addActionListener((ActionListener) this);
-        PM.TxtBusqueda().addKeyListener((KeyListener) this);
+        PanelMateriales();
 
         //          PANEL REGISTRO NUEVO USUARIO
-        PU = new PanelUsuarios();
-        PU.BtnActualizar().addActionListener((ActionListener) this);
-        PU.BtnBuscar().addActionListener((ActionListener) this);
-        PU.BtnEditarMaterial().addActionListener((ActionListener) this);
-
-        PU.BtnNuevo().addActionListener((ActionListener) this);
-        PU.TxtBusqueda().addKeyListener((KeyListener) this);
+        PanelUsuarios();
 
         //            PANEL REGISTRO AYUDANTES 
         PA = new PanelAyudantes();
@@ -165,6 +153,61 @@ public class ControlGlobal implements ActionListener, KeyListener {
             RUsuario.setVisible(false);
         });
 
+    }
+
+    //PANEL USUARIOS
+    public void PanelUsuarios() {
+        PU = new PanelUsuarios();
+        PU.BtnActualizar().addActionListener((ActionListener) this);
+        PU.BtnBuscar().addActionListener((ActionListener) this);
+        PU.BtnEditarMaterial().addActionListener((ActionListener) this);
+        PU.BtnDetalles().addActionListener((ActionEvent e) -> {
+            System.out.println("asdas");
+            CargarDatosUsuariosDetalles(PU.TxtBusqueda().getText());
+        });
+        PU.BtnNuevo().addActionListener((ActionListener) this);
+        PU.TxtBusqueda().addKeyListener((KeyListener) this);
+    }
+
+    //PANEL MATERIALES
+    public void PanelMateriales() {
+        PM = new PanelMateriales();
+        PM.BtnBuscar().addActionListener((ActionEvent e) -> {
+            CargarDatosMateriales(PM.TxtBusqueda().getText());
+        });
+        PM.BtnEditarMaterial().addActionListener((ActionEvent e) -> {
+            if (PM.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PM, "Debe seleccionar un registro");
+            } else {
+                RArticulo.BtnAgregar().setVisible(false);
+                RArticulo.BtnAgregar1().setVisible(false);
+                RArticulo.BtnModificar().setVisible(true);
+                Articulos(1);
+            }
+        });
+        PM.BtnDetalles().addActionListener((ActionEvent e) -> {
+            CargarDatosMaterialesDetalles(PM.TxtBusqueda().getText());
+        });
+        PM.BtnMaterialBajo().addActionListener((e) -> {
+            CargarDatosMaterialesBajos(PM.TxtBusqueda().getText());
+        });
+        PM.TxtBusqueda().addKeyListener((KeyListener) this);
+        PM.BtnNuevo().addActionListener((ActionEvent e) -> {
+            RArticulo.BtnAgregar().setVisible(true);
+            RArticulo.BtnAgregar1().setVisible(false);
+            RArticulo.BtnModificar().setVisible(false);
+            Articulos(0);
+        });
+        PM.BtnIngresoMateriales().addActionListener((ActionEvent e) -> {
+            if (PM.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PM, "Debe seleccionar un registro");
+            } else {
+                RArticulo.BtnAgregar().setVisible(false);
+                RArticulo.BtnAgregar1().setVisible(true);
+                RArticulo.BtnModificar().setVisible(false);
+                Articulos(1);
+            }
+        });
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -251,7 +294,6 @@ public class ControlGlobal implements ActionListener, KeyListener {
             }
         }
         if (e.getSource() == this.PU.BtnActualizar()) {
-            System.out.println("Funciona");
             CargarDatosUsuarios("");
         }
         if (e.getSource() == PU.BtnBuscar()) {
@@ -431,7 +473,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 + "    Foreign key (PC) references Ayudante(Id)\n"
                 + ");\n"
                 + "Create table Inventario(\n"
-                + "    Codigo varchar(15)primary key,\n"
+                + "    Codigo varchar(15)primary key,CodMat varchar(50),\n"
                 + "    Material varchar(100),\n"
                 + "    PrecioCompra float,\n"
                 + "    PrecioVenta float,\n"
@@ -503,8 +545,19 @@ public class ControlGlobal implements ActionListener, KeyListener {
         this.PM.setDatos(this.CG.getLista(textoBusqueda), this.CG.getTotal());
     }
 
+    public void CargarDatosMaterialesDetalles(String textoBusqueda) {
+        this.PM.setDatos(this.CG.getListaDetalles(textoBusqueda), this.CG.getTotal());
+    }
+    public void CargarDatosMaterialesBajos(String textoBusqueda) {
+        this.PM.setDatos(this.CG.getListaBajos(textoBusqueda), this.CG.getTotal());
+    }
+
     public void CargarDatosUsuarios(String textoBusqueda) {
         this.PU.setDatos(this.CG.getListaUsuarios(textoBusqueda), this.CG.getTotal());
+    }
+
+    public void CargarDatosUsuariosDetalles(String textoBusqueda) {
+        this.PU.setDatos(this.CG.getListaUsuariosDetalles(textoBusqueda), this.CG.getTotal());
     }
 
     public void CargarDatosAyudantes(String textoBusqueda) {
@@ -526,46 +579,70 @@ public class ControlGlobal implements ActionListener, KeyListener {
     /*                    FIn interfaz Manager     */
  /*                  Interfaz Registro Articulo       */
     public void Articulos(int n) {
-        RA = new RegistroArticulo();
-        RA.setLocationRelativeTo(null);
-        RA.setVisible(true);
+        RArticulo.setVisible(true);
         if (n == 1) {
+
             String Codigo = PM.TablaArticulos().getValueAt(PM.TablaArticulos().getSelectedRow(), 0).toString();
             String[] datos = CG.getArticulo(Codigo);
-            RA.TxtCodigo().setText(Codigo);
-            RA.TxtNombre().setText(datos[0]);
-            RA.TxtPrecioCompra().setText(datos[1]);
-            RA.TxtPrecioVenta().setText(datos[2]);
-            RA.TxtUnidad().setSelectedItem(datos[3]);
-            RA.TxtCantidad().setText(datos[4]);
+            RArticulo.TxtCodigo().setText(Codigo);
+            RArticulo.TxtNombre().setText(datos[0]);
+            RArticulo.TxtPrecioCompra().setText(datos[1]);
+            RArticulo.TxtPrecioVenta().setText(datos[2]);
+            RArticulo.TxtUnidad().setSelectedItem(datos[3]);
+            RArticulo.TxtCantidad().setText(datos[4]);
+            RArticulo.TxtCodigo1().setText(datos[5]);
 
         } else {
-            RA.BtnAgregar().addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (CG.InsertarArticulo(
-                            RA.TxtCodigo().getText(),
-                            RA.TxtNombre().getText(),
-                            RA.TxtPrecioCompra().getText(),
-                            RA.TxtPrecioVenta().getText(),
-                            RA.TxtUnidad().getSelectedItem().toString(),
-                            RA.TxtCantidad().getText())) {
-                        System.out.println("Correcto");
 
-                    } else {
-                        System.out.println("NO se pudo guardar el articulo");
-                    }
-                }
-            });
-            RA.BtnModificar().addActionListener(this);
-            RA.LabelCodigo().setText("Ultimo : " + CG.getCodigo());
-            RA.TxtCantidad().setText("");
-            RA.TxtCodigo().setText("TMC-");
-            RA.TxtNombre().setText("");
-            RA.TxtPrecioCompra().setText("");
-            RA.TxtPrecioVenta().setText("");
-            RA.TxtUnidad();
+            LimpiarInterfazArticulo();
+
         }
+        RArticulo.BtnAgregar().addActionListener((ActionEvent e) -> {
+            InsertarArticulo(n);
+            CargarDatosMateriales(PM.TxtBusqueda().getText());
+        });
+        RArticulo.BtnModificar().addActionListener((ActionEvent e) -> {
+            InsertarArticulo(n);
+            CargarDatosMateriales(PM.TxtBusqueda().getText());
+            RArticulo.setVisible(false);
+        });
+        RArticulo.BtnAgregar1().addActionListener((ActionEvent e) -> {
+            InsertarArticulo(2);
+            CargarDatosMateriales(PM.TxtBusqueda().getText());
+            RArticulo.setVisible(false);
+        });
+    }
+
+    public void InsertarArticulo(int x) {
+        try {
+            if (CG.InsertarArticulo(
+                    RArticulo.TxtCodigo().getText(),
+                    RArticulo.TxtCodigo1().getText(),
+                    RArticulo.TxtNombre().getText(),
+                    RArticulo.TxtPrecioCompra().getText(),
+                    RArticulo.TxtPrecioVenta().getText(),
+                    RArticulo.TxtUnidad().getSelectedItem().toString(),
+                    RArticulo.TxtCantidad().getText(), x)) {
+                System.out.println("Correcto");
+                LimpiarInterfazArticulo();
+
+            } else {
+                System.out.println("NO se pudo guardar el articulo");
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR ");
+        }
+    }
+
+    public void LimpiarInterfazArticulo() {
+        RArticulo.LabelCodigo().setText("Ultimo : " + CG.getCodigo());
+
+        RArticulo.TxtCantidad().setText("");
+        RArticulo.TxtCodigo().setText("TMC-");
+        RArticulo.TxtCodigo1().setText("");
+        RArticulo.TxtNombre().setText("");
+        RArticulo.TxtPrecioCompra().setText("");
+        RArticulo.TxtPrecioVenta().setText("");
     }
 
 }
