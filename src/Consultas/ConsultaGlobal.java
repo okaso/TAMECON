@@ -179,8 +179,11 @@ public class ConsultaGlobal {
                 do {
                     datos[i][0] = resultado.getString(1);
                     datos[i][1] = resultado.getString(2);
-                    datos[i][2] = resultado.getString(3);
-//                    datos[i][6] = resultado.getString("categoria");
+                    if (resultado.getString(3).equals("H")) {
+                        datos[i][2] = "Habilitado";
+                    } else {
+                        datos[i][2] = "Deshabilitado";
+                    }
                     i++;
                 } while (resultado.next());
             }
@@ -431,6 +434,7 @@ public class ConsultaGlobal {
         }
         return modeloTabla;
     }
+
     public DefaultTableModel getListaBajos(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -449,7 +453,7 @@ public class ConsultaGlobal {
             ResultSet resultado = Conexion.getDatos(consulta);
 
             // Se crea el array de columnas
-            String[] columnas = {"Codigo", "Codigo Material", "Articulo", "Entrada", "Salida", "Unidad"};
+            String[] columnas = {"Codigo", "Codigo Material", "Articulo", "Cantidad", "Unidad"};
 
             resultado.last();
             Total = resultado.getRow();
@@ -465,8 +469,6 @@ public class ConsultaGlobal {
                     datos[i][2] = resultado.getString(3);
                     datos[i][3] = resultado.getString(4);
                     datos[i][4] = resultado.getString(5);
-                    datos[i][5] = resultado.getString(6);
-                    
 
 //                    datos[i][6] = resultado.getString("categoria");
                     i++;
@@ -708,4 +710,33 @@ public class ConsultaGlobal {
         }
     }
 
+    //          INSERTAR NUEVO AYUDANTE
+    public boolean ModificarAyudante(int Id, String Nombre, String Estado) {
+        String consulta = "";
+          consulta = "CALL ModificarAyudante(" + Id + ",'" + Nombre + "','" + Estado + "')";
+        
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean NuevoAyudante(String Nombre, String Estado) {
+        String consulta = "Insert Into Ayudante(Nombre,Estado)Values('" + Nombre + "','" + Estado + "')";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+       public boolean EliminarAyudante(int id) {
+        String consulta = "Delete From Ayudante where Id="+id;
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+ 
 }

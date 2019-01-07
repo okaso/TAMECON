@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author HP
+ * @author PABLO
  */
 public class ControlGlobal implements ActionListener, KeyListener {
 
@@ -70,6 +70,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
 
         RArticulo = new RegistroArticulo();
+        RAyudante= new RegistroAyudante();
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
@@ -102,13 +103,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         PanelUsuarios();
 
         //            PANEL REGISTRO AYUDANTES 
-        PA = new PanelAyudantes();
-        PA.BtnActualizar().addActionListener((ActionListener) this);
-        PA.BtnBuscar().addActionListener((ActionListener) this);
-        PA.BtnEditarMaterial().addActionListener((ActionListener) this);
-        PA.BtnEliminar().addActionListener((ActionListener) this);
-        PA.BtnNuevo().addActionListener((ActionListener) this);
-        PA.TxtBusqueda().addKeyListener((KeyListener) this);
+        PanelAyudantes();
 
         //              PANEL INGRESO VEHICULO AL TALLER
         PIV = new PanelIngresoVehiculo();
@@ -185,6 +180,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 Articulos(1);
             }
         });
+        PM.BtnActualizar().addActionListener((e) -> {
+            CargarDatosMateriales("");
+        });
         PM.BtnDetalles().addActionListener((ActionEvent e) -> {
             CargarDatosMaterialesDetalles(PM.TxtBusqueda().getText());
         });
@@ -208,6 +206,49 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 Articulos(1);
             }
         });
+    }
+
+    //PANEL AYUDANTES
+    public void PanelAyudantes() {
+        PA = new PanelAyudantes();
+
+        PA.BtnActualizar().addActionListener((e) -> {
+            CargarDatosAyudantes(PA.TxtBusqueda().getText());
+        });
+        PA.BtnBuscar().addActionListener((e) -> {
+            CargarDatosAyudantes(PA.TxtBusqueda().getText());
+        });
+        PA.BtnEditarMaterial().addActionListener((e) -> {
+            if (PA.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+            } else {
+                RAyudante.setVisible(true);
+                InsertarAyudantes(false);
+            }
+        });
+        PA.BtnEliminar().addActionListener((e) -> {
+            if (PA.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PA, "Debe seleccionar un registro");
+            } else {
+                int dialogoResultado = JOptionPane.showConfirmDialog(PA, "¿Esta segur@ de borrar el registro de Ayudante?", "Pregunta", JOptionPane.YES_NO_OPTION);
+                if (dialogoResultado == JOptionPane.YES_OPTION) {
+                    int id = Integer.parseInt(
+                            ((DefaultTableModel)PA.TablaArticulos().getModel())
+                                    .getValueAt(PA.TablaArticulos().getSelectedRow(), 0).toString());
+                    if (CG.EliminarAyudante(id)) {
+                         CargarDatosAyudantes("");
+                    } else {
+                        JOptionPane.showMessageDialog(PA, "El Registro no se pudo borrar");
+                    }
+                   
+                }
+            }
+        });
+        PA.BtnNuevo().addActionListener((e) -> {
+            RAyudante.setVisible(true);
+            InsertarAyudantes(true);
+        });
+        PA.TxtBusqueda().addKeyListener((KeyListener) this);
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -314,6 +355,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
         if (e.getSource() == PU.TxtBusqueda()) {
             CargarDatosUsuarios(PU.TxtBusqueda().getText());
+        }
+        if(e.getSource() ==PA.TxtBusqueda()){
+            CargarDatosAyudantes(PA.TxtBusqueda().getText());
         }
     }
 
@@ -423,7 +467,23 @@ public class ControlGlobal implements ActionListener, KeyListener {
         CargarDatosAyudantes(PA.TxtBusqueda().getText());
         PA.setVisible(true);
         LimpiarInterfaz(PA);
-        System.out.println(" Ayudantes");
+        RAyudante.BtnAgregar().addActionListener((e) -> {
+            String S = RAyudante.Estado().getSelectedItem().toString();
+            if (S.equals("Habilitado")) {
+                S = "H";
+            } else {
+                S = "D";
+            }
+            if (CG.NuevoAyudante(RAyudante.TxtNombre().getText(),S)) {
+                CargarDatosAyudantes(PA.TxtBusqueda().getText());
+            } else {
+                JOptionPane.showMessageDialog(PA, "NO SE PUDO COMPLETAR EL REGISTRO");
+            }
+        });
+        RAyudante.BtnModificar().addActionListener((e) -> {
+            NuevoAyudante(false);
+        });
+        
     }
 
     public void IngresoVehiculo() {
@@ -548,6 +608,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     public void CargarDatosMaterialesDetalles(String textoBusqueda) {
         this.PM.setDatos(this.CG.getListaDetalles(textoBusqueda), this.CG.getTotal());
     }
+
     public void CargarDatosMaterialesBajos(String textoBusqueda) {
         this.PM.setDatos(this.CG.getListaBajos(textoBusqueda), this.CG.getTotal());
     }
@@ -574,6 +635,40 @@ public class ControlGlobal implements ActionListener, KeyListener {
 
     public void CargarDatosIngresoVehiculo(String textoBusqueda) {
         this.PIV.setDatos(this.CG.getListaIngresoVehiculo(textoBusqueda), this.CG.getTotal());
+    }
+
+    /*                  INSERTAR Y MODIFICAR USUARIOS       */
+    public void InsertarAyudantes(boolean Condicion) {
+
+        if (Condicion) {
+            RAyudante.BtnAgregar().setVisible(true);
+            RAyudante.BtnModificar().setVisible(false);
+            RAyudante.TxtNombre().setText("");
+            RAyudante.setTitle("0");
+        } else {
+            RAyudante.BtnAgregar().setVisible(false);
+            RAyudante.BtnModificar().setVisible(true);
+            RAyudante.setTitle(PA.TablaArticulos().getValueAt(PA.TablaArticulos().getSelectedRow(), 0).toString());
+            RAyudante.TxtNombre().setText(PA.TablaArticulos().getValueAt(PA.TablaArticulos().getSelectedRow(), 1).toString());
+            RAyudante.Estado().setSelectedItem(PA.TablaArticulos().getValueAt(PA.TablaArticulos().getSelectedRow(), 2));
+        }
+        
+    }
+
+    public void NuevoAyudante(boolean condicion) {
+
+        int id = Integer.parseInt(RAyudante.getTitle());
+        String S = RAyudante.Estado().getSelectedItem().toString();
+        if (S.equals("Habilitado")) {
+            S = "H";
+        } else {
+            S = "D";
+        }
+        if (CG.ModificarAyudante(id, RAyudante.TxtNombre().getText(), S)) {
+            RAyudante.setVisible(false);
+            CargarDatosAyudantes(PA.TxtBusqueda().getText());
+        }
+
     }
 
     /*                    FIn interfaz Manager     */

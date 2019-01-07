@@ -5,6 +5,9 @@
  */
 package Interfaces.Registros;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
 /**
  *
  * @author HP
@@ -29,11 +32,11 @@ public class RegistroAyudante extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        TxtNombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        ComboEstado = new javax.swing.JComboBox<>();
+        BtnAgregar = new javax.swing.JButton();
+        BtnModificar = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Wide Latin", 1, 18)); // NOI18N
         jLabel1.setText("AYUDANTE");
@@ -42,11 +45,11 @@ public class RegistroAyudante extends javax.swing.JFrame {
 
         jLabel3.setText("Estado :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Habilitado", "Deshabilitado" }));
+        ComboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Habilitado", "Deshabilitado" }));
 
-        jButton1.setText("AGREGAR");
+        BtnAgregar.setText("AGREGAR");
 
-        jButton2.setText("MODIFICAR");
+        BtnModificar.setText("MODIFICAR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,13 +64,17 @@ public class RegistroAyudante extends javax.swing.JFrame {
                         .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jButton1))
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2))))
+                            .addComponent(TxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ComboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BtnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnModificar)
+                        .addGap(67, 67, 67)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -78,15 +85,15 @@ public class RegistroAyudante extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ComboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(BtnAgregar)
+                    .addComponent(BtnModificar))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -129,12 +136,25 @@ public class RegistroAyudante extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton BtnAgregar;
+    private javax.swing.JButton BtnModificar;
+    private javax.swing.JComboBox<String> ComboEstado;
+    private javax.swing.JTextField TxtNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    public JTextField TxtNombre(){
+        return TxtNombre;
+    }
+    public javax.swing.JComboBox Estado(){
+        return ComboEstado;
+    }
+    public JButton BtnAgregar(){
+        return BtnAgregar;
+    }
+    public JButton BtnModificar(){
+        return BtnModificar;
+    }
 }
