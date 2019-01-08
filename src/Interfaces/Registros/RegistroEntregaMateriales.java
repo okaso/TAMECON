@@ -350,8 +350,8 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
     }
 
     public void setDatos(DefaultTableModel modeloTabla) {
-       
         TablaEntregas.setModel(modeloTabla);
+        
     }
     public javax.swing.JComboBox ComboMaterial(){
         return ComboMaterial;

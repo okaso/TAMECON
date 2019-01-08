@@ -302,7 +302,6 @@ public class ConsultaGlobal {
         try {
             String consulta = "SELECT I.Id,I.Placa,I.FechaIngreso,I.FechaSalida,A.Nombre "
                     + " From IngresoVehiculo I inner join Ayudante A on I.PC=A.Id WHERE I.FechaSalida1='null' ";
-            
 
 //            System.out.println(consulta);
             ResultSet resultado = Conexion.getDatos(consulta);
@@ -337,7 +336,7 @@ public class ConsultaGlobal {
 
         return modeloTabla;
     }
-    
+
     public DefaultTableModel getListaIngresoVehiculoDetalles(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -528,6 +527,7 @@ public class ConsultaGlobal {
         }
         return modeloTabla;
     }
+
     public DefaultTableModel getEntrega(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
@@ -537,18 +537,17 @@ public class ConsultaGlobal {
         };
         try {
             String consulta = "SELECT E.Id,I.Codigo,I.Material,I.PrecioVenta,E.Cantidad,I.PrecioVenta*E.Cantidad,E.Descuento From EntregaMateriales E inner join Inventario I on E.Codigo=I.Codigo WHERE  E.IdV =" + textoBusqueda;
-            
 
 //            System.out.println(consulta);
             ResultSet resultado = Conexion.getDatos(consulta);
-
+            float Total1 = 0, Descuento=0, Total2;
             // Se crea el array de columnas
-            String[] columnas = {"Nro Registro", "Codigo Material", "Articulo", "P/Venta", "Cantidad"," Total","Descuento Al TOTAL"};
+            String[] columnas = {"Nro Registro", "Codigo Material", "Articulo", "P/Venta", "Cantidad", " Total"};
 
             resultado.last();
             Total = resultado.getRow();
             //Se crea una matriz con tantas filas y columnas que necesite
-            Object[][] datos = new String[Total][7];
+            Object[][] datos = new String[Total][6];
 
             if (resultado.getRow() > 0) {
                 resultado.first();
@@ -560,20 +559,24 @@ public class ConsultaGlobal {
                     datos[i][3] = resultado.getString(4);
                     datos[i][4] = resultado.getString(5);
                     datos[i][5] = resultado.getString(6);
-                    datos[i][6] = resultado.getString(7);
+                    //datos[i][6] = resultado.getString(7);
+                    Total1 += Float.parseFloat(resultado.getString(6));
+                    Descuento = Float.parseFloat(resultado.getString(7));
 
-//                    datos[i][6] = resultado.getString("categoria");
                     i++;
                 } while (resultado.next());
             }
+            Total2 = Total1 - Descuento;
             resultado.close();
             modeloTabla.setDataVector(datos, columnas);
+            modeloTabla.addRow(new Object[]{"-", "-", "-", "-", "-", "-"});
+            modeloTabla.addRow(new Object[]{"TOTAL ", String.valueOf(Total1), "DESCUENTO", String.valueOf(Descuento), "PAGO FINAL", String.valueOf(Total2)});
+
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return modeloTabla;
     }
-    
 
     public String Backup() {
         String Tabla[] = {"Usuario", "Vehiculo", "Inventario", "Deposito", "DepositoTotal", "Ayudante", "Venta", "IngresoVehiculo", "EntregaMateriales", "Bitacora", "Proveedor"};
@@ -806,8 +809,8 @@ public class ConsultaGlobal {
     //          INSERTAR NUEVO AYUDANTE
     public boolean ModificarAyudante(int Id, String Nombre, String Estado) {
         String consulta = "";
-          consulta = "CALL ModificarAyudante(" + Id + ",'" + Nombre + "','" + Estado + "')";
-        
+        consulta = "CALL ModificarAyudante(" + Id + ",'" + Nombre + "','" + Estado + "')";
+
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
@@ -823,16 +826,17 @@ public class ConsultaGlobal {
             return false;
         }
     }
+
     public boolean EliminarAyudante(int id) {
-        String consulta = "Delete From Ayudante where Id="+id;
+        String consulta = "Delete From Ayudante where Id=" + id;
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
             return false;
         }
     }
- 
-    public boolean NuevoVehiculo(String NombreCliente,String Placa, String Modelo,String Color) {
+
+    public boolean NuevoVehiculo(String NombreCliente, String Placa, String Modelo, String Color) {
         String consulta = "Insert Into Vehiculo(NombreCliente,Placa,Modelo,Color)Values('" + NombreCliente + "','" + Placa + "','" + Modelo + "','" + Color + "')";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
@@ -840,49 +844,52 @@ public class ConsultaGlobal {
             return false;
         }
     }
-    public boolean ModificarVehiculo(String NombreCliente,String Placa, String Modelo,String Color) {
-        String consulta = "UPDATE Vehiculo SET NombreCliente='" + NombreCliente + "',Modelo='" + Modelo + "',Color='" + Color + "' where Placa='"+Placa+"'";
+
+    public boolean ModificarVehiculo(String NombreCliente, String Placa, String Modelo, String Color) {
+        String consulta = "UPDATE Vehiculo SET NombreCliente='" + NombreCliente + "',Modelo='" + Modelo + "',Color='" + Color + "' where Placa='" + Placa + "'";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
             return false;
         }
     }
+
     public boolean EliminarVehiculo(String Placa) {
-        String consulta = "Delete From Vehiculo where Placa='"+Placa+"'";
+        String consulta = "Delete From Vehiculo where Placa='" + Placa + "'";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
             return false;
         }
     }
-    public boolean NuevoIngresoVehiculo(String fecha,String Placa, String Ayudante) {
-        String consulta = "CALL IngresoVehiculo('" + Placa + "','"+ Ayudante +"','" + fecha + "')";
+
+    public boolean NuevoIngresoVehiculo(String fecha, String Placa, String Ayudante) {
+        String consulta = "CALL IngresoVehiculo('" + Placa + "','" + Ayudante + "','" + fecha + "')";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
             return false;
         }
     }
-    public boolean ModificarIngresoVehiculo(String Placa, String Ayudante,String id) {
-        String consulta = "CALL ModificarIngresoVehiculo('" + Placa + "','" + Ayudante + "',"+id+")";
+
+    public boolean ModificarIngresoVehiculo(String Placa, String Ayudante, String id) {
+        String consulta = "CALL ModificarIngresoVehiculo('" + Placa + "','" + Ayudante + "'," + id + ")";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
             return false;
         }
     }
-    
-    public boolean EntregaMateriales(String Codigo,String Id,String Cantidad,String User,String Descuento,String PV) {
-        String consulta = "CALL Entrega('" + Codigo + "',"+ Id +"," + Cantidad + ",'"+User+"',"+Descuento+","+PV+")";
+
+    public boolean EntregaMateriales(String Codigo, String Id, String Cantidad, String User, String Descuento, String PV) {
+        String consulta = "CALL Entrega('" + Codigo + "'," + Id + "," + Cantidad + ",'" + User + "'," + Descuento + "," + PV + ")";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
             return false;
         }
     }
-    
-    
+
     public String[] getAyudantes() {
         try {
             String consulta = "SELECT * FROM Ayudante Where Estado='H'";
@@ -907,10 +914,36 @@ public class ConsultaGlobal {
         }
         return null;
     }
+
+    public String[] getPagarTotal() {
+        try {
+            String consulta = "SELECT * FROM Ayudante Where Estado='H'";
+            ResultSet resultado = Conexion.getDatos(consulta);
+
+            resultado.last();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            String[] datos = new String[resultado.getRow()];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i] = resultado.getString("Nombre");
+                    i++;
+                } while (resultado.next());
+            }
+            resultado.close();
+            return datos;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
     public String[] getPlaca(String txtBusqueda) {
         try {
             String consulta = "SELECT * FROM Vehiculo";
-           
+
             if (!txtBusqueda.isEmpty()) {
                 consulta += " WHERE Placa LIKE '" + txtBusqueda + "%'";
             }
@@ -935,12 +968,13 @@ public class ConsultaGlobal {
         }
         return null;
     }
+
     public String[] getMaterial(String txtBusqueda) {
         try {
             String consulta = "SELECT * FROM Inventario";
-           
+
             if (!txtBusqueda.isEmpty()) {
-                consulta += " WHERE Codigo LIKE '" + txtBusqueda + "%' OR CodMat LIKE '"+txtBusqueda+"%'";
+                consulta += " WHERE Codigo LIKE '" + txtBusqueda + "%' OR CodMat LIKE '" + txtBusqueda + "%'";
             }
             ResultSet resultado = Conexion.getDatos(consulta);
 
@@ -963,10 +997,11 @@ public class ConsultaGlobal {
         }
         return null;
     }
+
     public String getCodigo(String txtBusqueda) {
         try {
-            String consulta = "SELECT * FROM Inventario Where Material='"+txtBusqueda+"'";
-     
+            String consulta = "SELECT * FROM Inventario Where Material='" + txtBusqueda + "'";
+
             ResultSet resultado = Conexion.getDatos(consulta);
 
             resultado.last();
@@ -988,19 +1023,18 @@ public class ConsultaGlobal {
         }
         return null;
     }
-    
+
     public String[] getMaterialDetalles(String Codigo) {
         String datos[] = {"", "", "", ""};
         String consulta = "Select * From Inventario I inner join DepositoTotal D on D.Codigo =I.Codigo where I.Codigo='" + Codigo + "'";
         try {
             ResultSet rs = Conexion.getDatos(consulta);
             if (rs.last()) {
-                
+
                 datos[0] = rs.getString("PrecioCompra");
                 datos[1] = rs.getString("PrecioVenta");
                 datos[2] = rs.getString("Unidad");
                 datos[3] = rs.getString("CSaldo");
-                
 
             }
         } catch (SQLException ex) {
@@ -1008,5 +1042,5 @@ public class ConsultaGlobal {
         }
         return datos;
     }
-    
+
 }
