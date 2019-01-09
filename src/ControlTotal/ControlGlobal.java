@@ -57,6 +57,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
     RegistroVehiculo RVehiculo;
     RegistroVentaArticulos RVenta;
     RegistroEntregaMateriales REntrega;
+    RegistroProveedor RProveedor;
+    
     Backup PB;
     JDialog Dialogo;
     String User = "";
@@ -79,6 +81,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RAyudante = new RegistroAyudante();
         RVehiculo = new RegistroVehiculo();
         RIngresoVehiculo = new RegistroIngresoVehiculo();
+        RProveedor =new RegistroProveedor();
 
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
@@ -117,13 +120,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         //              PANEL INGRESO VEHICULO AL TALLER
         PanelIngresoVehiculo();
         //              PANEL REGISTRO PROVEEDORES
-        PP = new PanelProveedores();
-        PP.BtnActualizar().addActionListener((ActionListener) this);
-        PP.BtnBuscar().addActionListener((ActionListener) this);
-        PP.BtnEditarMaterial().addActionListener((ActionListener) this);
-        PP.BtnEliminar().addActionListener((ActionListener) this);
-        PP.BtnNuevo().addActionListener((ActionListener) this);
-        PP.TxtBusqueda().addKeyListener((KeyListener) this);
+        PanelProveedores();
 
         //              PANEL REGISTRO VEHICULOS
         PanelVehiculo();
@@ -216,7 +213,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         });
         PA.BtnEditarMaterial().addActionListener((e) -> {
             if (PA.TablaArticulos().getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+                JOptionPane.showMessageDialog(PA, "Debe seleccionar un registro");
             } else {
                 RAyudante.setVisible(true);
                 InsertarAyudantes(false);
@@ -257,7 +254,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         });
         PV.BtnEditarMaterial().addActionListener((e) -> {
             if (PV.TablaArticulos().getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+                JOptionPane.showMessageDialog(PV, "Debe seleccionar un registro");
             } else {
                 RVehiculo.setVisible(true);
                 RVehiculo.TxtNombre().setText(PV.TablaArticulos().getValueAt(PV.TablaArticulos().getSelectedRow(), 3).toString());
@@ -290,7 +287,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         });
         PIV.BtnEditarMaterial().addActionListener((e) -> {
             if (PIV.TablaArticulos().getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+                JOptionPane.showMessageDialog(PIV, "Debe seleccionar un registro");
             } else {
                 RIngresoVehiculo.Ayudante().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getAyudantes()));
                 RIngresoVehiculo.Placa().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getPlaca("")));
@@ -317,7 +314,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         });
         PIV.BtnEntrega().addActionListener((e) -> {
             if (PIV.TablaArticulos().getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(PU, "Debe seleccionar un registro");
+                JOptionPane.showMessageDialog(PIV, "Debe seleccionar un registro");
             } else {
 
                 EntregaMateriales();
@@ -325,7 +322,96 @@ public class ControlGlobal implements ActionListener, KeyListener {
             }
         });
     }
+    
+    //PANEL PROVEEDORES
+    public void PanelProveedores(){
+        PP = new PanelProveedores();
+        PP.BtnActualizar().addActionListener((e) -> {
+            PP.TxtBusqueda().setText("");
+            CargarDatosProveedor(PP.TxtBusqueda().getText());
+        });
+        PP.BtnBuscar().addActionListener((e) -> {
+            CargarDatosProveedor(PP.TxtBusqueda().getText());
+        });
+        PP.BtnEditarMaterial().addActionListener((e) -> {
+            if (PP.TablaArticulos().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(PP, "Debe seleccionar un registro");
+            } else {
+            InsertarProveedor(false);
+            }
+        });
+        PP.BtnEliminar().addActionListener((e) -> {
+            EliminarProveedor();
+        });
+        PP.BtnNuevo().addActionListener((e) -> {
+            InsertarProveedor(true);
+        });
+        PP.TxtBusqueda().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+                CargarDatosProveedor(PP.TxtBusqueda().getText());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+    }
+    
+    public void InsertarProveedor(boolean condicion){
+        RProveedor.setVisible(true);
+        if(condicion){
+           RProveedor.BtnAgregar().setVisible(true);
+           RProveedor.BtnModificar().setVisible(false);
+           RProveedor.TxtDetalle().setText("");
+           RProveedor.TxtDirec().setText("");
+           RProveedor.TxtNomb().setText("");
+           RProveedor.TxtTelef().setText("");
+        }else{
+           RProveedor.BtnAgregar().setVisible(false);
+           RProveedor.BtnModificar().setVisible(true);
+           RProveedor.setTitle(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 0).toString());
+           RProveedor.TxtDetalle().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 4).toString());
+           RProveedor.TxtDirec().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 3).toString());
+           RProveedor.TxtNomb().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 1).toString());
+           RProveedor.TxtTelef().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 2).toString());
+        }
+        RProveedor.BtnAgregar().addActionListener((e) -> {
+            if(CG.InsertarProveedor(RProveedor.TxtNomb().getText(),
+                    RProveedor.TxtTelef().getText(),
+                    RProveedor.TxtDirec().getText(),
+                    RProveedor.TxtDetalle().getText())){
+                CargarDatosProveedor(PP.TxtBusqueda().getText());
+                RProveedor.setVisible(false);
+            }else{
+                System.out.println("NO SE PUDO INSERTAR EL PROVEEDOR");
+            }
+        });
+        RProveedor.BtnModificar().addActionListener((e) -> {
+            if(CG.ModificarProveedor(RProveedor.TxtNomb().getText(),
+                    RProveedor.TxtTelef().getText(),
+                    RProveedor.TxtDirec().getText(),
+                    RProveedor.TxtDetalle().getText(),
+                    RProveedor.getTitle())){
+                CargarDatosProveedor(PP.TxtBusqueda().getText());
+            RProveedor.setVisible(false);
+            }else{
+                System.out.println("NO SE PUDO MODIFICAR EL PROVEEDOR");
+            }
+        });
+    }
+    public void EliminarProveedor(){
+        if(CG.EliminarProveedor(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 0).toString())){
+            CargarDatosProveedor(PP.TxtBusqueda().getText());
+        }else{
+            System.out.println("NO SE PUDO ELIMINAR EL PROVEEDOR");
+        }
+    }
+    
     public void EntregaMateriales() {
         REntrega = new RegistroEntregaMateriales();
         REntrega.setLocationRelativeTo(null);
@@ -335,8 +421,16 @@ public class ControlGlobal implements ActionListener, KeyListener {
             RegistroEntregaMateriales();
         });
         REntrega.BtnImprimir().addActionListener(this);
-        REntrega.BtnQuitar().addActionListener(this);
-        REntrega.BtnRebaja().addActionListener(this);
+        REntrega.BtnQuitar().addActionListener((e) -> {
+            if (REntrega.TablaEntregas().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(REntrega, "Debe seleccionar un registro");
+            } else {
+                QuitarMaterial();
+            }
+        });
+        REntrega.BtnRebaja().addActionListener((e) -> {
+            AgregarRebaja();
+        });
 
     }
 
@@ -347,10 +441,32 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 User,
                 REntrega.TxtRebaja().getText(),
                 REntrega.LabelPV().getText())) {
+            REntrega.TxtCantidad().setText("");
             REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
 
         } else {
             System.out.println("NOse PUDO GUARDAR");
+        }
+    }
+
+    public void QuitarMaterial() {
+        if (CG.QuitarMaterial(REntrega.TablaEntregas().getValueAt(REntrega.TablaEntregas().getSelectedRow(), 1).toString(),
+                REntrega.TablaEntregas().getValueAt(REntrega.TablaEntregas().getSelectedRow(), 4).toString(),
+                REntrega.TablaEntregas().getValueAt(REntrega.TablaEntregas().getSelectedRow(), 0).toString()
+        )) {
+            REntrega.TxtCantidad().setText("");
+            REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
+        } else {
+            System.out.println("No se Pudo Quitar Este Articulo");
+        }
+    }
+    public void AgregarRebaja(){
+        if(CG.AgregarRebaja(REntrega.LabelNro().getText(),REntrega.TxtRebaja().getText())){
+            REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
+            REntrega.TxtRebaja().setText("0");
+        }
+        else{
+            System.out.println("No se pudo Agregar Rebaja");
         }
     }
 

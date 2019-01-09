@@ -24,7 +24,6 @@ public class ConsultaGlobal {
 
     public ConsultaGlobal() {
         Conexion = new ConexionBD();
-
     }
 
     public String[] getAcceso(String login, String contrasenia) {
@@ -540,7 +539,7 @@ public class ConsultaGlobal {
 
 //            System.out.println(consulta);
             ResultSet resultado = Conexion.getDatos(consulta);
-            float Total1 = 0, Descuento=0, Total2;
+            float Total1 = 0, Descuento = 0, Total2;
             // Se crea el array de columnas
             String[] columnas = {"Nro Registro", "Codigo Material", "Articulo", "P/Venta", "Cantidad", " Total"};
 
@@ -806,6 +805,37 @@ public class ConsultaGlobal {
         }
     }
 
+    //          INSERTAR PROVEEDOR
+    public boolean InsertarProveedor(String Nombre, String Telef, String Direccion, String Detalles) {
+        String consulta = "CALL InsertarProveedor ('" + Nombre + "','" + Telef + "','" + Direccion + "','" + Detalles + "')";
+
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean ModificarProveedor(String Nombre, String Telef, String Direccion, String Detalles, String id) {
+        String consulta = "CALL ModificarProveedor ('" + Nombre + "','" + Telef + "','" + Direccion + "','" + Detalles + "'," + id + ")";
+
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean EliminarProveedor( String id) {
+        String consulta = "DELETE FROM Proveedor where Id=" + id;
+
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //          INSERTAR NUEVO AYUDANTE
     public boolean ModificarAyudante(int Id, String Nombre, String Estado) {
         String consulta = "";
@@ -883,6 +913,24 @@ public class ConsultaGlobal {
 
     public boolean EntregaMateriales(String Codigo, String Id, String Cantidad, String User, String Descuento, String PV) {
         String consulta = "CALL Entrega('" + Codigo + "'," + Id + "," + Cantidad + ",'" + User + "'," + Descuento + "," + PV + ")";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean QuitarMaterial(String Codigo, String Cantidad, String id) {
+        String consulta = "CALL Quitar(" + id + ",'" + Codigo + "'," + Cantidad + ")";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean AgregarRebaja(String Id, String Descuento) {
+        String consulta = "CALL AgregarRebaja(" + Id + "," + Descuento + ")";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
