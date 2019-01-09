@@ -826,6 +826,24 @@ public class ConsultaGlobal {
         }
     }
     
+    public boolean AgregarVenta( String Codigo,String Cant,String PV,String Us,String Nomb) {
+        String consulta = "CALL AgregarVenta('"+Codigo+"',"+Cant+","+PV+",'"+Us+"','"+Nomb+"')";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean QuitarVenta( String Codigo,String Cant,String PV,String Us,String Nomb,String Id) {
+        String consulta = "CALL QuitarVenta('"+Codigo+"',"+Cant+","+PV+",'"+Us+"','"+Nomb+"',"+Id+")";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
     public boolean EliminarProveedor( String id) {
         String consulta = "DELETE FROM Proveedor where Id=" + id;
 

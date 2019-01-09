@@ -82,6 +82,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RVehiculo = new RegistroVehiculo();
         RIngresoVehiculo = new RegistroIngresoVehiculo();
         RProveedor =new RegistroProveedor();
+        
 
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
@@ -566,7 +567,10 @@ public class ControlGlobal implements ActionListener, KeyListener {
             Vehiculos();
         }
         if (e.getSource() == IM.ItemVentas()) {
-            //Vacio
+            RVenta=new RegistroVentaArticulos();
+            RVenta.setVisible(true);
+            RVenta.setLocationRelativeTo(null);
+            RVenta.setTitle(User);
         }
         //Boton NUEVO PRESIONADO DE PANEL USUARIO
         if (e.getSource() == PU.BtnNuevo()) {
