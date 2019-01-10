@@ -5,14 +5,16 @@ import Consultas.ConsultaGlobal;
 import Mysql.ConexionBD;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 
 public class RegistroVentaArticulos extends javax.swing.JFrame {
 
     
     public RegistroVentaArticulos() {
-        Conexion=new ConexionBD();
+        
         
         initComponents();
     }
@@ -242,7 +244,7 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
         return TxtPV;
     }
     public JTextField TxtPC(){
-        return TxtPV;
+        return TxtPC;
     }
     public JTextField TxtCV(){
         return TxtCV;
@@ -267,5 +269,14 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
     }
     public JButton BtnImprimir(){
         return BtnImprimir;
+    }
+    public JTable TablaVenta(){
+        return TablaVenta;
+    }
+    public void setDatos(DefaultTableModel modeloTabla) {
+        TablaVenta.setModel(modeloTabla);
+    }
+    public javax.swing.JComboBox Materiales(){
+        return ComboMateriales;
     }
 }

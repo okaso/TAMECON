@@ -13,6 +13,7 @@ import Interfaces.Registros.*;
 import Mysql.CopiaSeguridad;
 import Paneles.*;
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -58,7 +60,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     RegistroVentaArticulos RVenta;
     RegistroEntregaMateriales REntrega;
     RegistroProveedor RProveedor;
-    
+
     Backup PB;
     JDialog Dialogo;
     String User = "";
@@ -81,8 +83,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RAyudante = new RegistroAyudante();
         RVehiculo = new RegistroVehiculo();
         RIngresoVehiculo = new RegistroIngresoVehiculo();
-        RProveedor =new RegistroProveedor();
-        
+        RProveedor = new RegistroProveedor();
+        RVenta = new RegistroVentaArticulos();
 
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
@@ -90,6 +92,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
         login = new Login();
         login.setLocationRelativeTo(null);
         login.setVisible(true);
+        
+        
         /*Objetos de interfaz login*/
         login.BtnIngresar().addActionListener((ActionListener) this);
         login.TxtPassword().addKeyListener((KeyListener) this);
@@ -323,9 +327,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
             }
         });
     }
-    
+
     //PANEL PROVEEDORES
-    public void PanelProveedores(){
+    public void PanelProveedores() {
         PP = new PanelProveedores();
         PP.BtnActualizar().addActionListener((e) -> {
             PP.TxtBusqueda().setText("");
@@ -338,7 +342,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             if (PP.TablaArticulos().getSelectedRow() < 0) {
                 JOptionPane.showMessageDialog(PP, "Debe seleccionar un registro");
             } else {
-            InsertarProveedor(false);
+                InsertarProveedor(false);
             }
         });
         PP.BtnEliminar().addActionListener((e) -> {
@@ -362,57 +366,58 @@ public class ControlGlobal implements ActionListener, KeyListener {
             }
         });
     }
-    
-    public void InsertarProveedor(boolean condicion){
+
+    public void InsertarProveedor(boolean condicion) {
         RProveedor.setVisible(true);
-        if(condicion){
-           RProveedor.BtnAgregar().setVisible(true);
-           RProveedor.BtnModificar().setVisible(false);
-           RProveedor.TxtDetalle().setText("");
-           RProveedor.TxtDirec().setText("");
-           RProveedor.TxtNomb().setText("");
-           RProveedor.TxtTelef().setText("");
-        }else{
-           RProveedor.BtnAgregar().setVisible(false);
-           RProveedor.BtnModificar().setVisible(true);
-           RProveedor.setTitle(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 0).toString());
-           RProveedor.TxtDetalle().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 4).toString());
-           RProveedor.TxtDirec().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 3).toString());
-           RProveedor.TxtNomb().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 1).toString());
-           RProveedor.TxtTelef().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 2).toString());
+        if (condicion) {
+            RProveedor.BtnAgregar().setVisible(true);
+            RProveedor.BtnModificar().setVisible(false);
+            RProveedor.TxtDetalle().setText("");
+            RProveedor.TxtDirec().setText("");
+            RProveedor.TxtNomb().setText("");
+            RProveedor.TxtTelef().setText("");
+        } else {
+            RProveedor.BtnAgregar().setVisible(false);
+            RProveedor.BtnModificar().setVisible(true);
+            RProveedor.setTitle(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 0).toString());
+            RProveedor.TxtDetalle().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 4).toString());
+            RProveedor.TxtDirec().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 3).toString());
+            RProveedor.TxtNomb().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 1).toString());
+            RProveedor.TxtTelef().setText(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 2).toString());
         }
         RProveedor.BtnAgregar().addActionListener((e) -> {
-            if(CG.InsertarProveedor(RProveedor.TxtNomb().getText(),
+            if (CG.InsertarProveedor(RProveedor.TxtNomb().getText(),
                     RProveedor.TxtTelef().getText(),
                     RProveedor.TxtDirec().getText(),
-                    RProveedor.TxtDetalle().getText())){
+                    RProveedor.TxtDetalle().getText())) {
                 CargarDatosProveedor(PP.TxtBusqueda().getText());
                 RProveedor.setVisible(false);
-            }else{
+            } else {
                 System.out.println("NO SE PUDO INSERTAR EL PROVEEDOR");
             }
         });
         RProveedor.BtnModificar().addActionListener((e) -> {
-            if(CG.ModificarProveedor(RProveedor.TxtNomb().getText(),
+            if (CG.ModificarProveedor(RProveedor.TxtNomb().getText(),
                     RProveedor.TxtTelef().getText(),
                     RProveedor.TxtDirec().getText(),
                     RProveedor.TxtDetalle().getText(),
-                    RProveedor.getTitle())){
+                    RProveedor.getTitle())) {
                 CargarDatosProveedor(PP.TxtBusqueda().getText());
-            RProveedor.setVisible(false);
-            }else{
+                RProveedor.setVisible(false);
+            } else {
                 System.out.println("NO SE PUDO MODIFICAR EL PROVEEDOR");
             }
         });
     }
-    public void EliminarProveedor(){
-        if(CG.EliminarProveedor(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 0).toString())){
+
+    public void EliminarProveedor() {
+        if (CG.EliminarProveedor(PP.TablaArticulos().getValueAt(PP.TablaArticulos().getSelectedRow(), 0).toString())) {
             CargarDatosProveedor(PP.TxtBusqueda().getText());
-        }else{
+        } else {
             System.out.println("NO SE PUDO ELIMINAR EL PROVEEDOR");
         }
     }
-    
+
     public void EntregaMateriales() {
         REntrega = new RegistroEntregaMateriales();
         REntrega.setLocationRelativeTo(null);
@@ -461,12 +466,12 @@ public class ControlGlobal implements ActionListener, KeyListener {
             System.out.println("No se Pudo Quitar Este Articulo");
         }
     }
-    public void AgregarRebaja(){
-        if(CG.AgregarRebaja(REntrega.LabelNro().getText(),REntrega.TxtRebaja().getText())){
+
+    public void AgregarRebaja() {
+        if (CG.AgregarRebaja(REntrega.LabelNro().getText(), REntrega.TxtRebaja().getText())) {
             REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
             REntrega.TxtRebaja().setText("0");
-        }
-        else{
+        } else {
             System.out.println("No se pudo Agregar Rebaja");
         }
     }
@@ -500,6 +505,73 @@ public class ControlGlobal implements ActionListener, KeyListener {
             }
         });
         REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
+    }
+
+    public void VentaArticulos() {
+        RVenta.Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(RVenta.TxtCodigo().getText())));
+        RVenta.Materiales().addActionListener((e) -> {
+            RVenta.TxtCodigo().setText(CG.getCodigo(RVenta.Materiales().getSelectedItem().toString()));
+            String[] dat = CG.getMaterialDetalles(RVenta.TxtCodigo().getText());
+            RVenta.TxtPC().setText(dat[0]);
+            RVenta.TxtPV().setText(dat[1]);
+            RVenta.CDeposito().setText(dat[3]);
+        });
+        RVenta.BtnAgregar().addActionListener((e) -> {
+            Venta();
+        });
+        RVenta.BtnQuitar().addActionListener((e) -> {
+            if (RVenta.TablaVenta().getSelectedRow() < 0) {
+                JOptionPane.showMessageDialog(RVenta, "Debe seleccionar un registro");
+            } else {
+                QuitarVenta();
+            }
+        });
+        RVenta.BtnDescuento().addActionListener((e) -> {
+            CG.AgregarDescuento(RVenta.BtnDescuento().getText());
+        });
+        RVenta.TxtCodigo().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                String[] dat = CG.getMaterialDetalles(RVenta.TxtCodigo().getText());
+                RVenta.TxtPC().setText(dat[0]);
+                RVenta.TxtPV().setText(dat[1]);
+                RVenta.CDeposito().setText(dat[3]);
+                RVenta.Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(RVenta.TxtCodigo().getText())));
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+    }
+
+    public void Venta() {
+        if (CG.AgregarVenta(RVenta.TxtCodigo().getText(), RVenta.TxtCV().getText(), RVenta.TxtPV().getText(), User, RVenta.Nombre().getText())) {
+            RVenta.TxtCV().setText("");
+            RVenta.setDatos(CG.getVenta());
+        } else {
+            System.out.println("NO SE PUDO AGREGAR VENTA");
+            RVenta.setDatos(CG.getVenta());
+        }
+    }
+
+    public void QuitarVenta() {
+        if (CG.QuitarVenta(
+                RVenta.TablaVenta().getValueAt(RVenta.TablaVenta().getSelectedRow(), 1).toString(),
+                RVenta.TablaVenta().getValueAt(RVenta.TablaVenta().getSelectedRow(), 4).toString(),
+                RVenta.TablaVenta().getValueAt(RVenta.TablaVenta().getSelectedRow(), 0).toString())) {
+            RVenta.setDatos(CG.getVenta());
+        } else {
+            System.out.println("No Se Pudo Quitar la Venta");
+        }
+    }
+
+    public void AgregarDescuentoAVenta() {
     }
 
     /*Vaciar Interfaz Principañ*/
@@ -567,10 +639,12 @@ public class ControlGlobal implements ActionListener, KeyListener {
             Vehiculos();
         }
         if (e.getSource() == IM.ItemVentas()) {
-            RVenta=new RegistroVentaArticulos();
+
             RVenta.setVisible(true);
             RVenta.setLocationRelativeTo(null);
             RVenta.setTitle(User);
+            RVenta.setDatos(CG.getVenta());
+            VentaArticulos();
         }
         //Boton NUEVO PRESIONADO DE PANEL USUARIO
         if (e.getSource() == PU.BtnNuevo()) {

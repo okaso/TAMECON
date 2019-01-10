@@ -576,6 +576,57 @@ public class ConsultaGlobal {
         }
         return modeloTabla;
     }
+    
+    public DefaultTableModel getVenta() {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        try {
+            String consulta = "Select V.Id,V.Codigo,I.Material,V.PrecioVenta,V.Cantidad,V.PrecioVenta*V.Cantidad,V.Descuento "
+                    + " From Venta V inner join Inventario I on V.Codigo=I.Codigo "
+                    + " where date(V.FechaCancelacion)='1111-11-11'";
+//            System.out.println(consulta);
+            ResultSet resultado = Conexion.getDatos(consulta);
+            float Total1 = 0, Descuento = 0, Total2;
+            // Se crea el array de columnas
+            String[] columnas = {"Nro Registro", "Codigo Material", "Articulo", "P/Venta", "Cantidad", " Total"};
+
+            resultado.last();
+            Total = resultado.getRow();
+            //Se crea una matriz con tantas filas y columnas que necesite
+            Object[][] datos = new String[Total][6];
+
+            if (resultado.getRow() > 0) {
+                resultado.first();
+                int i = 0;
+                do {
+                    datos[i][0] = resultado.getString(1);
+                    datos[i][1] = resultado.getString(2);
+                    datos[i][2] = resultado.getString(3);
+                    datos[i][3] = resultado.getString(4);
+                    datos[i][4] = resultado.getString(5);
+                    datos[i][5] = resultado.getString(6);
+                    //datos[i][6] = resultado.getString(7);
+                    Total1 += Float.parseFloat(resultado.getString(6));
+                    Descuento = Float.parseFloat(resultado.getString(7));
+
+                    i++;
+                } while (resultado.next());
+            }
+            Total2 = Total1 - Descuento;
+            resultado.close();
+            modeloTabla.setDataVector(datos, columnas);
+            modeloTabla.addRow(new Object[]{"-", "-", "-", "-", "-", "-"});
+            modeloTabla.addRow(new Object[]{"TOTAL ", String.valueOf(Total1), "DESCUENTO", String.valueOf(Descuento), "PAGO FINAL", String.valueOf(Total2)});
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return modeloTabla;
+    }
 
     public String Backup() {
         String Tabla[] = {"Usuario", "Vehiculo", "Inventario", "Deposito", "DepositoTotal", "Ayudante", "Venta", "IngresoVehiculo", "EntregaMateriales", "Bitacora", "Proveedor"};
@@ -834,8 +885,16 @@ public class ConsultaGlobal {
             return false;
         }
     }
-    public boolean QuitarVenta( String Codigo,String Cant,String PV,String Us,String Nomb,String Id) {
-        String consulta = "CALL QuitarVenta('"+Codigo+"',"+Cant+","+PV+",'"+Us+"','"+Nomb+"',"+Id+")";
+    public boolean QuitarVenta( String Codigo,String Cant,String Id) {
+        String consulta = "CALL QuitarVenta('"+Codigo+"',"+Cant+","+Id+")";
+        if (Conexion.EjecutarConsulta(consulta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean AgregarDescuento( String Des) {
+        String consulta = "CALL InsertarDescuento("+Des+")";
         if (Conexion.EjecutarConsulta(consulta)) {
             return true;
         } else {
@@ -955,6 +1014,9 @@ public class ConsultaGlobal {
             return false;
         }
     }
+    
+    
+    
 
     public String[] getAyudantes() {
         try {
