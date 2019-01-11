@@ -94,6 +94,17 @@
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="Separador">
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ItemDetallesVentas">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Imagenes/Manager/registro.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="DETALLES DE VENTAS"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ItemDetallesVentasActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ItemUsuarios">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">

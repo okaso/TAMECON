@@ -39,6 +39,7 @@ public class InterfazManager extends javax.swing.JFrame {
         ItemVentas = new javax.swing.JMenuItem();
         ItemProveedor = new javax.swing.JMenuItem();
         Separador = new javax.swing.JPopupMenu.Separator();
+        ItemDetallesVentas = new javax.swing.JMenuItem();
         ItemUsuarios = new javax.swing.JMenuItem();
         ItemBackup = new javax.swing.JMenuItem();
         ItemSesion = new javax.swing.JMenuItem();
@@ -92,6 +93,15 @@ public class InterfazManager extends javax.swing.JFrame {
         jMenu1.add(ItemProveedor);
         jMenu1.add(Separador);
 
+        ItemDetallesVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/registro.png"))); // NOI18N
+        ItemDetallesVentas.setText("DETALLES DE VENTAS");
+        ItemDetallesVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemDetallesVentasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(ItemDetallesVentas);
+
         ItemUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         ItemUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/user.png"))); // NOI18N
         ItemUsuarios.setText("REGISTRAR NUEVO USUARIO");
@@ -134,6 +144,10 @@ public class InterfazManager extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ItemProveedorActionPerformed
 
+    private void ItemDetallesVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemDetallesVentasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemDetallesVentasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -172,6 +186,7 @@ public class InterfazManager extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ItemAyudantes;
     private javax.swing.JMenuItem ItemBackup;
+    private javax.swing.JMenuItem ItemDetallesVentas;
     private javax.swing.JMenuItem ItemMateriales;
     private javax.swing.JMenuItem ItemProveedor;
     private javax.swing.JMenuItem ItemRegistroVehiculos;
@@ -210,7 +225,9 @@ public class InterfazManager extends javax.swing.JFrame {
     public JMenuItem ItemVehiculos(){
         return ItemVehiculos;
     }
-    
+    public JMenuItem ItemDetalles(){
+        return ItemDetallesVentas;
+    }
     public JMenuItem ItemVentas(){
         return ItemVentas;
     }

@@ -189,7 +189,7 @@ public class PanelAyudantes extends javax.swing.JPanel {
     }
 
     public JButton BtnActualizar() {
-        return BtnNuevo;
+        return BtnActualizar;
     }
 
     public JTextField TxtBusqueda() {

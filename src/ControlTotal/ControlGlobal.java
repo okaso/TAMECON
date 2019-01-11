@@ -11,23 +11,19 @@ import Interfaces.*;
 import Interfaces.Login;
 import Interfaces.Registros.RegistroArticulo;
 import Interfaces.Registros.*;
-import Mysql.CopiaSeguridad;
 import Paneles.*;
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-import java.awt.Image;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -51,6 +47,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     PanelProveedores PP;
     PanelUsuarios PU;
     PanelVehiculos PV;
+    DetallesDeVentas DV;
 
     //   INTERFACES DE REGISTROS
     RegistroUsuario RUsuario;
@@ -58,7 +55,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     RegistroAyudante RAyudante;
     RegistroIngresoVehiculo RIngresoVehiculo;
     RegistroVehiculo RVehiculo;
-    
+
     RegistroEntregaMateriales REntrega;
     RegistroProveedor RProveedor;
     ImpresionEntregaMateriales IEM;
@@ -86,17 +83,16 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RVehiculo = new RegistroVehiculo();
         RIngresoVehiculo = new RegistroIngresoVehiculo();
         RProveedor = new RegistroProveedor();
-        
-        IEM= new ImpresionEntregaMateriales();
-        
+
+        IEM = new ImpresionEntregaMateriales();
+
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
         login = new Login();
         login.setLocationRelativeTo(null);
         login.setVisible(true);
-        
-        
+
         /*Objetos de interfaz login*/
         login.BtnIngresar().addActionListener((ActionListener) this);
         login.TxtPassword().addKeyListener((KeyListener) this);
@@ -115,6 +111,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.ItemUsuarios().addActionListener((ActionListener) this);
         IM.ItemVehiculos().addActionListener((ActionListener) this);
         IM.ItemVentas().addActionListener((ActionListener) this);
+        IM.ItemDetalles().addActionListener((e) -> {
+            DetallesIngresos();
+        });
 
         /*              Iniciando Panel Materiales                 */
         PanelMateriales();
@@ -132,6 +131,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
 
         //              PANEL REGISTRO VEHICULOS
         PanelVehiculo();
+        DetallesVentas();
 
         //              PANEL COPIA DE SEGURIDAD
         PB = new Backup();
@@ -331,6 +331,11 @@ public class ControlGlobal implements ActionListener, KeyListener {
         });
     }
 
+    public void DetallesVentas() {
+        DV = new DetallesDeVentas();
+
+    }
+
     //PANEL PROVEEDORES
     public void PanelProveedores() {
         PP = new PanelProveedores();
@@ -436,7 +441,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             IEM.Fecha();
             IEM.setPlaca(REntrega.LabelPlaca().getText());
             IEM.setCliente(CG.getCliente(REntrega.LabelPlaca().getText()));
-            
+
         });
         REntrega.BtnQuitar().addActionListener((e) -> {
             if (REntrega.TablaEntregas().getSelectedRow() < 0) {
@@ -564,6 +569,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             Usuarios();
         }
         if (e.getSource() == IM.ItemBackup()) {
+
             Backup();
         }
         if (e.getSource() == IM.ItemAyudantes()) {
@@ -584,16 +590,16 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
         if (e.getSource() == IM.ItemVentas()) {
             RegistroVentaArticulos RVenta;
-            RVenta=new RegistroVentaArticulos();
-            String name = JOptionPane.showInputDialog(RVenta, "Igrese Nombre Del Cliente");
+            RVenta = new RegistroVentaArticulos();
+            String name = JOptionPane.showInputDialog(IM, "Igrese Nombre Del Cliente");
             RVenta.Nombre().setText(name);
-            CG.RVenta(User,name);
+            CG.RVenta(User, name);
             RVenta.Nro().setText(CG.getIdVenta());
             RVenta.Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(RVenta.TxtCodigo().getText())));
             RVenta.setDatos(CG.getVenta(RVenta.Nro().getText()));
             RVenta.setVisible(true);
             RVenta.setLocationRelativeTo(null);
-            
+
         }
         //Boton NUEVO PRESIONADO DE PANEL USUARIO
         if (e.getSource() == PU.BtnNuevo()) {
@@ -697,11 +703,17 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.ItemUsuarios().setVisible(true);
         IM.ItemVehiculos().setVisible(true);
         IM.ItemVentas().setVisible(true);
+        IM.ItemDetalles().setVisible(true);
+        IM.ItemDetalles().addActionListener((e) -> {
+        });
+        PM.BtnDetalles().setVisible(true);
+        PIV.BtnDetalles().setVisible(true);
     }
 
     public void UserSupervisor() {
         IM.ItemAyudantes().setVisible(true);
         IM.ItemBackup().setVisible(false);
+        IM.ItemDetalles().setVisible(false);
 
         IM.ItemIngresoVehiculos().setVisible(true);
         IM.ItemSesion().setVisible(true);
@@ -710,11 +722,14 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.ItemUsuarios().setVisible(false);
         IM.ItemVehiculos().setVisible(true);
         IM.ItemVentas().setVisible(true);
+        PM.BtnDetalles().setVisible(false);
+        PIV.BtnDetalles().setVisible(false);
     }
 
     public void UserAdministrador() {
         IM.ItemAyudantes().setVisible(true);
         IM.ItemBackup().setVisible(false);
+        IM.ItemDetalles().setVisible(false);
 
         IM.ItemIngresoVehiculos().setVisible(true);
         IM.ItemSesion().setVisible(true);
@@ -723,6 +738,8 @@ public class ControlGlobal implements ActionListener, KeyListener {
         IM.ItemUsuarios().setVisible(false);
         IM.ItemVehiculos().setVisible(true);
         IM.ItemVentas().setVisible(true);
+        PM.BtnDetalles().setVisible(false);
+        PIV.BtnDetalles().setVisible(false);
     }
 
     public void Manager(String title) {
@@ -780,6 +797,25 @@ public class ControlGlobal implements ActionListener, KeyListener {
 
     }
 
+    public void DetallesIngresos() {
+        DV.setVisible(true);
+        LimpiarInterfaz(DV);
+        DV.setDatos(CG.getDetallesVenta(DV.TxtBusqueda().getText()), this.CG.getTotal());
+        DV.BtnActualizar().addActionListener((e) -> {
+            DV.TxtBusqueda().setText("");
+            DV.setDatos(CG.getDetallesVenta(DV.TxtBusqueda().getText()), this.CG.getTotal());
+
+        });
+        DV.BtnVentas().addActionListener((e) -> {
+             DV.setDatos(CG.getDetallesVenta(DV.TxtBusqueda().getText()), this.CG.getTotal());
+        });
+        DV.BtnEntregas().addActionListener((e) -> {
+             DV.setDatos(CG.getDetallesEntrega(DV.TxtBusqueda().getText()), this.CG.getTotal());
+            
+        });
+
+    }
+
     public void IngresoVehiculo() {
         CargarDatosIngresoVehiculo(PIV.TxtBusqueda().getText());
         PIV.setVisible(true);
@@ -826,19 +862,19 @@ public class ControlGlobal implements ActionListener, KeyListener {
         String ba = "Create database TAMECON;\n"
                 + "Use TAMECON;\n"
                 + "Create Table Vehiculo(\n"
-                + "    Placa varchar(12) primary key,\n"
+                + "	Placa varchar(12) primary key,\n"
                 + "    Modelo varchar(50),\n"
                 + "    Color varchar(20),\n"
                 + "    NombreCliente varchar(80)\n"
                 + ");\n"
                 + "Create Table Ayudante(\n"
-                + "    Id int auto_increment primary key,\n"
+                + "	Id int auto_increment primary key,\n"
                 + "    Nombre varchar(35),\n"
                 + "    Estado CHAR(1)\n"
                 + ");\n"
                 + "\n"
                 + "Create table IngresoVehiculo(\n"
-                + "    Id int Auto_Increment primary key,\n"
+                + "	Id int Auto_Increment primary key,\n"
                 + "    Placa varchar(12),\n"
                 + "    PC int,\n"
                 + "    FechaIngreso datetime,\n"
@@ -849,30 +885,32 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 + "    Foreign key (PC) references Ayudante(Id)\n"
                 + ");\n"
                 + "Create table Inventario(\n"
-                + "    Codigo varchar(15)primary key,CodMat varchar(50),\n"
+                + "	Codigo varchar(15)primary key,\n"
                 + "    Material varchar(100),\n"
                 + "    PrecioCompra float,\n"
                 + "    PrecioVenta float,\n"
                 + "    Unidad varchar(10)\n"
                 + ");\n"
                 + "create table DepositoTotal(\n"
-                + "    Codigo varchar(15)primary key,\n"
+                + "	Codigo varchar(15)primary key,\n"
                 + "    CEntrada float,\n"
                 + "    CSalida float,\n"
                 + "    CSaldo float,\n"
-                + "    Foreign key (Codigo) references Inventario(Codigo)\n"
+                + "	Foreign key (Codigo) references Inventario(Codigo)\n"
                 + ");\n"
                 + "Create table Deposito(\n"
-                + "    Codigo varchar(15),\n"
+                + "	Codigo varchar(15),\n"
                 + "    CEntrada float,\n"
                 + "    CSalida float,\n"
+                + "    CSaldo float,\n"
                 + "    Fecha datetime,\n"
                 + "    Foreign key (Codigo) references Inventario(Codigo)\n"
                 + ");\n"
                 + "\n"
                 + "Create Table EntregaMateriales(\n"
-                + "    Codigo varchar(15),\n"
-                + "    Id int,\n"
+                + "	Id int auto_Increment primary key,\n"
+                + "	Codigo varchar(15),\n"
+                + "    IdV int,\n"
                 + "    Cantidad float,\n"
                 + "    PrecioVenta float,\n"
                 + "    Fecha datetime,\n"
@@ -880,39 +918,251 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 + "    Descuento float,\n"
                 + "    Foreign key (User) references Usuario(User),\n"
                 + "    Foreign key(Codigo) references Inventario(Codigo),\n"
-                + "    Foreign key (Id) references IngresoVehiculo(Id)\n"
+                + "    Foreign key (IdV) references IngresoVehiculo(Id)\n"
                 + ");\n"
-                + "Create table Venta(\n"
-                + "    Codigo varchar(15),\n"
-                + "    Cantidad float,\n"
-                + "    PrecioVenta float,\n"
-                + "    FechaCancelacion Datetime,\n"
+                + "\n"
+                + "\n"
+                + "Create table NroVenta(\n"
+                + "	Id int auto_Increment Primary key,\n"
+                + "    Nombre varchar(50),\n"
                 + "    Descuento float,\n"
                 + "    User varchar(25),\n"
-                + "    Nombre Varchar(50),\n"
-                + "    Foreign key (User) references Usuario(User),\n"
+                + "     Foreign key (User) references Usuario(User)\n"
+                + ");\n"
+                + "\n"
+                + "\n"
+                + "Create table Venta(\n"
+                + "	I int Auto_Increment primary key,\n"
+                + "	Id int,\n"
+                + "	Codigo varchar(15),\n"
+                + "    Cantidad float,\n"
+                + "    PrecioVenta float,\n"
+                + "    FechaCancelacion datetime,\n"
+                + "    Foreign key(Id)references NroVenta(Id),\n"
                 + "    Foreign key(Codigo) references Inventario(Codigo)\n"
                 + ");\n"
+                + "\n"
+                + "                    \n"
                 + "Create Table Usuario(\n"
-                + "    User varchar(25) primary key,\n"
+                + "	User varchar(25) primary key,\n"
                 + "    Password varchar(60),\n"
                 + "    NombreUsuario varchar(50),\n"
-                + "    Id datetime,\n"
+                + "    FechaIngreso datetime,\n"
                 + "    Cargo varchar(25)\n"
                 + ");\n"
                 + "create table Proveedor(\n"
-                + "    Id int auto_increment primary key,\n"
+                + "	Id int auto_increment primary key,\n"
                 + "    Nombre varchar(50),\n"
                 + "    Telefono varchar(20),\n"
                 + "    Direccion varchar(100),\n"
                 + "    Detalles varchar(100)\n"
                 + ");\n"
-                + "\n"
                 + "Create table Bitacora(\n"
-                + "    User varchar(25),\n"
+                + "	User varchar(25),\n"
                 + "    FechaIngreso datetime,\n"
                 + "    Foreign key (User) references Usuario(User)\n"
-                + ");";
+                + ");\n"
+                + "delimiter $\n"
+                + "CREATE PROCEDURE `InsertarNuevoMaterial` (IN `Cod` VARCHAR(15), IN `CM` VARCHAR(50), IN `M` VARCHAR(100), IN `PC` FLOAT, IN `PV` FLOAT, IN `U` VARCHAR(10), IN `C` FLOAT)\n"
+                + "  begin\n"
+                + "	insert Into Inventario(Codigo,CodMat,Material,PrecioCompra,PrecioVenta,Unidad) Values(Cod,CM,M,PC,PV,U);\n"
+                + "    Insert into Deposito(Codigo,CEntrada,CSalida,Fecha) values(Cod,C,0,now());\n"
+                + "    Insert Into DepositoTotal(Codigo,CEntrada,CSalida,CSaldo) values(Cod,C,0,C);\n"
+                + "		\n"
+                + "end $\n"
+                + "\n"
+                + "\n"
+                + "delimiter $\n"
+                + "create procedure ModificarMaterial(IN Cod VARCHAR(15), IN CM VARCHAR(50), IN M VARCHAR(100), IN PC FLOAT, IN PV FLOAT, IN U VARCHAR(10), IN C FLOAT)\n"
+                + "	begin\n"
+                + "	UPDATE Inventario SET CodMat=CM,Material=M,PrecioCompra= PC,PrecioVenta = PV,Unidad=U where Codigo=Cod;\n"
+                + "    UPDATE DepositoTotal SET CEntrada=C,CSaldo=C,CSalida=0 where Codigo=Cod;\n"
+                + "	end $\n"
+                + "\n"
+                + "DELIMITER $\n"
+                + "CREATE PROCEDURE InsertarDeposito (IN `Cod` VARCHAR(15), IN `CE` FLOAT, IN `CS` FLOAT) \n"
+                + " begin\n"
+                + "Set @CE1=(Select CEntrada from DepositoTotal where Codigo=Cod);\n"
+                + "Set @CS1=(Select CSalida from DepositoTotal where Codigo=Cod);\n"
+                + "\n"
+                + "	insert Into Deposito(Codigo,CEntrada,CSalida,Fecha) values(Cod,CE,CS,Now());\n"
+                + "    Update DepositoTotal SET CEntrada=CE+@CE1, CSalida=CS+@CS1, CSaldo=(CE+@CE1)-(CS+@CS1) where Codigo=Cod;\n"
+                + "end$\n"
+                + "delimiter $\n"
+                + "create procedure IngresoVehiculo(in placa varchar(12),in Nomb varchar(35),in fecha varchar(12))\n"
+                + "begin\n"
+                + "set @Id=(Select Id from Ayudante where Nombre=Nomb);\n"
+                + "Insert Into IngresoVehiculo(Placa,PC,FechaIngreso1,FechaIngreso,FechaSalida1) values(placa,@Id,fecha,NOW(),'null');\n"
+                + "end $\n"
+                + "\n"
+                + "delimiter $\n"
+                + "create procedure ModificarIngresoVehiculo(in placa varchar(12),in Nomb varchar(35),in I int)\n"
+                + "begin\n"
+                + "set @Id=(Select Id from Ayudante where Nombre=Nomb);\n"
+                + "Update IngresoVehiculo SET Placa=placa, PC=@Id,FechaIngreso=now() Where Id=I;\n"
+                + "end $\n"
+                + "\n"
+                + "\n"
+                + "delimiter $\n"
+                + "create procedure Entrega(in Cod varchar(15),in Id int,in Cant float,in Us varchar(25),in Des float,in PV float)\n"
+                + "begin\n"
+                + "insert into EntregaMateriales(Codigo,IdV,Cantidad,PrecioVenta,Fecha,User,Descuento)values(Cod,Id,Cant,PV,NOW(),Us,Des);\n"
+                + "CALL InsertarDeposito(Cod,0,Cant);\n"
+                + "end $\n"
+                + "delimiter $\n"
+                + "Create Procedure Quitar(in I int,in Cod Varchar(15),in Cant float)\n"
+                + "begin\n"
+                + "Set @C=(Select CSalida from DepositoTotal Where Codigo=Cod);\n"
+                + "Set @CE=(Select CEntrada from DepositoTotal Where Codigo=Cod);\n"
+                + "Set @CS=(Select CSaldo from DepositoTotal Where Codigo=Cod);\n"
+                + "Delete From EntregaMateriales Where Id=I;\n"
+                + "Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@C-Cant+@CE+Cant Where Codigo=Cod;\n"
+                + "end $\n"
+                + "\n"
+                + "delimiter $\n"
+                + "Create Procedure AgregarRebaja(in Id int,in Des float)\n"
+                + "begin\n"
+                + "Update EntregaMateriales SEt Descuento=Des where IdV=Id;\n"
+                + "end$\n"
+                + "\n"
+                + "delimiter $\n"
+                + "Create Procedure AgregarVenta(in Ide int,Cod varchar(15),\n"
+                + "    Cant float,\n"
+                + "    PV float)\n"
+                + "begin\n"
+                + "insert into Venta(Id,Codigo,Cantidad,PrecioVenta,FechaCancelacion)values(Ide,Cod,Cant,PV,'1111-11-11 00:00:00');\n"
+                + "CALL InsertarDeposito(Cod,0,Cant);\n"
+                + "end$\n"
+                + "\n"
+                + "delimiter $\n"
+                + "Create Procedure QuitarVenta(in Cod varchar(15),\n"
+                + "    in Cant float,\n"
+                + "    in iss int)\n"
+                + "begin\n"
+                + "Set @C=(Select CSalida from DepositoTotal Where Codigo=Cod);\n"
+                + "Set @CE=(Select CEntrada from DepositoTotal Where Codigo=Cod);\n"
+                + "Delete From Venta  Where I=iss;\n"
+                + "Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@CE-(@C-Cant) Where Codigo=Cod;\n"
+                + "end$\n"
+                + "\n"
+                + "delimiter $\n"
+                + "create procedure InsertarDescuento(in Des float,in iss int)\n"
+                + "begin\n"
+                + "	Update NroVenta Set Descuento=Des Where Id=iss;\n"
+                + "end $\n"
+                + "\n"
+                + "delimiter $\n"
+                + "Create Procedure FechaS(in FS varchar(12),in d int)\n"
+                + "begin\n"
+                + "UPDATE IngresoVehiculo SET FechaSalida1=FS,FechaSalida=now() where Id=d;\n"
+                + "end $\n"
+                + "Select * From Venta;\n"
+                + "Select * From NroVenta;\n"
+                + "delimiter $\n"
+                + "Create Procedure FeS(in iss int)\n"
+                + "begin\n"
+                + "UPDATE Venta SET FechaCancelacion=now() where Id=iss;\n"
+                + "end $\n"
+                + "\n"
+                + "delimiter $\n"
+                + "Create Procedure RVenta(in Nomb varchar(50),in Us varchar(25))\n"
+                + "begin\n"
+                + "insert into NroVenta(Nombre,User,Descuento) values(Nomb,Us,0);\n"
+                + "end $\n"
+                + "\n"
+                + "\n"
+                + "DELIMITER $$\n"
+                + "--\n"
+                + "-- Procedimientos\n"
+                + "--\n"
+                + "CREATE  PROCEDURE AgregarRebaja (IN Id INT, IN Des FLOAT)  begin\n"
+                + "Update EntregaMateriales SEt Descuento=Des where IdV=Id;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE  PROCEDURE AgregarVenta (IN Ide INT, Cod VARCHAR(15), Cant FLOAT, PV FLOAT)  begin\n"
+                + "insert into Venta(Id,Codigo,Cantidad,PrecioVenta,FechaCancelacion)values(Ide,Cod,Cant,PV,'1111-11-11 00:00:00');\n"
+                + "CALL InsertarDeposito(Cod,0,Cant);\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE Entrega (IN Cod VARCHAR(15), IN Id INT, IN Cant FLOAT, IN Us VARCHAR(25), IN Des FLOAT, IN PV FLOAT)  begin\n"
+                + "insert into EntregaMateriales(Codigo,IdV,Cantidad,PrecioVenta,Fecha,User,Descuento)values(Cod,Id,Cant,PV,NOW(),Us,Des);\n"
+                + "CALL InsertarDeposito(Cod,0,Cant);\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE FechaS (IN FS VARCHAR(12), IN d INT)  begin\n"
+                + "UPDATE IngresoVehiculo SET FechaSalida1=FS,FechaSalida=now() where Id=d;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE FeS (IN iss INT)  begin\n"
+                + "UPDATE Venta SET FechaCancelacion=now() where Id=iss;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE IngresoVehiculo (IN placa VARCHAR(12), IN Nomb VARCHAR(35), IN fecha VARCHAR(12))  begin\n"
+                + "set @Id=(Select Id from Ayudante where Nombre=Nomb);\n"
+                + "Insert Into IngresoVehiculo(Placa,PC,FechaIngreso1,FechaIngreso,FechaSalida1) values(placa,@Id,fecha,NOW(),'null');\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE InsertarDeposito (IN Cod VARCHAR(15), IN CE FLOAT, IN CS FLOAT)  begin\n"
+                + "Set @CE1=(Select CEntrada from DepositoTotal where Codigo=Cod);\n"
+                + "Set @CS1=(Select CSalida from DepositoTotal where Codigo=Cod);\n"
+                + "\n"
+                + "	insert Into Deposito(Codigo,CEntrada,CSalida,Fecha) values(Cod,CE,CS,Now());\n"
+                + "    Update DepositoTotal SET CEntrada=CE+@CE1, CSalida=CS+@CS1, CSaldo=(CE+@CE1)-(CS+@CS1) where Codigo=Cod;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE InsertarDescuento (IN Des FLOAT, IN iss INT)  begin\n"
+                + "	Update NroVenta Set Descuento=Des Where Id=iss;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE InsertarNuevoMaterial (IN Cod VARCHAR(15), IN CM VARCHAR(50), IN M VARCHAR(100), IN PC FLOAT, IN PV FLOAT, IN U VARCHAR(10), IN C FLOAT)  begin\n"
+                + "	insert Into Inventario(Codigo,CodMat,Material,PrecioCompra,PrecioVenta,Unidad) Values(Cod,CM,M,PC,PV,U);\n"
+                + "    Insert into Deposito(Codigo,CEntrada,CSalida,Fecha) values(Cod,C,0,now());\n"
+                + "    Insert Into DepositoTotal(Codigo,CEntrada,CSalida,CSaldo) values(Cod,C,0,C);\n"
+                + "    \n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE  PROCEDURE InsertarProveedor (IN Nomb VARCHAR(50), IN Telef VARCHAR(20), IN Direc VARCHAR(100), IN Det VARCHAR(100))  begin\n"
+                + "Insert Into Proveedor(Nombre,Telefono,Direccion,Detalles)values(Nomb,Telef,Direc,Det);\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE ModificarAyudante (IN I INT, IN Nomb VARCHAR(35), IN St CHAR(1))  begin\n"
+                + "	UPDATE Ayudante SET Estado=St, Nombre=Nomb Where Id=I;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE ModificarIngresoVehiculo (IN placa VARCHAR(12), IN Nomb VARCHAR(35), IN I INT)  begin\n"
+                + "set @Id=(Select Id from Ayudante where Nombre=Nomb);\n"
+                + "Update IngresoVehiculo SET Placa=placa, PC=@Id,FechaIngreso=now() Where Id=I;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE ModificarMaterial (IN Cod VARCHAR(15), IN CM VARCHAR(50), IN M VARCHAR(100), IN PC FLOAT, IN PV FLOAT, IN U VARCHAR(10), IN C FLOAT)  begin\n"
+                + "	UPDATE Inventario SET CodMat=CM,Material=M,PrecioCompra= PC,PrecioVenta = PV,Unidad=U where Codigo=Cod;\n"
+                + "    UPDATE DepositoTotal SET CEntrada=C,CSaldo=C,CSalida=0 where Codigo=Cod;\n"
+                + "	end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE ModificarProveedor (IN Nomb VARCHAR(50), IN Telef VARCHAR(20), IN Direc VARCHAR(100), IN Det VARCHAR(100), IN I INT)  begin\n"
+                + "    Update Proveedor Set Nombre=Nomb,Telefono=Telef,Direccion=Direc,Detalles=Det Where Id=I;\n"
+                + "    End$$\n"
+                + "\n"
+                + "CREATE PROCEDURE Quitar (IN I INT, IN Cod VARCHAR(15), IN Cant FLOAT)  begin\n"
+                + "Set @C=(Select CSalida from DepositoTotal Where Codigo=Cod);\n"
+                + "Set @CE=(Select CEntrada from DepositoTotal Where Codigo=Cod);\n"
+                + "Set @CS=(Select CSaldo from DepositoTotal Where Codigo=Cod);\n"
+                + "Delete From EntregaMateriales Where Id=I;\n"
+                + "Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@C-Cant+@CE+Cant Where Codigo=Cod;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE QuitarVenta (IN Cod VARCHAR(15), IN Cant FLOAT, IN iss INT)  begin\n"
+                + "Set @C=(Select CSalida from DepositoTotal Where Codigo=Cod);\n"
+                + "Set @CE=(Select CEntrada from DepositoTotal Where Codigo=Cod);\n"
+                + "Delete From Venta  Where I=iss;\n"
+                + "Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@CE-(@C-Cant) Where Codigo=Cod;\n"
+                + "end$$\n"
+                + "\n"
+                + "CREATE PROCEDURE RVenta (IN Nomb VARCHAR(50), IN Us VARCHAR(25))  begin\n"
+                + "insert into NroVenta(Nombre,User,Descuento) values(Nomb,Us,0);\n"
+                + "end$$\n"
+                + "\n"
+                + "DELIMITER ;";
         PB.Texto().setText(ba + Copia);
 
     }
