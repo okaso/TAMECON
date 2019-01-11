@@ -42,6 +42,7 @@ public class DetallesDeVentas extends javax.swing.JPanel {
         TxtBusqueda = new javax.swing.JTextField();
         LabelTotal = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(204, 204, 204));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Wide Latin", 1, 36)); // NOI18N
@@ -51,13 +52,17 @@ public class DetallesDeVentas extends javax.swing.JPanel {
         jLabel2.setText("Buscar Por Codigo Material :");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 116, -1, -1));
 
+        BtnEntregas.setBackground(new java.awt.Color(102, 255, 255));
+        BtnEntregas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnEntregas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
         BtnEntregas.setText("Detalles de Entregas a Taller");
-        add(BtnEntregas, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 103, -1, -1));
+        add(BtnEntregas, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, -1));
 
+        BtnVentas.setBackground(new java.awt.Color(102, 255, 255));
+        BtnVentas.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
         BtnVentas.setText("Detalles de Ventas");
-        add(BtnVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(334, 103, -1, -1));
+        add(BtnVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, -1, -1));
 
         TablaArticulos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,6 +76,7 @@ public class DetallesDeVentas extends javax.swing.JPanel {
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 162, 1050, 447));
 
+        BtnActualizar.setBackground(new java.awt.Color(204, 204, 204));
         BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
         BtnActualizar.setText("Actualizar");
         add(BtnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(556, 103, -1, -1));
