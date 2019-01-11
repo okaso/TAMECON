@@ -6,6 +6,7 @@
 package ControlTotal;
 
 import Consultas.ConsultaGlobal;
+import Impresion.ImpresionEntregaMateriales;
 import Interfaces.*;
 import Interfaces.Login;
 import Interfaces.Registros.RegistroArticulo;
@@ -57,9 +58,10 @@ public class ControlGlobal implements ActionListener, KeyListener {
     RegistroAyudante RAyudante;
     RegistroIngresoVehiculo RIngresoVehiculo;
     RegistroVehiculo RVehiculo;
-    RegistroVentaArticulos RVenta;
+    
     RegistroEntregaMateriales REntrega;
     RegistroProveedor RProveedor;
+    ImpresionEntregaMateriales IEM;
 
     Backup PB;
     JDialog Dialogo;
@@ -84,8 +86,9 @@ public class ControlGlobal implements ActionListener, KeyListener {
         RVehiculo = new RegistroVehiculo();
         RIngresoVehiculo = new RegistroIngresoVehiculo();
         RProveedor = new RegistroProveedor();
-        RVenta = new RegistroVentaArticulos();
-
+        
+        IEM= new ImpresionEntregaMateriales();
+        
         /*Iniciando COnexion Con la Base De Datos*/
         CG = new ConsultaGlobal();
 
@@ -426,7 +429,15 @@ public class ControlGlobal implements ActionListener, KeyListener {
         REntrega.BtnAgregar().addActionListener((e) -> {
             RegistroEntregaMateriales();
         });
-        REntrega.BtnImprimir().addActionListener(this);
+        REntrega.BtnImprimir().addActionListener((e) -> {
+            IEM.setVisible(true);
+            IEM.setTitle(REntrega.LabelNro().getText());
+            IEM.setDatos(CG.getImpresionEntrega(REntrega.LabelNro().getText()));
+            IEM.Fecha();
+            IEM.setPlaca(REntrega.LabelPlaca().getText());
+            IEM.setCliente(CG.getCliente(REntrega.LabelPlaca().getText()));
+            
+        });
         REntrega.BtnQuitar().addActionListener((e) -> {
             if (REntrega.TablaEntregas().getSelectedRow() < 0) {
                 JOptionPane.showMessageDialog(REntrega, "Debe seleccionar un registro");
@@ -507,73 +518,6 @@ public class ControlGlobal implements ActionListener, KeyListener {
         REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
     }
 
-    public void VentaArticulos() {
-        RVenta.Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(RVenta.TxtCodigo().getText())));
-        RVenta.Materiales().addActionListener((e) -> {
-            RVenta.TxtCodigo().setText(CG.getCodigo(RVenta.Materiales().getSelectedItem().toString()));
-            String[] dat = CG.getMaterialDetalles(RVenta.TxtCodigo().getText());
-            RVenta.TxtPC().setText(dat[0]);
-            RVenta.TxtPV().setText(dat[1]);
-            RVenta.CDeposito().setText(dat[3]);
-        });
-        RVenta.BtnAgregar().addActionListener((e) -> {
-            Venta();
-        });
-        RVenta.BtnQuitar().addActionListener((e) -> {
-            if (RVenta.TablaVenta().getSelectedRow() < 0) {
-                JOptionPane.showMessageDialog(RVenta, "Debe seleccionar un registro");
-            } else {
-                QuitarVenta();
-            }
-        });
-        RVenta.BtnDescuento().addActionListener((e) -> {
-            CG.AgregarDescuento(RVenta.BtnDescuento().getText());
-        });
-        RVenta.TxtCodigo().addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                String[] dat = CG.getMaterialDetalles(RVenta.TxtCodigo().getText());
-                RVenta.TxtPC().setText(dat[0]);
-                RVenta.TxtPV().setText(dat[1]);
-                RVenta.CDeposito().setText(dat[3]);
-                RVenta.Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(RVenta.TxtCodigo().getText())));
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
-    }
-
-    public void Venta() {
-        if (CG.AgregarVenta(RVenta.TxtCodigo().getText(), RVenta.TxtCV().getText(), RVenta.TxtPV().getText(), User, RVenta.Nombre().getText())) {
-            RVenta.TxtCV().setText("");
-            RVenta.setDatos(CG.getVenta());
-        } else {
-            System.out.println("NO SE PUDO AGREGAR VENTA");
-            RVenta.setDatos(CG.getVenta());
-        }
-    }
-
-    public void QuitarVenta() {
-        if (CG.QuitarVenta(
-                RVenta.TablaVenta().getValueAt(RVenta.TablaVenta().getSelectedRow(), 1).toString(),
-                RVenta.TablaVenta().getValueAt(RVenta.TablaVenta().getSelectedRow(), 4).toString(),
-                RVenta.TablaVenta().getValueAt(RVenta.TablaVenta().getSelectedRow(), 0).toString())) {
-            RVenta.setDatos(CG.getVenta());
-        } else {
-            System.out.println("No Se Pudo Quitar la Venta");
-        }
-    }
-
-    public void AgregarDescuentoAVenta() {
-    }
-
     /*Vaciar Interfaz Principañ*/
     public void LimpiarInterfaz(JPanel Panel) {
         Panel.setSize(IM.getWidth(), IM.getHeight());
@@ -639,12 +583,17 @@ public class ControlGlobal implements ActionListener, KeyListener {
             Vehiculos();
         }
         if (e.getSource() == IM.ItemVentas()) {
-
+            RegistroVentaArticulos RVenta;
+            RVenta=new RegistroVentaArticulos();
+            String name = JOptionPane.showInputDialog(RVenta, "Igrese Nombre Del Cliente");
+            RVenta.Nombre().setText(name);
+            CG.RVenta(User,name);
+            RVenta.Nro().setText(CG.getIdVenta());
+            RVenta.Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(RVenta.TxtCodigo().getText())));
+            RVenta.setDatos(CG.getVenta(RVenta.Nro().getText()));
             RVenta.setVisible(true);
             RVenta.setLocationRelativeTo(null);
-            RVenta.setTitle(User);
-            RVenta.setDatos(CG.getVenta());
-            VentaArticulos();
+            
         }
         //Boton NUEVO PRESIONADO DE PANEL USUARIO
         if (e.getSource() == PU.BtnNuevo()) {

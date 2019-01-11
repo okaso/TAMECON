@@ -1,25 +1,30 @@
-
 package Interfaces.Registros;
 
 import Consultas.ConsultaGlobal;
+import Impresion.ImpresionVentaMateriales;
 import Mysql.ConexionBD;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-
 public class RegistroVentaArticulos extends javax.swing.JFrame {
 
-    
+    ConsultaGlobal CG;
+    ImpresionVentaMateriales IVM;
+
     public RegistroVentaArticulos() {
-        
-        
+
+        CG = new ConsultaGlobal();
+        IVM= new ImpresionVentaMateriales();
         initComponents();
+        Acciones();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -45,6 +50,7 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
         BtnImprimir = new javax.swing.JButton();
         TxtRebaja = new javax.swing.JTextField();
         BtnDescuento = new javax.swing.JButton();
+        LabelNro = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 24)); // NOI18N
         jLabel1.setText("REGISTRO DE VENTA DE ARTICULO");
@@ -77,6 +83,8 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
 
         jLabel7.setText("Nombre de Cliente :");
 
+        TxtNombCliente.setEnabled(false);
+
         jLabel8.setText("Cantidad de Venta :");
 
         BtnVenta.setText("Agregar");
@@ -89,6 +97,8 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
 
         BtnDescuento.setText("Agregar Rebaja");
 
+        LabelNro.setText("N");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,7 +110,10 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
                         .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
-                        .addComponent(jLabel1))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(LabelNro, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -134,11 +147,11 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
                                 .addComponent(BtnVenta)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BtnQuitarVenta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                                 .addComponent(TxtRebaja, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BtnDescuento)
-                                .addGap(81, 81, 81)
+                                .addGap(93, 93, 93)
                                 .addComponent(BtnImprimir)))))
                 .addContainerGap())
         );
@@ -146,7 +159,9 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(LabelNro))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -181,7 +196,6 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-  
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -214,12 +228,73 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
         });
     }
 
+    public void Acciones() {
+        TxtCodigo().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                Materiales().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(TxtCodigo().getText())));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        
+        Materiales().addActionListener((e) -> {
+            TxtCodigo.setText(CG.getCodigo(Materiales().getSelectedItem().toString()));
+            String[] datos = CG.getMaterialDetalles(TxtCodigo().getText());
+            TxtPC().setText(datos[0]);
+            TxtPV().setText(datos[1]);
+            CDeposito().setText(datos[3]);
+        });
+        BtnAgregar().addActionListener((e) -> {
+            if (CG.AgregarVenta(TxtCodigo().getText(),
+                    TxtCV().getText(),
+                    TxtPV().getText(),
+                    Nro().getText())) {
+                setDatos(CG.getVenta(Nro().getText()));
+                TxtCV().setText("0");
+            } else {
+                System.out.println("NOSE PUDO AGREGAR VENTA");
+            }
+        });
+        BtnQuitar().addActionListener((e) -> {
+            if(CG.QuitarVenta(TablaVenta.getValueAt(TablaVenta.getSelectedRow(), 1).toString(),
+                    TablaVenta.getValueAt(TablaVenta.getSelectedRow(), 4).toString(),
+                    TablaVenta.getValueAt(TablaVenta.getSelectedRow(), 0).toString())){
+                setDatos(CG.getVenta(Nro().getText()));
+            }else{
+                System.out.println("NO SE PUDO QUITAR LA VENTA");
+            }
+        });
+        BtnDescuento().addActionListener((e) -> {
+            if(CG.AgregarDescuento(TxtRebaja.getText(),Nro().getText())){
+                TxtRebaja.setText("0");
+                setDatos(CG.getVenta(Nro().getText()));
+            }else{
+                System.out.println("NO SE PUDO AGREGAR REBAJA");
+            }
+        });
+        BtnImprimir().addActionListener((e) -> {
+            IVM.setVisible(true);
+            IVM.setTitle(Nro().getText());
+            IVM.setDatos(CG.getImpresionVenta(IVM.getTitle()));
+            IVM.Fecha();
+            IVM.setCliente(CG.getNombre(IVM.getTitle()));
+        });
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnDescuento;
     private javax.swing.JButton BtnImprimir;
     private javax.swing.JButton BtnQuitarVenta;
     private javax.swing.JButton BtnVenta;
     private javax.swing.JComboBox<String> ComboMateriales;
+    private javax.swing.JLabel LabelNro;
     private javax.swing.JTable TablaVenta;
     private javax.swing.JTextField TxtCD;
     private javax.swing.JTextField TxtCV;
@@ -237,46 +312,63 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    public JTextField TxtCodigo(){
+    public JTextField TxtCodigo() {
         return TxtCodigo;
     }
-    public JTextField TxtPV(){
+
+    public JTextField TxtPV() {
         return TxtPV;
     }
-    public JTextField TxtPC(){
+
+    public JTextField TxtPC() {
         return TxtPC;
     }
-    public JTextField TxtCV(){
+
+    public JTextField TxtCV() {
         return TxtCV;
     }
-    public JTextField CDeposito(){
+
+    public JTextField CDeposito() {
         return TxtCD;
     }
-    public JTextField Descuento(){
+
+    public JTextField Descuento() {
         return TxtRebaja;
     }
-    public JTextField Nombre(){
+
+    public JTextField Nombre() {
         return TxtNombCliente;
     }
-    public JButton BtnAgregar(){
+
+    public JButton BtnAgregar() {
         return BtnVenta;
     }
-    public JButton BtnQuitar(){
+
+    public JButton BtnQuitar() {
         return BtnQuitarVenta;
     }
-    public JButton BtnDescuento(){
+
+    public JButton BtnDescuento() {
         return BtnDescuento;
     }
-    public JButton BtnImprimir(){
+
+    public JButton BtnImprimir() {
         return BtnImprimir;
     }
-    public JTable TablaVenta(){
+
+    public JTable TablaVenta() {
         return TablaVenta;
     }
+
+    public JLabel Nro() {
+        return LabelNro;
+    }
+
     public void setDatos(DefaultTableModel modeloTabla) {
         TablaVenta.setModel(modeloTabla);
     }
-    public javax.swing.JComboBox Materiales(){
+
+    public javax.swing.JComboBox Materiales() {
         return ComboMateriales;
     }
 }

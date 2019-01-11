@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-01-2019 a las 20:16:55
+-- Tiempo de generación: 11-01-2019 a las 07:19:41
 -- Versión del servidor: 10.1.32-MariaDB
 -- Versión de PHP: 5.6.36
 
@@ -30,14 +30,22 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarRebaja` (IN `Id` INT, IN `De
 Update EntregaMateriales SEt Descuento=Des where IdV=Id;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarVenta` (`Cod` VARCHAR(15), `Cant` FLOAT, `PV` FLOAT, `Us` VARCHAR(25), `Nomb` VARCHAR(50))  begin
-insert into Venta(Codigo,Cantidad,PrecioVenta,FechaCancelacion,User,Nombre)values(Cod,Cant,PV,'1111-11-11 00:00:00',Us,Nomb);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AgregarVenta` (IN `Ide` INT, `Cod` VARCHAR(15), `Cant` FLOAT, `PV` FLOAT)  begin
+insert into Venta(Id,Codigo,Cantidad,PrecioVenta,FechaCancelacion)values(Ide,Cod,Cant,PV,'1111-11-11 00:00:00');
 CALL InsertarDeposito(Cod,0,Cant);
 end$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `Entrega` (IN `Cod` VARCHAR(15), IN `Id` INT, IN `Cant` FLOAT, IN `Us` VARCHAR(25), IN `Des` FLOAT, IN `PV` FLOAT)  begin
 insert into EntregaMateriales(Codigo,IdV,Cantidad,PrecioVenta,Fecha,User,Descuento)values(Cod,Id,Cant,PV,NOW(),Us,Des);
 CALL InsertarDeposito(Cod,0,Cant);
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FechaS` (IN `FS` VARCHAR(12), IN `d` INT)  begin
+UPDATE IngresoVehiculo SET FechaSalida1=FS,FechaSalida=now() where Id=d;
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FeS` (IN `iss` INT)  begin
+UPDATE Venta SET FechaCancelacion=now() where Id=iss;
 end$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `IngresoVehiculo` (IN `placa` VARCHAR(12), IN `Nomb` VARCHAR(35), IN `fecha` VARCHAR(12))  begin
@@ -51,6 +59,10 @@ Set @CS1=(Select CSalida from DepositoTotal where Codigo=Cod);
 
 	insert Into Deposito(Codigo,CEntrada,CSalida,Fecha) values(Cod,CE,CS,Now());
     Update DepositoTotal SET CEntrada=CE+@CE1, CSalida=CS+@CS1, CSaldo=(CE+@CE1)-(CS+@CS1) where Codigo=Cod;
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertarDescuento` (IN `Des` FLOAT, IN `iss` INT)  begin
+	Update NroVenta Set Descuento=Des Where Id=iss;
 end$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertarNuevoMaterial` (IN `Cod` VARCHAR(15), IN `CM` VARCHAR(50), IN `M` VARCHAR(100), IN `PC` FLOAT, IN `PV` FLOAT, IN `U` VARCHAR(10), IN `C` FLOAT)  begin
@@ -90,12 +102,15 @@ Delete From EntregaMateriales Where Id=I;
 Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@C-Cant+@CE+Cant Where Codigo=Cod;
 end$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `QuitarVenta` (`Cod` VARCHAR(15), `Cant` FLOAT, IN `id` INT)  begin
+CREATE DEFINER=`root`@`localhost` PROCEDURE `QuitarVenta` (IN `Cod` VARCHAR(15), IN `Cant` FLOAT, IN `iss` INT)  begin
 Set @C=(Select CSalida from DepositoTotal Where Codigo=Cod);
 Set @CE=(Select CEntrada from DepositoTotal Where Codigo=Cod);
-Set @CS=(Select CSaldo from DepositoTotal Where Codigo=Cod);
-Delete From Venta  Where Id=id;
-Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@C-Cant+@CE+Cant Where Codigo=Cod;
+Delete From Venta  Where I=iss;
+Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@CE-(@C-Cant) Where Codigo=Cod;
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RVenta` (IN `Nomb` VARCHAR(50), IN `Us` VARCHAR(25))  begin
+insert into NroVenta(Nombre,User,Descuento) values(Nomb,Us,0);
 end$$
 
 DELIMITER ;
@@ -362,7 +377,43 @@ INSERT INTO `bitacora` (`User`, `FechaIngreso`) VALUES
 ('AccesoRoot', '2019-01-09 01:29:55'),
 ('AccesoRoot', '2019-01-09 01:31:22'),
 ('AccesoRoot', '2019-01-09 01:32:54'),
-('AccesoRoot', '2019-01-09 15:57:57');
+('AccesoRoot', '2019-01-09 15:57:57'),
+('AccesoRoot', '2019-01-09 23:48:41'),
+('AccesoRoot', '2019-01-09 23:50:45'),
+('AccesoRoot', '2019-01-09 23:54:14'),
+('AccesoRoot', '2019-01-09 23:57:41'),
+('AccesoRoot', '2019-01-10 00:04:34'),
+('AccesoRoot', '2019-01-10 00:13:07'),
+('AccesoRoot', '2019-01-10 00:15:08'),
+('AccesoRoot', '2019-01-10 00:17:38'),
+('AccesoRoot', '2019-01-10 00:18:53'),
+('AccesoRoot', '2019-01-10 00:28:27'),
+('AccesoRoot', '2019-01-10 00:32:45'),
+('AccesoRoot', '2019-01-10 00:47:52'),
+('AccesoRoot', '2019-01-10 01:11:12'),
+('AccesoRoot', '2019-01-10 19:41:44'),
+('AccesoRoot', '2019-01-10 20:16:04'),
+('AccesoRoot', '2019-01-10 23:34:20'),
+('AccesoRoot', '2019-01-10 23:43:22'),
+('AccesoRoot', '2019-01-10 23:45:53'),
+('AccesoRoot', '2019-01-10 23:51:55'),
+('AccesoRoot', '2019-01-11 00:05:10'),
+('AccesoRoot', '2019-01-11 00:20:00'),
+('AccesoRoot', '2019-01-11 00:39:54'),
+('AccesoRoot', '2019-01-11 00:41:53'),
+('AccesoRoot', '2019-01-11 00:43:16'),
+('AccesoRoot', '2019-01-11 00:46:01'),
+('AccesoRoot', '2019-01-11 00:48:17'),
+('AccesoRoot', '2019-01-11 00:49:24'),
+('AccesoRoot', '2019-01-11 00:57:57'),
+('AccesoRoot', '2019-01-11 01:05:11'),
+('AccesoRoot', '2019-01-11 01:07:09'),
+('AccesoRoot', '2019-01-11 01:42:56'),
+('AccesoRoot', '2019-01-11 01:55:47'),
+('AccesoRoot', '2019-01-11 01:58:57'),
+('AccesoRoot', '2019-01-11 02:03:54'),
+('AccesoRoot', '2019-01-11 02:15:44'),
+('AccesoRoot', '2019-01-11 02:22:14');
 
 -- --------------------------------------------------------
 
@@ -431,7 +482,41 @@ INSERT INTO `deposito` (`Codigo`, `CEntrada`, `CSalida`, `CSaldo`, `Fecha`) VALU
 ('TMC-012', 0, 20, NULL, '2019-01-08 18:24:23'),
 ('TMC-013', 0, 50, NULL, '2019-01-08 18:25:31'),
 ('TMC-012', 0, 30, NULL, '2019-01-08 18:52:34'),
-('TMC-007', 0, 97, NULL, '2019-01-09 13:47:47');
+('TMC-007', 0, 97, NULL, '2019-01-09 13:47:47'),
+('TMC-007', 0, 150, NULL, '2019-01-09 23:02:53'),
+('TMC-012', 0, 84, NULL, '2019-01-10 00:20:09'),
+('TMC-012', 0, 46, NULL, '2019-01-10 00:20:41'),
+('TMC-012', 0, 4, NULL, '2019-01-10 00:20:59'),
+('TMC-007', 0, 45, NULL, '2019-01-10 00:33:23'),
+('TMC-007', 0, 5, NULL, '2019-01-10 00:33:49'),
+('TMC-007', 0, 50, NULL, '2019-01-10 00:48:17'),
+('TMC-007', 0, 150, NULL, '2019-01-10 00:52:16'),
+('TMC-007', 0, 150, NULL, '2019-01-10 01:07:13'),
+('TMC-007', 0, 150, NULL, '2019-01-10 01:08:09'),
+('TMC-007', 0, 150, NULL, '2019-01-10 01:10:20'),
+('TMC-007', 0, 5, NULL, '2019-01-10 01:11:29'),
+('TMC-007', 0, 5, NULL, '2019-01-10 01:12:12'),
+('TMC-007', 0, 5, NULL, '2019-01-10 01:12:14'),
+('TMC-008', 0, 40, NULL, '2019-01-10 01:12:38'),
+('TMC-012', 0, 50, NULL, '2019-01-10 20:16:20'),
+('TMC-012', 0, 2, NULL, '2019-01-10 20:16:27'),
+('TMC-007', 0, 5, NULL, '2019-01-11 00:49:35'),
+('TMC-007', 0, 10, NULL, '2019-01-11 00:50:03'),
+('TMC-007', 0, 5, NULL, '2019-01-11 00:50:22'),
+('TMC-008', 0, 100, NULL, '2019-01-11 00:51:31'),
+('TMC-008', 0, 50, NULL, '2019-01-11 00:58:12'),
+('TMC-008', 0, 50, NULL, '2019-01-11 00:58:29'),
+('TMC-008', 0, 105, NULL, '2019-01-11 01:05:57'),
+('TMC-008', 0, 35, NULL, '2019-01-11 01:07:25'),
+('TMC-007', 0, 5, NULL, '2019-01-11 01:43:15'),
+('TMC-012', 0, 10, NULL, '2019-01-11 01:43:26'),
+('TMC-014', 0, 4, NULL, '2019-01-11 01:43:40'),
+('TMC-007', 0, 10, NULL, '2019-01-11 01:44:07'),
+('TMC-008', 0, 10, NULL, '2019-01-11 01:56:02'),
+('TMC-008', 0, 5, NULL, '2019-01-11 01:59:07'),
+('TMC-008', 0, 5, NULL, '2019-01-11 02:04:06'),
+('TMC-008', 0, 10, NULL, '2019-01-11 02:15:56'),
+('TMC-012', 0, 38, NULL, '2019-01-11 02:22:30');
 
 -- --------------------------------------------------------
 
@@ -451,14 +536,14 @@ CREATE TABLE `depositototal` (
 --
 
 INSERT INTO `depositototal` (`Codigo`, `CEntrada`, `CSalida`, `CSaldo`) VALUES
-('TMC-007', 1000, 600, 400),
-('TMC-008', 550, 50, 500),
+('TMC-007', 1000, 980, 20),
+('TMC-008', 550, 320, 230),
 ('TMC-009', 15, 0, 15),
 ('TMC-010', 500, 0, 500),
 ('TMC-011', 250, 0, 250),
-('TMC-012', 942, 112, 1084),
+('TMC-012', 942, 342, 600),
 ('TMC-013', 125, 125, 0),
-('TMC-014', 50, 0, 50),
+('TMC-014', 50, 4, 46),
 ('TMC-015', 42, 0, 42);
 
 -- --------------------------------------------------------
@@ -484,7 +569,9 @@ CREATE TABLE `entregamateriales` (
 
 INSERT INTO `entregamateriales` (`Id`, `Codigo`, `IdV`, `Cantidad`, `PrecioVenta`, `Fecha`, `User`, `Descuento`) VALUES
 (7, 'TMC-012', 8, 92, 25, '2019-01-08 18:16:56', 'AccesoRoot', 50),
-(8, 'TMC-013', 8, 50, 15, '2019-01-08 18:25:31', 'AccesoRoot', 50);
+(8, 'TMC-013', 8, 50, 15, '2019-01-08 18:25:31', 'AccesoRoot', 50),
+(9, 'TMC-012', 6, 50, 25, '2019-01-10 20:16:20', 'AccesoRoot', 5),
+(10, 'TMC-012', 6, 2, 25, '2019-01-10 20:16:27', 'AccesoRoot', 5);
 
 -- --------------------------------------------------------
 
@@ -512,9 +599,9 @@ INSERT INTO `ingresovehiculo` (`Id`, `Placa`, `PC`, `FechaIngreso`, `FechaIngres
 (3, 'a', 57, '2019-01-07 06:35:26', '07-01-2019', NULL, NULL),
 (4, '683-PUA', 57, '2019-01-07 07:07:54', '07-01-2019', NULL, NULL),
 (5, 'a', 1, '2019-01-07 07:17:16', '03-01-2019', NULL, NULL),
-(6, '683-PUA', 1, '2019-01-07 07:19:13', '07-01-2019', NULL, 'null'),
+(6, '683-PUA', 1, '2019-01-07 07:19:13', '07-01-2019', '2019-01-10 20:18:29', '10-01-2019'),
 (7, 'asdasd', 57, '2019-01-07 23:40:58', '11-01-2019', NULL, 'null'),
-(8, '1234ab', 59, '2019-01-08 13:23:22', '08-01-2019', NULL, 'null');
+(8, '1234ab', 59, '2019-01-08 13:23:22', '08-01-2019', '2019-01-10 20:01:09', '2010-01-30');
 
 -- --------------------------------------------------------
 
@@ -551,6 +638,47 @@ INSERT INTO `inventario` (`Codigo`, `CodMat`, `Material`, `PrecioCompra`, `Preci
 ('TMC-013', '263asd', 'PINTURA', 11.5, 15, 'Unidad'),
 ('TMC-014', 'asds', 'adasd', 55, 25, 'Litros'),
 ('TMC-015', 'ssfds', 'sdf', 25, 24, 'Metros');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `nroventa`
+--
+
+CREATE TABLE `nroventa` (
+  `Id` int(11) NOT NULL,
+  `Nombre` varchar(50) DEFAULT NULL,
+  `Descuento` float DEFAULT NULL,
+  `User` varchar(25) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `nroventa`
+--
+
+INSERT INTO `nroventa` (`Id`, `Nombre`, `Descuento`, `User`) VALUES
+(1, 'PABLO', 0, 'AccesoRoot'),
+(5, 'JOSE', 0, 'AccesoRoot'),
+(6, 'VARGAS', 0, 'AccesoRoot'),
+(7, 'LELA', 0, 'AccesoRoot'),
+(8, 'JOSE', 0, 'AccesoRoot'),
+(9, 'CARLOS', 0, 'AccesoRoot'),
+(10, 'VARL', 0, 'AccesoRoot'),
+(11, 'EL GERSON', 0, 'AccesoRoot'),
+(12, 'JOSU', 0, 'AccesoRoot'),
+(13, 'EL JOSU', 0, 'AccesoRoot'),
+(14, 'EL JOSU', 0, 'AccesoRoot'),
+(15, 'PABLO', 0, 'AccesoRoot'),
+(16, 'OMAR', 0, 'AccesoRoot'),
+(17, 'NELVU', 7, 'AccesoRoot'),
+(18, 'PABLO', 22, 'AccesoRoot'),
+(19, 'CARLOS', 4, 'AccesoRoot'),
+(20, 'MARIO', 0, 'AccesoRoot'),
+(21, 'NELVU', 1, 'AccesoRoot'),
+(22, 'DAS', 1, 'AccesoRoot'),
+(23, 'ASD', 10, 'AccesoRoot'),
+(24, 'ASDA', 5, 'AccesoRoot'),
+(25, 'JOSU', 5, 'AccesoRoot');
 
 -- --------------------------------------------------------
 
@@ -592,7 +720,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`User`, `Password`, `NombreUsuario`, `FechaIngreso`, `Cargo`) VALUES
-('AccesoRoot', '7a7d800377e8c8797b2f7d94f77a6cf6667ac648', 'TAMECON', '2019-01-09 15:57:57', 'Manager'),
+('AccesoRoot', '7a7d800377e8c8797b2f7d94f77a6cf6667ac648', 'TAMECON', '2019-01-11 02:22:14', 'Manager'),
 ('Pablo', 'ce7169ba6c7dea1ca07fdbff5bd508d4bb3e5832', 'Pablo', '2019-01-08 13:19:23', 'Administrador'),
 ('Pablo2', '51b24cb745061f0a8239cccb233377553bac8b51', 'Pablo2', '2019-01-08 13:20:01', 'Supervisor'),
 ('Root', 'e96857c58f716104caead648ee6aa61ab8e41cdc', 'OMAR', '2019-01-05 18:34:54', 'Supervisor');
@@ -628,15 +756,34 @@ INSERT INTO `vehiculo` (`Placa`, `Modelo`, `Color`, `NombreCliente`) VALUES
 --
 
 CREATE TABLE `venta` (
-  `Id` int(11) NOT NULL,
+  `I` int(11) NOT NULL,
+  `Id` int(11) DEFAULT NULL,
   `Codigo` varchar(15) DEFAULT NULL,
   `Cantidad` float DEFAULT NULL,
   `PrecioVenta` float DEFAULT NULL,
-  `FechaCancelacion` datetime DEFAULT NULL,
-  `User` varchar(25) DEFAULT NULL,
-  `Nombre` varchar(50) DEFAULT NULL,
-  `Descuento` float DEFAULT NULL
+  `FechaCancelacion` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `venta`
+--
+
+INSERT INTO `venta` (`I`, `Id`, `Codigo`, `Cantidad`, `PrecioVenta`, `FechaCancelacion`) VALUES
+(1, 14, 'TMC-007', 5, 20, '1111-11-11 00:00:00'),
+(2, 15, 'TMC-007', 10, 20, '1111-11-11 00:00:00'),
+(3, 14, 'TMC-007', 5, 20, '1111-11-11 00:00:00'),
+(4, 15, 'TMC-008', 100, 3.5, '1111-11-11 00:00:00'),
+(7, 17, 'TMC-008', 105, 3.5, '1111-11-11 00:00:00'),
+(8, 18, 'TMC-008', 35, 3.5, '1111-11-11 00:00:00'),
+(9, 19, 'TMC-007', 5, 20, '1111-11-11 00:00:00'),
+(10, 19, 'TMC-012', 10, 25, '1111-11-11 00:00:00'),
+(11, 19, 'TMC-014', 4, 25, '1111-11-11 00:00:00'),
+(12, 20, 'TMC-007', 10, 20, '1111-11-11 00:00:00'),
+(13, 21, 'TMC-008', 10, 3.5, '1111-11-11 00:00:00'),
+(14, 22, 'TMC-008', 5, 3.5, '1111-11-11 00:00:00'),
+(15, 23, 'TMC-008', 5, 3.5, '1111-11-11 00:00:00'),
+(16, 24, 'TMC-008', 10, 3.5, '2019-01-11 02:16:34'),
+(17, 25, 'TMC-012', 38, 25, '1111-11-11 00:00:00');
 
 --
 -- Índices para tablas volcadas
@@ -690,6 +837,13 @@ ALTER TABLE `inventario`
   ADD PRIMARY KEY (`Codigo`);
 
 --
+-- Indices de la tabla `nroventa`
+--
+ALTER TABLE `nroventa`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `User` (`User`);
+
+--
 -- Indices de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
@@ -711,8 +865,8 @@ ALTER TABLE `vehiculo`
 -- Indices de la tabla `venta`
 --
 ALTER TABLE `venta`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `User` (`User`),
+  ADD PRIMARY KEY (`I`),
+  ADD KEY `Id` (`Id`),
   ADD KEY `Codigo` (`Codigo`);
 
 --
@@ -729,7 +883,7 @@ ALTER TABLE `ayudante`
 -- AUTO_INCREMENT de la tabla `entregamateriales`
 --
 ALTER TABLE `entregamateriales`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `ingresovehiculo`
@@ -738,16 +892,22 @@ ALTER TABLE `ingresovehiculo`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT de la tabla `nroventa`
+--
+ALTER TABLE `nroventa`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `I` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Restricciones para tablas volcadas
@@ -787,10 +947,16 @@ ALTER TABLE `ingresovehiculo`
   ADD CONSTRAINT `ingresovehiculo_ibfk_2` FOREIGN KEY (`PC`) REFERENCES `ayudante` (`Id`);
 
 --
+-- Filtros para la tabla `nroventa`
+--
+ALTER TABLE `nroventa`
+  ADD CONSTRAINT `nroventa_ibfk_1` FOREIGN KEY (`User`) REFERENCES `usuario` (`User`);
+
+--
 -- Filtros para la tabla `venta`
 --
 ALTER TABLE `venta`
-  ADD CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`User`) REFERENCES `usuario` (`User`),
+  ADD CONSTRAINT `venta_ibfk_1` FOREIGN KEY (`Id`) REFERENCES `nroventa` (`Id`),
   ADD CONSTRAINT `venta_ibfk_2` FOREIGN KEY (`Codigo`) REFERENCES `inventario` (`Codigo`);
 COMMIT;
 
