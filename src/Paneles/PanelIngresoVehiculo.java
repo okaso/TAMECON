@@ -45,6 +45,9 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
         BtnEntrega = new javax.swing.JButton();
         BtnDetalles = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(153, 153, 153));
+
+        BtnNuevo.setBackground(new java.awt.Color(255, 255, 102));
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/vehiculos.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -53,6 +56,7 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
             }
         });
 
+        LabelTotal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LabelTotal.setText("TOTAL REGISTROS");
 
         jLabel1.setFont(new java.awt.Font("Wide Latin", 1, 36)); // NOI18N
@@ -60,6 +64,7 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
 
         jLabel2.setText("Buscar Por Nombre");
 
+        BtnEditar.setBackground(new java.awt.Color(255, 255, 51));
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
         BtnEditar.setText("Editar");
 
@@ -73,15 +78,18 @@ public class PanelIngresoVehiculo extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaArticulos);
 
+        BtnActualizar.setBackground(new java.awt.Color(255, 255, 0));
         BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
         BtnActualizar.setText("Actualizar");
 
         BtnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/buscar.png"))); // NOI18N
         BtnBuscar.setText("Buscar");
 
+        BtnEntrega.setBackground(new java.awt.Color(255, 255, 102));
         BtnEntrega.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/entrega.png"))); // NOI18N
         BtnEntrega.setText("Entrega de Materiales");
 
+        BtnDetalles.setBackground(new java.awt.Color(255, 255, 51));
         BtnDetalles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/vehiculos.png"))); // NOI18N
         BtnDetalles.setText("Detalles");
         BtnDetalles.addActionListener(new java.awt.event.ActionListener() {

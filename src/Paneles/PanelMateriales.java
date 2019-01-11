@@ -46,6 +46,7 @@ public class PanelMateriales extends javax.swing.JPanel {
         BtnActualizar = new javax.swing.JButton();
         BtnIngresar = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(996, 622));
 
         BtnEditarMaterial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N

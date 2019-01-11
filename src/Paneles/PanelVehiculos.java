@@ -43,6 +43,8 @@ public class PanelVehiculos extends javax.swing.JPanel {
         BtnActualizar = new javax.swing.JButton();
         BtnBuscar = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(153, 153, 153));
+
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/vehiculos.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {

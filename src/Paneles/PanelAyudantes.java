@@ -44,6 +44,9 @@ public class PanelAyudantes extends javax.swing.JPanel {
         BtnActualizar = new javax.swing.JButton();
         BtnBuscar = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(153, 153, 153));
+
+        BtnNuevo.setBackground(new java.awt.Color(255, 255, 204));
         BtnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/users.png"))); // NOI18N
         BtnNuevo.setText("NUEVO");
         BtnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -52,6 +55,7 @@ public class PanelAyudantes extends javax.swing.JPanel {
             }
         });
 
+        LabelTotal.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         LabelTotal.setText("TOTAL REGISTROS");
 
         jLabel1.setFont(new java.awt.Font("Wide Latin", 1, 36)); // NOI18N
@@ -59,9 +63,11 @@ public class PanelAyudantes extends javax.swing.JPanel {
 
         jLabel2.setText("Buscar Por Nombre");
 
+        BtnEditar.setBackground(new java.awt.Color(255, 255, 204));
         BtnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/edicion.png"))); // NOI18N
         BtnEditar.setText("Editar");
 
+        BtnEliminar.setBackground(new java.awt.Color(255, 255, 204));
         BtnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Manager/advertencia.png"))); // NOI18N
         BtnEliminar.setText("Eliminar");
 
@@ -75,6 +81,7 @@ public class PanelAyudantes extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(TablaArticulos);
 
+        BtnActualizar.setBackground(new java.awt.Color(0, 153, 153));
         BtnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Paneles/Imagenes/refresh.png"))); // NOI18N
         BtnActualizar.setText("Actualizar");
 
