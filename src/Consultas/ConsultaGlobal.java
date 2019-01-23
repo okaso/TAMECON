@@ -48,7 +48,34 @@ public class ConsultaGlobal {
         }
         return usuario;
     }
+    public String getLimiteLitros() {
+        String usuario ="";
+        try {
+            ResultSet resultado = Conexion.getDatos("SELECT * FROM DepositoTotal D inner join Inventario I on D.Codigo=I.Codigo Where I.Unidad='Litros' and D.CSaldo <20");
+            if (resultado.next()) {       
+                usuario+=resultado.getString("Material")+"\n";
+            }
+           
 
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return usuario;
+    }
+    public String getLimiteMetros() {
+        String usuario ="";
+        try {
+            ResultSet resultado = Conexion.getDatos("SELECT * FROM DepositoTotal D inner join Inventario I on D.Codigo=I.Codigo Where (I.Unidad='Unidad' OR I.Unidad='Metros') and D.CSaldo <8");
+            if (resultado.next()) {       
+                usuario+=resultado.getString("Material")+"\n";
+            }
+           
+
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+        return usuario;
+    }
     /*                       Cagar Datos de La LIsta De Articulos en Manager         */
     public DefaultTableModel getLista(String textoBusqueda) {
         DefaultTableModel modeloTabla = new DefaultTableModel() {

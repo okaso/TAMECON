@@ -264,6 +264,9 @@
     </Container>
     <Component class="javax.swing.JButton" name="BtnEntregar">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Entregar Material"/>
       </Properties>
     </Component>
@@ -289,11 +292,17 @@
     </Component>
     <Component class="javax.swing.JButton" name="BtnRebajar">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="REBAJAR"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BtnQuitar">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Quitar Material de Este Registro"/>
       </Properties>
     </Component>
@@ -309,6 +318,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="TxtImprimer">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="IMPRIMIR"/>
       </Properties>
     </Component>

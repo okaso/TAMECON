@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>C:\Users\HP\Documents\NetBeansProjects\TAMECON\dist\TAMECON.jar</jar>
-  <outfile>C:\Users\HP\Documents\NetBeansProjects\TAMECON\dist\TAMECON.exe</outfile>
+  <outfile>C:\Users\HP\Documents\NetBeansProjects\TAMECON\dist\Tamecon.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

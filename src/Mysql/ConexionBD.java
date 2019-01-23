@@ -26,7 +26,7 @@ public class ConexionBD {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/TAMECON";
             String User = "root";
-            String Password = "kmoprsuwxz1";
+            String Password = "";
             Conexion = (Connection) DriverManager.getConnection(url, User, Password);
             System.out.println("Exito");
 

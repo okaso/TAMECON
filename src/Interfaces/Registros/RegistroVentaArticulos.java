@@ -51,6 +51,7 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
         TxtRebaja = new javax.swing.JTextField();
         BtnDescuento = new javax.swing.JButton();
         LabelNro = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 1, 24)); // NOI18N
         jLabel1.setText("REGISTRO DE VENTA DE ARTICULO");
@@ -87,17 +88,28 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
 
         jLabel8.setText("Cantidad de Venta :");
 
+        BtnVenta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnVenta.setText("Agregar");
+        BtnVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnVentaActionPerformed(evt);
+            }
+        });
 
-        BtnQuitarVenta.setText("Quitar");
+        BtnQuitarVenta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        BtnQuitarVenta.setText("Quitar Registro");
 
+        BtnImprimir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnImprimir.setText("Imprimir");
 
         TxtRebaja.setText("0");
 
+        BtnDescuento.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnDescuento.setText("Agregar Rebaja");
 
         LabelNro.setText("N");
+
+        jLabel3.setText("Descuento :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,7 +123,7 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(244, 244, 244)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                         .addComponent(LabelNro, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9))
                     .addGroup(layout.createSequentialGroup()
@@ -147,11 +159,13 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
                                 .addComponent(BtnVenta)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BtnQuitarVenta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(TxtRebaja, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BtnDescuento)
-                                .addGap(93, 93, 93)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(BtnImprimir)))))
                 .addContainerGap())
         );
@@ -187,7 +201,8 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
                     .addComponent(BtnQuitarVenta)
                     .addComponent(BtnImprimir)
                     .addComponent(TxtRebaja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnDescuento))
+                    .addComponent(BtnDescuento)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -195,6 +210,10 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnVentaActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -258,6 +277,7 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
                     Nro().getText())) {
                 setDatos(CG.getVenta(Nro().getText()));
                 TxtCV().setText("0");
+                
             } else {
                 System.out.println("NOSE PUDO AGREGAR VENTA");
             }
@@ -305,6 +325,7 @@ public class RegistroVentaArticulos extends javax.swing.JFrame {
     private javax.swing.JTextField TxtRebaja;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

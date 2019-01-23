@@ -324,7 +324,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             if (PIV.TablaArticulos().getSelectedRow() < 0) {
                 JOptionPane.showMessageDialog(PIV, "Debe seleccionar un registro");
             } else {
-
+                Alertas();
                 EntregaMateriales();
 
             }
@@ -433,6 +433,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         CargarDatosEntrega();
         REntrega.BtnAgregar().addActionListener((e) -> {
             RegistroEntregaMateriales();
+            Alertas();
         });
         REntrega.BtnImprimir().addActionListener((e) -> {
             IEM.setVisible(true);
@@ -463,6 +464,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 User,
                 REntrega.TxtRebaja().getText(),
                 REntrega.LabelPV().getText())) {
+            Alertas();
             REntrega.TxtCantidad().setText("");
             REntrega.setDatos(CG.getEntrega(REntrega.LabelNro().getText()));
 
@@ -505,6 +507,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
             REntrega.LabelUnidad().setText(datos[2]);
             REntrega.LabelCantidad().setText(datos[3]);
         });
+
         REntrega.TxtCodigo().addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -513,7 +516,11 @@ public class ControlGlobal implements ActionListener, KeyListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 REntrega.ComboMaterial().setModel(new javax.swing.DefaultComboBoxModel<>(CG.getMaterial(REntrega.TxtCodigo().getText())));
-
+                String[] datos = CG.getMaterialDetalles(REntrega.TxtCodigo().getText());
+                REntrega.LabelPC().setText(datos[0]);
+                REntrega.LabelPV().setText(datos[1]);
+                REntrega.LabelUnidad().setText(datos[2]);
+                REntrega.LabelCantidad().setText(datos[3]);
             }
 
             @Override
@@ -547,12 +554,15 @@ public class ControlGlobal implements ActionListener, KeyListener {
                     login.TxtPassword().setText("");
                     login.TxtUsuario().setText("");
                     if (Usuario[2].equals("Manager")) {
+                        Alertas();
                         UserManager();
                     }
                     if (Usuario[2].equals("Supervisor")) {
+                        Alertas();
                         UserSupervisor();
                     }
                     if (Usuario[2].equals("Administrador")) {
+                        Alertas();
                         UserAdministrador();
                     }
                     Manager("Usuario : " + Usuario[1] + "  Cargo : " + Usuario[2] + "   Ultimo Acceso : " + Usuario[3]);
@@ -590,6 +600,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
         }
         if (e.getSource() == IM.ItemVentas()) {
             RegistroVentaArticulos RVenta;
+            Alertas();
             RVenta = new RegistroVentaArticulos();
             String name = JOptionPane.showInputDialog(IM, "Igrese Nombre Del Cliente");
             RVenta.Nombre().setText(name);
@@ -749,6 +760,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     }
 
     public void Materiales() {
+
         CargarDatosMateriales(PM.TxtBusqueda().getText());
         PM.setVisible(true);
         LimpiarInterfaz(PM);
@@ -798,6 +810,7 @@ public class ControlGlobal implements ActionListener, KeyListener {
     }
 
     public void DetallesIngresos() {
+
         DV.setVisible(true);
         LimpiarInterfaz(DV);
         DV.setDatos(CG.getDetallesVenta(DV.TxtBusqueda().getText()), this.CG.getTotal());
@@ -807,11 +820,11 @@ public class ControlGlobal implements ActionListener, KeyListener {
 
         });
         DV.BtnVentas().addActionListener((e) -> {
-             DV.setDatos(CG.getDetallesVenta(DV.TxtBusqueda().getText()), this.CG.getTotal());
+            DV.setDatos(CG.getDetallesVenta(DV.TxtBusqueda().getText()), this.CG.getTotal());
         });
         DV.BtnEntregas().addActionListener((e) -> {
-             DV.setDatos(CG.getDetallesEntrega(DV.TxtBusqueda().getText()), this.CG.getTotal());
-            
+            DV.setDatos(CG.getDetallesEntrega(DV.TxtBusqueda().getText()), this.CG.getTotal());
+
         });
 
     }
@@ -1010,14 +1023,14 @@ public class ControlGlobal implements ActionListener, KeyListener {
                 + "CALL InsertarDeposito(Cod,0,Cant);\n"
                 + "end $\n"
                 + "delimiter $\n"
+                + "delimiter $\n"
                 + "Create Procedure Quitar(in I int,in Cod Varchar(15),in Cant float)\n"
                 + "begin\n"
                 + "Set @C=(Select CSalida from DepositoTotal Where Codigo=Cod);\n"
                 + "Set @CE=(Select CEntrada from DepositoTotal Where Codigo=Cod);\n"
-                + "Set @CS=(Select CSaldo from DepositoTotal Where Codigo=Cod);\n"
                 + "Delete From EntregaMateriales Where Id=I;\n"
-                + "Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@C-Cant+@CE+Cant Where Codigo=Cod;\n"
-                + "end $\n"
+                + "Update DepositoTotal Set CSalida=@C-Cant,CSaldo=@CE-(@C-Cant) Where Codigo=Cod;\n"
+                + "end $"
                 + "\n"
                 + "delimiter $\n"
                 + "Create Procedure AgregarRebaja(in Id int,in Des float)\n"
@@ -1371,6 +1384,26 @@ public class ControlGlobal implements ActionListener, KeyListener {
             RIngresoVehiculo.Date().setDate(date);
         } else {
             JOptionPane.showMessageDialog(PV, "NO SE PUDO MODIFICAR EL VEHICULO");
+        }
+    }
+
+    public void Alertas() {
+        alertalitros();
+        masalertar();
+
+    }
+
+    public void alertalitros() {
+        String al = CG.getLimiteLitros();
+        if (!al.equals("")) {
+            JOptionPane.showMessageDialog(IM, "MATERIALES BAJOS Lts \n" + al);
+        }
+    }
+
+    public void masalertar() {
+        String al = CG.getLimiteMetros();
+        if (!al.equals("")) {
+            JOptionPane.showMessageDialog(IM, "MATERIALES BAJOS Mts, U. \n" + al);
         }
     }
 }

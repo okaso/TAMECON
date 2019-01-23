@@ -88,6 +88,7 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(TablaEntregas);
 
+        BtnEntregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnEntregar.setText("Entregar Material");
 
         TXtPC.setText("--------------");
@@ -98,14 +99,17 @@ public class RegistroEntregaMateriales extends javax.swing.JFrame {
 
         jLabel14.setText("AGREGAR REBAJA AL TOTAL :");
 
+        BtnRebajar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnRebajar.setText("REBAJAR");
 
+        BtnQuitar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnQuitar.setText("Quitar Material de Este Registro");
 
         jLabel15.setText("Cantidad En Almacen :");
 
         TXtCantidad.setText("---------");
 
+        TxtImprimer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         TxtImprimer.setText("IMPRIMIR");
 
         LabelUnidad.setText("----------");
